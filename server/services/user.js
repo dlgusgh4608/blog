@@ -1,11 +1,9 @@
-const { getSuggestedQuery } = require('@testing-library/react');
-
 class UserService {
   constructor(pool) {
     this._pool = pool;
   }
-  async getUser(id) {
-    const result = await this._pool.query(`SELECT id, post_id, p.content nickname, email FROM user WHERE id=$1`, [id]);
+  async getUser() {
+    const result = await this._pool.query(`SELECT * FROM user`);
     return result.rows;
   }
   async login(email, password) {
