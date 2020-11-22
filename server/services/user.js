@@ -3,24 +3,28 @@ class UserService {
     this._pool = pool;
   }
   async getUser() {
-    const result = await this._pool.query(`SELECT * FROM user`);
+    const result = await this._pool.query(
+      `SELECT users.id, users.email, users.nickname, posts.id as postId, posts.content, posts.create_at, posts.update_at 
+      FROM users LEFT JOIN posts 
+      ON users.id = posts.user_id;`,
+    );
     return result.rows;
   }
-  async login(email, password) {
-    const result = await this._pool.query(`SELECT email, password FROM user WHERE email = $1 AND password = $2`, [email, password]);
+  async login(email) {
+    const result = await this._pool.query(`SELECT password FROM users WHERE email = $1`, [email]);
     return result.rows;
   }
   async emailCheck(email) {
-    const result = await this._pool.query(`SELECT email FROM user WHERE email = $1 `, [email]);
+    const result = await this._pool.query(`SELECT email FROM users WHERE email = $1`, [email]);
     return result.rows;
   }
-  async signup(email, password) {
-    const result = await this._pool.query(`INSERT INTO user(email, password) VALUES($1, $2)`, [email, password]);
-    return result.rows[0];
+  async signup(email, password, nickname) {
+    const result = await this._pool.query(`INSERT INTO users(email, password, nickname) VALUES($1, $2, $3)`, [email, password, nickname]);
+    return result.rows;
   }
   async userDelete(userId) {
-    const result = await this._pool.query('DELETE FROM user FROM id = $1', [userId]);
-    return result.rows[0];
+    const result = await this._pool.query('DELETE FROM users FROM id = $1', [userId]);
+    return result.rows;
   }
 }
 

@@ -12,7 +12,7 @@ module.exports = (router, service) => {
     try {
       const postId = req.params.postId;
       if (postId == null) {
-        res.status(400).json({ error: 'invalid', reason: 'postId' });
+        return res.status(400).json({ error: 'invalid', reason: 'postId' });
       }
       const result = await service.post(postId);
       res.status(200).json({ data: result });
@@ -27,7 +27,7 @@ module.exports = (router, service) => {
       const content = req.params.content;
       const userId = req.params.userId;
       if (content == null) {
-        res.status(400).json({ error: 'invalid', reason: 'content' });
+        return res.status(400).json({ error: 'invalid', reason: 'content' });
       }
       const result = await service.createPost(userId, content);
       res.status(200).json({ data: result });
@@ -39,7 +39,7 @@ module.exports = (router, service) => {
   router.delete('api/v1/post/:postId', async (req, res) => {
     const postId = req.params.postId;
     if (postId == null) {
-      res.status(400).json({ error: 'invalid', reason: 'postId' });
+      return res.status(400).json({ error: 'invalid', reason: 'postId' });
     }
     const result = await service.deletePost(postId);
     res.status(200).json({ data: result });
@@ -50,10 +50,10 @@ module.exports = (router, service) => {
     const postId = req.params.postId;
     const content = req.params.content;
     if (postId == null) {
-      res.status(400).json({ error: 'invalid', reason: 'postId' });
+      return res.status(400).json({ error: 'invalid', reason: 'postId' });
     }
     if (content == null) {
-      res.status(400).json({ error: 'invalid', reason: 'content' });
+      return res.status(400).json({ error: 'invalid', reason: 'content' });
     }
     const result = await service.updatePost(postId, content);
     res.status(200).json({ data: result });

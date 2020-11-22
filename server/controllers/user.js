@@ -15,15 +15,19 @@ module.exports = (router, service) => {
       const email = req.body.email;
       const password = req.body.password;
       if (email == null) {
-        res.status(400).json({ error: 'invalid', reason: 'email' });
+        return res.status(400).json({ error: 'invalid', reason: 'email' });
       }
       if (password == null) {
-        res.status(400).json({ error: 'invalid', reason: 'password' });
+        return res.status(400).json({ error: 'invalid', reason: 'password' });
       }
-      const hashPassword = bcrypt.hash(password, 10);
-      const result = await service.login(email, hashPassword);
-      if (!result) {
-        res.status(200).send('없는 아이디이거나 비밀번호가 일치하지 않습니다.');
+      const hashPassword = await service.login(email);
+      if (hashPassword.length) {
+        const result = await bcrypt.compare(password, hashPassword[0].password);
+        if (!result) {
+          return res.status(200).send('비번틀림.');
+        }
+      } else {
+        return res.status(200).send('아이디 없음.');
       }
       res.status(200).send('login success');
     } catch (e) {
@@ -34,21 +38,17 @@ module.exports = (router, service) => {
   router.post(`/api/v1/signup`, async (req, res) => {
     try {
       const email = req.body.email;
-      const password = req.body.password;
+      const nickname = req.body.nickname;
       if (email == null) {
-        res.status(400).json({ error: 'invalid', reason: 'email' });
+        return res.status(400).json({ error: 'invalid', reason: 'email' });
       }
-      if (password == null) {
-        res.status(400).json({ error: 'invalid', reason: 'password' });
+      if (req.body.password == null) {
+        return res.status(400).json({ error: 'invalid', reason: 'password' });
       }
-      const emailCheck = service.emailCheck(email);
-      if (emailCheck !== null) {
-        res.status(200).send('이미 가입되어있는 이메일입니다.');
-      }
-      const hashPassword = bcrypt.hash(password, 10);
-      const result = service.signup(email, hashPassword);
+      const hashPassword = await bcrypt.hash(req.body.password, 10);
+      const result = await service.signup(email, hashPassword, nickname);
       if (result == null) {
-        res.status(500).send('알 수 없는 오류가 발생했습니다.');
+        return res.status(500).send('알 수 없는 오류가 발생했습니다.');
       }
       res.send('회원가입이 성공적으로 완료되었습니다.');
     } catch (e) {
@@ -60,11 +60,11 @@ module.exports = (router, service) => {
     try {
       const email = req.body.email;
       if (email == null) {
-        res.status(400).json({ error: 'invalid', reason: 'email' });
+        return res.status(400).json({ error: 'invalid', reason: 'email' });
       }
-      const result = service.eamilCheck(email);
+      const result = await service.emailCheck(email);
       if (result !== null) {
-        res.status(200).send('이미 가입되어있는 이메일 입니다.');
+        return res.status(200).send('이미 가입되어있는 이메일 입니다.');
       }
       res.status(200).send('사용하실수 있는 이메일입니다.');
     } catch (e) {
