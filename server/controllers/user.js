@@ -66,7 +66,7 @@ module.exports = (router, service) => {
       if (result.length) {
         return res.status(403).send('이미 가입되어있는 이메일 입니다.');
       }
-      res.status(200).send('사용하실수 있는 이메일입니다.');
+      res.status(200).send('사용할 수 있는 이메일 입니다.');
     } catch (e) {
       res.json(e);
     }
