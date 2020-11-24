@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
 const HeaderContainer = styled.header`
@@ -49,9 +49,10 @@ const LoginBtn = styled.button`
   outline: none;
   background-color: black;
   color: white;
+  cursor: pointer;
 `;
 
-const Header = () => {
+const Header = ({ onLoggingHandler }) => {
   return (
     <>
       <HeaderContainer>
@@ -61,7 +62,7 @@ const Header = () => {
           </Head>
           <Head>
             <Search>검색</Search>
-            <LoginBtn>로그인</LoginBtn>
+            <LoginBtn onClick={onLoggingHandler}>로그인</LoginBtn>
           </Head>
         </HeaderWrapper>
       </HeaderContainer>
