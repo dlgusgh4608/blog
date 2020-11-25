@@ -38,14 +38,15 @@ module.exports = (router, service) => {
   router.post(`/api/v1/signup`, async (req, res) => {
     try {
       const email = req.body.email;
-      const nickname = req.body.nickname;
+      const password = req.body.password;
+      const nickname = '.';
       if (email == null) {
         return res.status(400).json({ error: 'invalid', reason: 'email' });
       }
-      if (req.body.password == null) {
+      if (password == null) {
         return res.status(400).json({ error: 'invalid', reason: 'password' });
       }
-      const hashPassword = await bcrypt.hash(req.body.password, 10);
+      const hashPassword = await bcrypt.hash(password, 10);
       const result = await service.signup(email, hashPassword, nickname);
       if (result == null) {
         return res.status(500).send('알 수 없는 오류가 발생했습니다.');

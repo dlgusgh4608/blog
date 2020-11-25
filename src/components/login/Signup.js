@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useInput from '../../hooks/useInput';
 import { useDispatch, useSelector } from 'react-redux';
-import { EMAIL_CHECK_REQUEST } from '../../reducer/user';
+import { EMAIL_CHECK_REQUEST, SIGNUP_REQUEST } from '../../reducer/user';
 import Spinner from '../spinner/Spinner';
 
 const SignupContainer = styled.div`
@@ -155,13 +155,23 @@ const ErrorSpan = styled.span`
 `;
 
 const Signup = ({ onLoggingHandler, switchHandler }) => {
-  const { emailCheckSuccess, emailCheckLodding, emailCheckError } = useSelector((state) => state.user);
+  const { emailCheckSuccess, emailCheckLodding, emailCheckError, signupSuccess, signupError } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const [email, onChangeEmail] = useInput('');
-  const [password, onChangePassword] = useInput('');
+
+  useEffect(() => {
+    if (signupSuccess) {
+      alert('성공띠');
+    }
+  }, [signupSuccess]);
+  useEffect(() => {
+    if (signupError) {
+      alert('실패띠');
+    }
+  }, [signupError]);
 
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState(false);
+  const [password, onChangePassword] = useInput('');
   const onChangePasswordCheck = useCallback(
     (e) => {
       setPasswordCheck(e.target.value);
@@ -170,12 +180,44 @@ const Signup = ({ onLoggingHandler, switchHandler }) => {
     [password],
   );
 
-  const onEmailCheck = () => {
-    dispatch({
-      type: EMAIL_CHECK_REQUEST,
-      data: { email },
-    });
-  };
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState(false);
+
+  const onChangeEmail = useCallback((e) => {
+    const testEmail = e.target.value;
+    setEmail(testEmail);
+    setEmailError(!testEmail.match(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i));
+  }, []);
+  const onEmailCheck = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (emailError) {
+        return null;
+      }
+      dispatch({
+        type: EMAIL_CHECK_REQUEST,
+        data: { email },
+      });
+    },
+    [email, emailError],
+  );
+
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (password !== passwordCheck) {
+        return setPasswordError(true);
+      }
+      dispatch({
+        type: SIGNUP_REQUEST,
+        data: {
+          email,
+          password,
+        },
+      });
+    },
+    [email, password, passwordCheck],
+  );
 
   return (
     <>
@@ -191,10 +233,11 @@ const Signup = ({ onLoggingHandler, switchHandler }) => {
               <XBtn onClick={onLoggingHandler}>✖️</XBtn>
             </SignupExitWrapper>
             <SignupInpormation>
-              <SignupForm>
+              <SignupForm onSubmit={onSubmit}>
                 <SpanWrapper>
                   <h4>이메일</h4>
                   {emailCheckError && <ErrorSpan>{emailCheckError}</ErrorSpan>}
+                  {emailError && <ErrorSpan>이메일을 입력해주세요!</ErrorSpan>}
                   {emailCheckSuccess && (
                     <div>
                       <span>{emailCheckSuccess}</span>
@@ -203,17 +246,17 @@ const Signup = ({ onLoggingHandler, switchHandler }) => {
                   )}
                 </SpanWrapper>
                 <EmailInputWrapper>
-                  <EmailInput type="email" value={email} onChange={onChangeEmail} placeholder="이메일을 입력해주세요." />
+                  <EmailInput type="email" required value={email} onChange={onChangeEmail} placeholder="이메일을 입력해주세요." />
                   <EmailCheckBtn onClick={onEmailCheck}>{emailCheckLodding ? <Spinner /> : '중복확인'}</EmailCheckBtn>
                 </EmailInputWrapper>
                 <h4>비밀번호</h4>
-                <PasswordInput type="password" value={password} onChange={onChangePassword} placeholder="비밀번호를 입력해주세요." />
+                <PasswordInput type="password" required value={password} onChange={onChangePassword} placeholder="비밀번호를 입력해주세요." />
                 <SpanWrapper>
                   <h4>비밀번호확인</h4>
                   {passwordError && <ErrorSpan>비밀번호가 일치하지 않습니다.</ErrorSpan>}
                 </SpanWrapper>
 
-                <PasswordInput type="password" value={passwordCheck} onChange={onChangePasswordCheck} placeholder="비밀번호를 한번더 입력해주세요." />
+                <PasswordInput type="password" required value={passwordCheck} onChange={onChangePasswordCheck} placeholder="비밀번호를 한번더 입력해주세요." />
                 <SignupButton type="submit">회원가입</SignupButton>
               </SignupForm>
               <SignupFooter>

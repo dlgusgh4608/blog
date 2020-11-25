@@ -20,6 +20,7 @@ class UserService {
   }
   async signup(email, password, nickname) {
     const result = await this._pool.query(`INSERT INTO users(email, password, nickname) VALUES($1, $2, $3)`, [email, password, nickname]);
+    console.log(result);
     return result.rows;
   }
   async userDelete(userId) {
