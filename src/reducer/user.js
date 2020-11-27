@@ -36,13 +36,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         emailCheckLoading: false,
         emailCheckSuccess: action.data,
-        emailCheckError: null,
       };
     case EMAIL_CHECK_FAILURE:
       return {
         ...state,
         emailCheckLoading: false,
-        emailCheckSuccess: false,
         emailCheckError: action.error,
       };
     case SIGN_UP_REQUEST:
@@ -63,6 +61,25 @@ const reducer = (state = initialState, action) => {
         ...state,
         signUpLoading: false,
         signUpError: action.error,
+      };
+    case LOGIN_REQUEST:
+      return {
+        ...state,
+        loginLoading: true,
+        loginSuccess: false,
+        loginError: null,
+      };
+    case LOGIN_SUCCESS:
+      return {
+        ...state,
+        loginLoading: false,
+        loginSuccess: action.data,
+      };
+    case LOGIN_FAILURE:
+      return {
+        ...state,
+        loginLoading: false,
+        loginError: action.error,
       };
     default:
       return state;

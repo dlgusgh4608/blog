@@ -1,6 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import useInput from '../../hooks/useInput';
+import { LOGIN_REQUEST } from '../../reducer/user';
+import Spinner from '../spinner/Spinner';
 
 const LoginContainer = styled.div`
   position: fixed;
@@ -75,12 +78,15 @@ const LoginInput = styled.input`
 `;
 
 const LoginButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: greenyellow;
-  border: none;
   margin-top: 2.2rem;
+  border: none;
   border-radius: 2px;
-  font-size: 1rem;
   padding: 0.8rem;
+  font-size: 1rem;
   cursor: pointer;
 `;
 
@@ -108,17 +114,43 @@ const SignUp = styled.div`
 `;
 
 const Login = ({ toggleDialog, switchHandler }) => {
+  const dispatch = useDispatch();
+  const { loginSuccess, loginLoading, loginError } = useSelector((state) => state.user);
   const [email, onChangeEmail, setEmail] = useInput('');
   const [password, onChangePassword, setPassword] = useInput('');
 
-  const onSubmit = useCallback(() => {
-    if (!email) {
-      return alert('이메일을 입력해주세요.');
+  useEffect(() => {
+    if (loginSuccess) {
+      alert('성공띠');
     }
-    if (!password) {
-      return alert('비밀번호를 입력해주세요.');
+  }, [loginSuccess]);
+
+  useEffect(() => {
+    if (loginError) {
+      setEmail('');
+      setPassword('');
     }
-  }, []);
+  }, [loginError]);
+
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (!email) {
+        return alert('이메일을 입력해주세요.');
+      }
+      if (!password) {
+        return alert('비밀번호를 입력해주세요.');
+      }
+      dispatch({
+        type: LOGIN_REQUEST,
+        data: {
+          email,
+          password,
+        },
+      });
+    },
+    [email, password],
+  );
 
   return (
     <>
@@ -137,8 +169,7 @@ const Login = ({ toggleDialog, switchHandler }) => {
               <LoginForm onSubmit={onSubmit}>
                 <h4>이메일</h4> <LoginInput type="email" value={email} onChange={onChangeEmail} placeholder="이메일을 입력해주세요." />
                 <h4>비밀번호</h4> <LoginInput type="password" value={password} onChange={onChangePassword} placeholder="비밀번호를 입력해주세요." />
-                <LoginButton type="submit">로그인</LoginButton>
-                <div>이메일 혹은 비밀번호가 잘못되었습니다.</div>
+                <LoginButton type="submit">{loginLoading ? <Spinner /> : '로그인'}</LoginButton>
               </LoginForm>
               <LoginFooter>
                 <FooterSpan>아직 아이디가 없으신가요?</FooterSpan>
