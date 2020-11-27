@@ -18,7 +18,7 @@ class UserService {
     const result = await this._pool.query(`SELECT email FROM users WHERE email = $1`, [email]);
     return result.rows;
   }
-  async signup(email, password, nickname) {
+  async signUp(email, password, nickname) {
     const result = await this._pool.query(`INSERT INTO users(email, password, nickname) VALUES($1, $2, $3)`, [email, password, nickname]);
     console.log(result);
     return result.rows;

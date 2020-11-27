@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
+import useInput from '../../hooks/useInput';
 
 const LoginContainer = styled.div`
   position: fixed;
@@ -33,7 +34,7 @@ const LoginWelcomeImg = styled.img`
   width: 100%;
 `;
 
-const LoginInpormationWrapper = styled.div`
+const LoginInformationWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 2rem;
@@ -53,7 +54,7 @@ const LoginExitWrapper = styled.div`
   }
 `;
 
-const LoginInpormation = styled.div`
+const LoginInformation = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -76,7 +77,7 @@ const LoginInput = styled.input`
 const LoginButton = styled.button`
   background-color: greenyellow;
   border: none;
-  margin: 2.2rem 0 2.2rem 0;
+  margin-top: 2.2rem;
   border-radius: 2px;
   font-size: 1rem;
   padding: 0.8rem;
@@ -95,7 +96,7 @@ const FooterSpan = styled.span`
   margin-right: 0.5rem;
 `;
 
-const Signup = styled.div`
+const SignUp = styled.div`
   display: inline-block;
   font-weight: bold;
   color: green;
@@ -106,7 +107,19 @@ const Signup = styled.div`
   }
 `;
 
-const Login = ({ onLoggingHandler, switchHandler }) => {
+const Login = ({ toggleDialog, switchHandler }) => {
+  const [email, onChangeEmail, setEmail] = useInput('');
+  const [password, onChangePassword, setPassword] = useInput('');
+
+  const onSubmit = useCallback(() => {
+    if (!email) {
+      return alert('이메일을 입력해주세요.');
+    }
+    if (!password) {
+      return alert('비밀번호를 입력해주세요.');
+    }
+  }, []);
+
   return (
     <>
       <LoginContainer>
@@ -115,23 +128,24 @@ const Login = ({ onLoggingHandler, switchHandler }) => {
             <LoginWelcomeImg src="https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile27.uf.tistory.com%2Fimage%2F9905EB345DF8CE050BE220" />
             <h2>환영합니다.</h2>
           </LoginWelcome>
-          <LoginInpormationWrapper>
+          <LoginInformationWrapper>
             <LoginExitWrapper>
               <h2>로그인</h2>
-              <XBtn onClick={onLoggingHandler}>✖️</XBtn>
+              <XBtn onClick={toggleDialog}>✖️</XBtn>
             </LoginExitWrapper>
-            <LoginInpormation>
-              <LoginForm>
-                <h4>이메일</h4> <LoginInput type="email" placeholder="이메일을 입력해주세요." />
-                <h4>비밀번호</h4> <LoginInput type="password" placeholder="비밀번호를 입력해주세요." />
+            <LoginInformation>
+              <LoginForm onSubmit={onSubmit}>
+                <h4>이메일</h4> <LoginInput type="email" value={email} onChange={onChangeEmail} placeholder="이메일을 입력해주세요." />
+                <h4>비밀번호</h4> <LoginInput type="password" value={password} onChange={onChangePassword} placeholder="비밀번호를 입력해주세요." />
                 <LoginButton type="submit">로그인</LoginButton>
+                <div>이메일 혹은 비밀번호가 잘못되었습니다.</div>
               </LoginForm>
               <LoginFooter>
                 <FooterSpan>아직 아이디가 없으신가요?</FooterSpan>
-                <Signup onClick={switchHandler}>회원가입</Signup>
+                <SignUp onClick={switchHandler}>회원가입</SignUp>
               </LoginFooter>
-            </LoginInpormation>
-          </LoginInpormationWrapper>
+            </LoginInformation>
+          </LoginInformationWrapper>
         </LoginWrapper>
       </LoginContainer>
     </>

@@ -1,22 +1,22 @@
 export const initialState = {
   emailCheckSuccess: false,
-  emailCheckLodding: false,
+  emailCheckLoading: false,
   emailCheckError: null,
   loginSuccess: false,
-  loginLodding: false,
+  loginLoading: false,
   loginError: null,
-  signupSuccess: false,
-  signupLodding: false,
-  signupError: null,
+  signUpSuccess: false,
+  signUpLoading: false,
+  signUpError: null,
 };
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 
-export const SIGNUP_REQUEST = 'SIGNUP_REQUEST';
-export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
-export const SIGNUP_FAILURE = 'SIGNUP_FAILURE';
+export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
+export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
+export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
 
 export const EMAIL_CHECK_REQUEST = 'EMAIL_CHECK_REQUEST';
 export const EMAIL_CHECK_SUCCESS = 'EMAIL_CHECK_SUCCESS';
@@ -27,40 +27,42 @@ const reducer = (state = initialState, action) => {
     case EMAIL_CHECK_REQUEST:
       return {
         ...state,
-        emailCheckLodding: true,
+        emailCheckLoading: true,
         emailCheckSuccess: false,
         emailCheckError: null,
       };
     case EMAIL_CHECK_SUCCESS:
       return {
         ...state,
-        emailCheckLodding: false,
+        emailCheckLoading: false,
         emailCheckSuccess: action.data,
+        emailCheckError: null,
       };
     case EMAIL_CHECK_FAILURE:
       return {
         ...state,
-        emailCheckLodding: false,
+        emailCheckLoading: false,
+        emailCheckSuccess: false,
         emailCheckError: action.error,
       };
-    case SIGNUP_REQUEST:
+    case SIGN_UP_REQUEST:
       return {
         ...state,
-        signupLodding: true,
-        signupSuccess: false,
-        signupError: null,
+        signUpLoading: true,
+        signUpSuccess: false,
+        signUpError: null,
       };
-    case SIGNUP_SUCCESS:
+    case SIGN_UP_SUCCESS:
       return {
         ...state,
-        signupLodding: false,
-        signupSuccess: action.data,
+        signUpLoading: false,
+        signUpSuccess: action.data,
       };
-    case SIGNUP_FAILURE:
+    case SIGN_UP_FAILURE:
       return {
         ...state,
-        signupLodding: false,
-        signupError: action.error,
+        signUpLoading: false,
+        signUpError: action.error,
       };
     default:
       return state;

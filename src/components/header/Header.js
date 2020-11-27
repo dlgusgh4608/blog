@@ -52,7 +52,7 @@ const LoginBtn = styled.button`
   cursor: pointer;
 `;
 
-const Header = ({ onLoggingHandler }) => {
+const Header = ({ toggleDialog }) => {
   return (
     <>
       <HeaderContainer>
@@ -62,7 +62,7 @@ const Header = ({ onLoggingHandler }) => {
           </Head>
           <Head>
             <Search>검색</Search>
-            <LoginBtn onClick={onLoggingHandler}>로그인</LoginBtn>
+            <LoginBtn onClick={toggleDialog}>로그인</LoginBtn>
           </Head>
         </HeaderWrapper>
       </HeaderContainer>

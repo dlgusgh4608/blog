@@ -1,5 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 
 const Sort = styled.div`
   display: flex;
@@ -7,7 +8,7 @@ const Sort = styled.div`
   width: 14rem;
 `;
 
-const SortItem = styled.a`
+const Tab = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,20 +21,22 @@ const SortItem = styled.a`
 `;
 
 const Underbar = styled.div`
+  left: ${({ type }) => (type === 'recent' ? 0 : css`50%`)};
   position: absolute;
+  transition: left 0.1s ease-in-out;
   width: 50%;
   height: 2px;
   bottom: 0px;
   background-color: black;
 `;
 
-const MenuList = () => {
+const MenuList = ({ type }) => {
   return (
     <>
       <Sort>
-        <SortItem>트렌딩</SortItem>
-        <SortItem>최신</SortItem>
-        <Underbar />
+        <Tab to={'/recent'}>최신</Tab>
+        <Tab to={'/old'}>역순</Tab>
+        <Underbar type={type} />
       </Sort>
       <div>:</div>
     </>

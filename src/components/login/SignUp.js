@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useInput from '../../hooks/useInput';
 import { useDispatch, useSelector } from 'react-redux';
-import { EMAIL_CHECK_REQUEST, SIGNUP_REQUEST } from '../../reducer/user';
+import { EMAIL_CHECK_REQUEST, SIGN_UP_REQUEST } from '../../reducer/user';
 import Spinner from '../spinner/Spinner';
 
-const SignupContainer = styled.div`
+const SignUpContainer = styled.div`
   position: fixed;
   top: 0px;
   left: 0px;
@@ -17,14 +17,14 @@ const SignupContainer = styled.div`
   z-index: 99999;
 `;
 
-const SignupWrapper = styled.div`
+const SignUpWrapper = styled.div`
   display: flex;
   background-color: white;
   width: 670px;
   height: 480px;
 `;
 
-const SignupWelcome = styled.div`
+const SignUpWelcome = styled.div`
   width: 250px;
   background-color: gray;
   display: flex;
@@ -33,11 +33,11 @@ const SignupWelcome = styled.div`
   justify-content: center;
 `;
 
-const SignupWelcomeImg = styled.img`
+const SignUpWelcomeImg = styled.img`
   width: 100%;
 `;
 
-const SignupInpormationWrapper = styled.div`
+const SignUpInformationWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 2rem;
@@ -48,7 +48,7 @@ const SignupInpormationWrapper = styled.div`
   }
 `;
 
-const SignupExitWrapper = styled.div`
+const SignUpExitWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -59,14 +59,14 @@ const SignupExitWrapper = styled.div`
   }
 `;
 
-const SignupInpormation = styled.div`
+const SignUpInformation = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   flex: 1 1 0%;
 `;
 
-const SignupForm = styled.form`
+const SignUpForm = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -117,7 +117,7 @@ const PasswordInput = styled.input`
   padding: 0.8rem;
 `;
 
-const SignupButton = styled.button`
+const SignUpButton = styled.button`
   background-color: greenyellow;
   border: none;
   margin-top: 1.8rem;
@@ -131,7 +131,7 @@ const XBtn = styled.div`
   cursor: pointer;
 `;
 
-const SignupFooter = styled.div`
+const SignUpFooter = styled.div`
   text-align: right;
 `;
 
@@ -154,24 +154,36 @@ const ErrorSpan = styled.span`
   color: red;
 `;
 
-const Signup = ({ onLoggingHandler, switchHandler }) => {
-  const { emailCheckSuccess, emailCheckLodding, emailCheckError, signupSuccess, signupError } = useSelector((state) => state.user);
+const SuccessSpan = styled.span`
+  color: yellowgreen;
+`;
+
+const SignUp = ({ toggleDialog, switchHandler }) => {
+  const { emailCheckSuccess, emailCheckLoading, emailCheckError, signUpSuccess, signUpError } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (signupSuccess) {
-      alert('성공띠');
+    if (emailCheckSuccess) {
+      setCheckError(false);
     }
-  }, [signupSuccess]);
+  }, [emailCheckSuccess]);
+
   useEffect(() => {
-    if (signupError) {
-      alert('실패띠');
+    if (signUpSuccess) {
+      alert('회원가입에 성공하셨습니다.');
+      switchHandler();
     }
-  }, [signupError]);
+  }, [signUpSuccess]);
+  useEffect(() => {
+    if (signUpError) {
+      alert(signUpError);
+    }
+  }, [signUpError]);
 
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [password, onChangePassword] = useInput('');
+
   const onChangePasswordCheck = useCallback(
     (e) => {
       setPasswordCheck(e.target.value);
@@ -182,6 +194,8 @@ const Signup = ({ onLoggingHandler, switchHandler }) => {
 
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(false);
+  const [check, setCheck] = useState('');
+  const [checkError, setCheckError] = useState(false);
 
   const onChangeEmail = useCallback((e) => {
     const testEmail = e.target.value;
@@ -191,15 +205,16 @@ const Signup = ({ onLoggingHandler, switchHandler }) => {
   const onEmailCheck = useCallback(
     (e) => {
       e.preventDefault();
-      if (emailError) {
-        return null;
+      if (!email) {
+        return setEmailError(true);
       }
+      setCheck(email);
       dispatch({
         type: EMAIL_CHECK_REQUEST,
         data: { email },
       });
     },
-    [email, emailError],
+    [email],
   );
 
   const onSubmit = useCallback(
@@ -208,46 +223,47 @@ const Signup = ({ onLoggingHandler, switchHandler }) => {
       if (password !== passwordCheck) {
         return setPasswordError(true);
       }
+      if (check !== email) {
+        return setCheckError(true);
+      }
+      if (emailCheckError) {
+        return setCheckError(true);
+      }
       dispatch({
-        type: SIGNUP_REQUEST,
+        type: SIGN_UP_REQUEST,
         data: {
           email,
           password,
         },
       });
     },
-    [email, password, passwordCheck],
+    [email, password, check, passwordCheck],
   );
 
   return (
     <>
-      <SignupContainer>
-        <SignupWrapper>
-          <SignupWelcome>
-            <SignupWelcomeImg src="https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile27.uf.tistory.com%2Fimage%2F9905EB345DF8CE050BE220" />
+      <SignUpContainer>
+        <SignUpWrapper>
+          <SignUpWelcome>
+            <SignUpWelcomeImg src="https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile27.uf.tistory.com%2Fimage%2F9905EB345DF8CE050BE220" />
             <h2>환영합니다.</h2>
-          </SignupWelcome>
-          <SignupInpormationWrapper>
-            <SignupExitWrapper>
+          </SignUpWelcome>
+          <SignUpInformationWrapper>
+            <SignUpExitWrapper>
               <h2>회원가입</h2>
-              <XBtn onClick={onLoggingHandler}>✖️</XBtn>
-            </SignupExitWrapper>
-            <SignupInpormation>
-              <SignupForm onSubmit={onSubmit}>
+              <XBtn onClick={toggleDialog}>✖️</XBtn>
+            </SignUpExitWrapper>
+            <SignUpInformation>
+              <SignUpForm onSubmit={onSubmit}>
                 <SpanWrapper>
                   <h4>이메일</h4>
                   {emailCheckError && <ErrorSpan>{emailCheckError}</ErrorSpan>}
-                  {emailError && <ErrorSpan>이메일을 입력해주세요!</ErrorSpan>}
-                  {emailCheckSuccess && (
-                    <div>
-                      <span>{emailCheckSuccess}</span>
-                      <button>사용</button>
-                    </div>
-                  )}
+                  {emailError && <ErrorSpan>이메일형식으로 입력해주세요!</ErrorSpan>}
+                  {emailCheckSuccess && <SuccessSpan>{emailCheckSuccess}</SuccessSpan>}
                 </SpanWrapper>
                 <EmailInputWrapper>
                   <EmailInput type="email" required value={email} onChange={onChangeEmail} placeholder="이메일을 입력해주세요." />
-                  <EmailCheckBtn onClick={onEmailCheck}>{emailCheckLodding ? <Spinner /> : '중복확인'}</EmailCheckBtn>
+                  <EmailCheckBtn onClick={onEmailCheck}>{emailCheckLoading ? <Spinner /> : '중복확인'}</EmailCheckBtn>
                 </EmailInputWrapper>
                 <h4>비밀번호</h4>
                 <PasswordInput type="password" required value={password} onChange={onChangePassword} placeholder="비밀번호를 입력해주세요." />
@@ -257,18 +273,18 @@ const Signup = ({ onLoggingHandler, switchHandler }) => {
                 </SpanWrapper>
 
                 <PasswordInput type="password" required value={passwordCheck} onChange={onChangePasswordCheck} placeholder="비밀번호를 한번더 입력해주세요." />
-                <SignupButton type="submit">회원가입</SignupButton>
-              </SignupForm>
-              <SignupFooter>
+                <SignUpButton type="submit">{checkError ? '중복확인을 시도 해주세요.' : '회원가입'}</SignUpButton>
+              </SignUpForm>
+              <SignUpFooter>
                 <FooterSpan>이미 아이디가 있으신가요?</FooterSpan>
                 <Login onClick={switchHandler}>로그인</Login>
-              </SignupFooter>
-            </SignupInpormation>
-          </SignupInpormationWrapper>
-        </SignupWrapper>
-      </SignupContainer>
+              </SignUpFooter>
+            </SignUpInformation>
+          </SignUpInformationWrapper>
+        </SignUpWrapper>
+      </SignUpContainer>
     </>
   );
 };
 
-export default Signup;
+export default SignUp;

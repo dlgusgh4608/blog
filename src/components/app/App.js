@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
-import { Provider } from 'react-redux';
-import store from '../../store/configureStore';
-import Header from '../header/Header';
-import LogingMainPage from '../login/LogingMain';
-import MainPage from '../post/MainPage';
+import Main from '../../routes/main/Main';
 
 const GlobalStyle = createGlobalStyle`
   body{
@@ -16,22 +13,40 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+/**
+ * isLoggedIn null => 로그인 여부를 확인하기 전
+ * isLoggedIn false => 로그인 되지 않음
+ * isLoggedIn true => 로그인 확인 완료
+ * switch (isLoggedIn) {
+ *   case null:
+ *     return '';
+ *   case true:
+ *     return '<Router router>';
+ *   case default:
+ * }
+ */
+
 const App = () => {
-  const [isLoging, setIsLoging] = useState(false);
-
-  const onLoggingHandler = () => {
-    setIsLoging((prev) => !prev);
-  };
-
-  isLoging ? (document.body.style.overflowY = 'hidden') : (document.body.style.overflowY = 'initial');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
-    <Provider store={store}>
+    <>
       <GlobalStyle />
-      {isLoging && <LogingMainPage onLoggingHandler={onLoggingHandler} />}
-      <Header onLoggingHandler={onLoggingHandler} />
-      <MainPage />
-    </Provider>
+      {(() => {
+        switch (isLoggedIn) {
+          case null:
+            return <></>;
+          default:
+            return (
+              <Switch>
+                <Route path={'/old'} exact={true} component={Main} />
+                <Route path={'/recent'} exact={true} component={Main} />
+                <Redirect from={'/'} exact={true} to={'/recent'} />
+              </Switch>
+            );
+        }
+      })()}
+    </>
   );
 };
 
