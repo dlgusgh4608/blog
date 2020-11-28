@@ -11,7 +11,7 @@ class UserService {
     return result.rows;
   }
   async login(email) {
-    const result = await this._pool.query(`SELECT password FROM users WHERE email = $1`, [email]);
+    const result = await this._pool.query(`SELECT id, email, password FROM users WHERE email = $1`, [email]);
     return result.rows;
   }
   async emailCheck(email) {

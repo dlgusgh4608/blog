@@ -1,13 +1,27 @@
 import { all, call, put, takeLatest, fork } from 'redux-saga/effects';
 import axios from 'axios';
-import { EMAIL_CHECK_REQUEST, EMAIL_CHECK_FAILURE, EMAIL_CHECK_SUCCESS, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE } from '../reducer/user';
+import {
+  EMAIL_CHECK_REQUEST,
+  EMAIL_CHECK_FAILURE,
+  EMAIL_CHECK_SUCCESS,
+  SIGN_UP_REQUEST,
+  SIGN_UP_SUCCESS,
+  SIGN_UP_FAILURE,
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGIN_FAILURE,
+} from '../reducer/user';
 
 function emailCheckAPI(data) {
-  return axios.post('http://localhost:5000/api/v1/emailCheck', data);
+  return axios.post('/v1/emailCheck', data);
 }
 
 function signUpAPI(data) {
-  return axios.post('http://localhost:5000/api/v1/signUp', data);
+  return axios.post('/v1/signUp', data);
+}
+
+function loginAPI(data) {
+  return axios.post('/v1/login', data);
 }
 
 function* emailCheck(action) {
@@ -42,6 +56,21 @@ function* signUp(action) {
   }
 }
 
+function* login(action) {
+  try {
+    const result = yield call(loginAPI, action.data);
+    yield put({
+      type: LOGIN_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: LOGIN_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
 function* watchEmailCheck() {
   yield takeLatest(EMAIL_CHECK_REQUEST, emailCheck);
 }
@@ -49,7 +78,10 @@ function* watchEmailCheck() {
 function* watchSignUp() {
   yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
+function* watchLogin() {
+  yield takeLatest(LOGIN_REQUEST, login);
+}
 
 export default function* userSaga() {
-  yield all([fork(watchEmailCheck), fork(watchSignUp)]);
+  yield all([fork(watchEmailCheck), fork(watchSignUp), fork(watchLogin)]);
 }

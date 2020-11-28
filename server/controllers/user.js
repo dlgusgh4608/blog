@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-
+const jwt = require('jsonwebtoken');
 module.exports = (router, service) => {
   router.get('/api/v1/user', async (req, res) => {
     try {
@@ -12,24 +12,40 @@ module.exports = (router, service) => {
 
   router.post('/api/v1/login', async (req, res) => {
     try {
-      const email = req.body.email;
-      const password = req.body.password;
+      const { email, password } = req.body;
+      const secret = req.app.get('jwt-secret');
       if (email == null) {
         return res.status(400).json({ error: 'invalid', reason: 'email' });
       }
       if (password == null) {
         return res.status(400).json({ error: 'invalid', reason: 'password' });
       }
-      const hashPassword = await service.login(email);
-      if (hashPassword.length) {
-        const result = await bcrypt.compare(password, hashPassword[0].password);
+      const user = await service.login(email);
+      if (user.length) {
+        const result = await bcrypt.compare(password, user[0].password);
         if (!result) {
           return res.status(200).send('비번틀림.');
         }
       } else {
         return res.status(200).send('아이디 없음.');
       }
-      res.status(200).send('login success');
+      let payload = {
+        user_id: user[0].id,
+      };
+      jwt.sign(
+        payload,
+        secret,
+        {
+          expiresIn: '1h',
+          issuer: 'blog.io',
+          subject: 'access_token',
+        },
+        (err, token) => {
+          if (err) return res.json({ err });
+          res.cookie('access_token', token, { httpOnly: true });
+          return res.status(200).send('success');
+        },
+      );
     } catch (e) {
       res.json(e);
     }
