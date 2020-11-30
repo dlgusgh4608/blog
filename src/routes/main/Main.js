@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import MainLayout from '../../components/layout/MainLayout';
 import MenuList from '../../components/post/MenuList';
-import PostItems from '../../components/post/PostItem';
+import PostItem from '../../components/post/PostItem';
 
 const MainContainer = styled.div`
   width: 1728px;
@@ -48,14 +48,14 @@ const Main = ({ location }) => {
         </MenuWrapper>
         <MainWrapper>
           <PostWrapper>
-            <PostItems />
-            <PostItems />
-            <PostItems />
-            <PostItems />
-            <PostItems />
-            <PostItems />
-            <PostItems />
-            <PostItems />
+            <PostItem />
+            <PostItem />
+            <PostItem />
+            <PostItem />
+            <PostItem />
+            <PostItem />
+            <PostItem />
+            <PostItem />
           </PostWrapper>
         </MainWrapper>
       </MainContainer>

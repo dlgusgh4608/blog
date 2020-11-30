@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const PostContainer = styled.div`
@@ -17,7 +18,7 @@ const PostContainer = styled.div`
   }
 `;
 
-const PostHeader = styled.a`
+const PostHeader = styled(Link)`
   color: black;
 `;
 
@@ -42,7 +43,7 @@ const PostMainContainer = styled.div`
   padding: 1rem;
 `;
 
-const PostMainWrapper = styled.a`
+const PostMainWrapper = styled(Link)`
   color: black;
 `;
 
@@ -80,7 +81,7 @@ const PostFooterContainer = styled.div`
   font-size: 0.85rem;
 `;
 
-const PostHostWrapper = styled.a`
+const PostHostWrapper = styled(Link)`
   display: flex;
   align-items: center;
 `;
@@ -112,16 +113,16 @@ const Heart = styled.div`
   margin-right: 0.5rem;
 `;
 
-const PostItems = () => {
+const PostItem = () => {
   return (
     <PostContainer>
-      <PostHeader href="">
+      <PostHeader to={'/post'}>
         <ImageWrapper>
           <MainImage src="https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile27.uf.tistory.com%2Fimage%2F9905EB345DF8CE050BE220" />
         </ImageWrapper>
       </PostHeader>
       <PostMainContainer>
-        <PostMainWrapper>
+        <PostMainWrapper to={'/post'}>
           <PostTitle>제목ddddddddddddddddddddddddddddddddddddd</PostTitle>
           <PostContent>
             글내 요요요요요용글내
@@ -135,7 +136,7 @@ const PostItems = () => {
         </PostCommentWrapper>
       </PostMainContainer>
       <PostFooterContainer>
-        <PostHostWrapper href="">
+        <PostHostWrapper to={'/post'}>
           <PostHostImg src="https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile27.uf.tistory.com%2Fimage%2F9905EB345DF8CE050BE220" />
           <PostHostNameWrapper>
             by <PostHostName>이현호</PostHostName>
@@ -150,4 +151,4 @@ const PostItems = () => {
   );
 };
 
-export default PostItems;
+export default PostItem;

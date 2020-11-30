@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import Main from '../../routes/main/Main';
+import Write from '../../routes/post/Write';
+import Post from '../../components/post/Post';
 
 const GlobalStyle = createGlobalStyle`
   body{
@@ -45,10 +47,12 @@ const App = () => {
       {(() => {
         switch (isLoggedIn) {
           case true:
-            return <></>;
+            return;
           default:
             return (
               <Switch>
+                <Route path={'/write'} exact={true} component={Write} />
+                <Route path={'/post'} exact={true} component={Post} />
                 <Route path={'/old'} exact={true} component={Main} />
                 <Route path={'/recent'} exact={true} component={Main} />
                 <Redirect from={'/'} exact={true} to={'/recent'} />

@@ -1,9 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
-const CreatePostBtn = styled.button`
+const CreatePostBtn = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: bold;
   font-size: 1rem;
   border: 1px solid black;
@@ -13,6 +17,7 @@ const CreatePostBtn = styled.button`
   padding-left: 0.8rem;
   height: 2rem;
   margin-right: 1rem;
+  color: black;
   cursor: pointer;
 `;
 
@@ -31,7 +36,7 @@ const DownIcon = styled(FontAwesomeIcon)`
 const InfoButton = () => {
   return (
     <>
-      <CreatePostBtn>새 글 작성</CreatePostBtn>
+      <CreatePostBtn to={'/write'}>새 글 작성</CreatePostBtn>
       <MyInfoWrapper>
         이<DownIcon icon={faCaretDown} />
       </MyInfoWrapper>

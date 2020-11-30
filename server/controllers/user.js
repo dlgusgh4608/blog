@@ -44,7 +44,7 @@ module.exports = (router, service) => {
         payload,
         secret,
         {
-          expiresIn: '2h',
+          expiresIn: '1h',
           issuer: 'blog.io',
           subject: 'access_token',
         },

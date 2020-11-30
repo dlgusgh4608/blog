@@ -2,6 +2,8 @@ import React from 'react';
 import InfoButton from './InfoButton';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const HeaderContainer = styled.header`
   height: 4rem;
@@ -55,6 +57,10 @@ const LoginBtn = styled.button`
   cursor: pointer;
 `;
 
+const SearchBtn = styled(FontAwesomeIcon)`
+  color: black;
+`;
+
 const Header = ({ toggleDialog }) => {
   const { me } = useSelector((state) => state.user);
 
@@ -66,8 +72,9 @@ const Header = ({ toggleDialog }) => {
             <Logo>blog</Logo>
           </Head>
           <Head>
-            <Search>검색</Search>
-
+            <Search href="/">
+              <SearchBtn icon={faSearch} />
+            </Search>
             {me ? <InfoButton /> : <LoginBtn onClick={toggleDialog}>로그인</LoginBtn>}
           </Head>
         </HeaderWrapper>

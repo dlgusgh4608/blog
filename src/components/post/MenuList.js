@@ -16,7 +16,6 @@ const Tab = styled(Link)`
   height: 3rem;
   font-size: 1.25rem;
   cursor: pointer;
-
   color: black;
 `;
 

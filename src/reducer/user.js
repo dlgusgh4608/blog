@@ -53,6 +53,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         loadMyInfoLoading: false,
         loadMyInfoError: action.error,
+        me: null,
       };
     case EMAIL_CHECK_REQUEST:
       return {
