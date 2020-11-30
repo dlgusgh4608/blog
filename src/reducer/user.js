@@ -1,4 +1,9 @@
+import { bindActionCreators } from 'redux';
+
 export const initialState = {
+  loadMyInfoSuccess: false,
+  loadMyInfoLoading: false,
+  loadMyInfoError: null,
   emailCheckSuccess: false,
   emailCheckLoading: false,
   emailCheckError: null,
@@ -8,7 +13,12 @@ export const initialState = {
   signUpSuccess: false,
   signUpLoading: false,
   signUpError: null,
+  me: null,
 };
+
+export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
+export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
+export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -24,6 +34,26 @@ export const EMAIL_CHECK_FAILURE = 'EMAIL_CHECK_FAILURE';
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOAD_MY_INFO_REQUEST:
+      return {
+        ...state,
+        loadMyInfoLoading: true,
+        loadMyInfoSuccess: false,
+        loadMyInfoError: null,
+      };
+    case LOAD_MY_INFO_SUCCESS:
+      return {
+        ...state,
+        loadMyInfoLoading: false,
+        loadMyInfoSuccess: true,
+        me: action.data.data,
+      };
+    case LOAD_MY_INFO_FAILURE:
+      return {
+        ...state,
+        loadMyInfoLoading: false,
+        loadMyInfoError: action.error,
+      };
     case EMAIL_CHECK_REQUEST:
       return {
         ...state,

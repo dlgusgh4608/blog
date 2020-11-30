@@ -1,4 +1,6 @@
-import React, { useCallback } from 'react';
+import React from 'react';
+import InfoButton from './InfoButton';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 const HeaderContainer = styled.header`
@@ -29,15 +31,16 @@ const Head = styled.div`
   justify-content: center;
   font-weight: bold;
   font-size: 1.4rem;
-  cursor: pointer;
 `;
 
 const Logo = styled.a`
   color: black;
+  cursor: pointer;
 `;
 
 const Search = styled.a`
   margin-right: 0.75rem;
+  cursor: pointer;
 `;
 
 const LoginBtn = styled.button`
@@ -53,6 +56,8 @@ const LoginBtn = styled.button`
 `;
 
 const Header = ({ toggleDialog }) => {
+  const { me } = useSelector((state) => state.user);
+
   return (
     <>
       <HeaderContainer>
@@ -62,7 +67,8 @@ const Header = ({ toggleDialog }) => {
           </Head>
           <Head>
             <Search>검색</Search>
-            <LoginBtn onClick={toggleDialog}>로그인</LoginBtn>
+
+            {me ? <InfoButton /> : <LoginBtn onClick={toggleDialog}>로그인</LoginBtn>}
           </Head>
         </HeaderWrapper>
       </HeaderContainer>

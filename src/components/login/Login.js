@@ -121,12 +121,13 @@ const Login = ({ toggleDialog, switchHandler }) => {
 
   useEffect(() => {
     if (loginSuccess) {
-      alert('성공띠');
+      toggleDialog();
     }
   }, [loginSuccess]);
 
   useEffect(() => {
     if (loginError) {
+      alert('가입되지 않은 이메일이거나 비밀번호가 틀렸습니다.');
       setEmail('');
       setPassword('');
     }

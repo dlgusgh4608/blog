@@ -3,8 +3,16 @@ const jwt = require('jsonwebtoken');
 module.exports = (router, service) => {
   router.get('/api/v1/user', async (req, res) => {
     try {
-      const result = await service.getUser();
-      res.status(200).json({ data: result });
+      const token = req.cookies.access_token;
+
+      if (!token) {
+        return res.status(403).json({ success: 'false', massage: 'not logged in' });
+      }
+      const decode = jwt.verify(token, req.app.get('jwt-secret'));
+      const result = await service.getUser(decode.user_id);
+      console.log(result);
+      const user = result.id;
+      return res.json({ data: result });
     } catch (e) {
       res.json(e);
     }
@@ -21,29 +29,31 @@ module.exports = (router, service) => {
         return res.status(400).json({ error: 'invalid', reason: 'password' });
       }
       const user = await service.login(email);
-      if (user.length) {
-        const result = await bcrypt.compare(password, user[0].password);
+      if (user) {
+        const result = await bcrypt.compare(password, user.password);
         if (!result) {
-          return res.status(200).send('비번틀림.');
+          return res.status(400).send('비번틀림.');
         }
       } else {
-        return res.status(200).send('아이디 없음.');
+        return res.status(400).send('아이디 없음.');
       }
-      let payload = {
-        user_id: user[0].id,
+      const payload = {
+        user_id: user.id,
       };
       jwt.sign(
         payload,
         secret,
         {
-          expiresIn: '1h',
+          expiresIn: '2h',
           issuer: 'blog.io',
           subject: 'access_token',
         },
         (err, token) => {
           if (err) return res.json({ err });
-          res.cookie('access_token', token, { httpOnly: true });
-          return res.status(200).send('success');
+          return res
+            .cookie('access_token', token, { httpOnly: true, expires: new Date(Date.now() + 1000 * 60 * 60) })
+            .status(200)
+            .json({ data: 'result' });
         },
       );
     } catch (e) {

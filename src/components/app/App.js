@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import Main from '../../routes/main/Main';
@@ -27,14 +28,23 @@ const GlobalStyle = createGlobalStyle`
  */
 
 const App = () => {
+  const { loginSuccess } = useSelector((state) => state.user);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (loginSuccess) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
 
   return (
     <>
       <GlobalStyle />
       {(() => {
         switch (isLoggedIn) {
-          case null:
+          case true:
             return <></>;
           default:
             return (

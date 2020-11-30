@@ -15,7 +15,12 @@ const userService = new UserService(pool);
 const postService = new PostService(pool);
 const commentService = new CommentService(pool);
 
-app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  }),
+);
 app.use(express.json());
 app.set('jwt-secret', 'test');
 app.use(cookieParser());
