@@ -4,7 +4,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import Main from '../../routes/main/Main';
 import Write from '../../routes/post/Write';
-import Post from '../../components/post/Post';
+import Post from '../../routes/post/Post';
 
 const GlobalStyle = createGlobalStyle`
   body{
