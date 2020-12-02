@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import Main from '../../routes/main/Main';
-import Write from '../../routes/post/Write';
+import PostWrite from '../../routes/post/PostWrite';
 import Post from '../../routes/post/Post';
 
 const GlobalStyle = createGlobalStyle`
@@ -51,7 +51,7 @@ const App = () => {
           default:
             return (
               <Switch>
-                <Route path={'/write'} exact={true} component={Write} />
+                <Route path={'/write'} exact={true} component={PostWrite} />
                 <Route path={'/post'} exact={true} component={Post} />
                 <Route path={'/old'} exact={true} component={Main} />
                 <Route path={'/recent'} exact={true} component={Main} />

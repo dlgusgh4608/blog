@@ -7,7 +7,7 @@ const Container = styled.div`
   margin: 15rem auto 10rem auto;
 `;
 
-const Wrapper = styled.div`
+const HostWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
@@ -20,9 +20,10 @@ const Img = styled.img`
   width: 7rem;
   height: 7rem;
   border-radius: 50%;
+  object-fit: cover;
 `;
 
-const HostWrapper = styled.div`
+const NameWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -47,19 +48,56 @@ const Hr = styled.div`
   margin-bottom: 5rem;
 `;
 
+const PostContainer = styled.div`
+  border: 1px solid black;
+  display: flex;
+`;
+
+const PreviousPostContainer = styled.div`
+  flex: 1 1 0%;
+`;
+
+const NextPostContainer = styled.div`
+  flex: 1 1 0%;
+  margin-left: 2rem;
+`;
+
+const PreviousPostWrapper = styled.a`
+  display: flex;
+  align-items: center;
+  height: 3rem;
+  background-color: gray;
+`;
+
+const NextPostWrapper = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 3rem;
+  background-color: gray;
+`;
+
 const Footer = () => {
   return (
     <Container>
-      <Wrapper>
+      <HostWrapper>
         <ImgWrapper to={'/'}>
           <Img src="https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile27.uf.tistory.com%2Fimage%2F9905EB345DF8CE050BE220" />
         </ImgWrapper>
-        <HostWrapper>
+        <NameWrapper>
           <HostName to={'/'}>이현호</HostName>
           <HostBlog>이현호의 블로그</HostBlog>
-        </HostWrapper>
-      </Wrapper>
+        </NameWrapper>
+      </HostWrapper>
       <Hr />
+      <PostContainer>
+        <PreviousPostContainer>
+          <PreviousPostWrapper>이전페이지</PreviousPostWrapper>
+        </PreviousPostContainer>
+        <NextPostContainer>
+          <NextPostWrapper>다음페이지</NextPostWrapper>
+        </NextPostContainer>
+      </PostContainer>
     </Container>
   );
 };

@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import MainLayout from '../../components/layout/MainLayout';
-import MenuList from '../../components/post/MenuList';
-import PostItem from '../../components/post/PostItem';
+import MenuList from '../../components/main/MenuList';
+import PostItem from '../../components/main/PostItem';
 
 const MainContainer = styled.div`
   width: 1728px;
