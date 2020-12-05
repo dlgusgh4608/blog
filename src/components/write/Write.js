@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import TextArea from 'react-textarea-autosize';
+import useInput from '../../hooks/useInput';
 
 const Container = styled.div`
   display: flex;
@@ -22,6 +23,7 @@ const Title = styled(TextArea)`
   resize: none;
   overflow-y: hidden;
   font-weight: bold;
+  margin-bottom: 3rem;
 
   :focus {
     outline: none;
@@ -32,20 +34,86 @@ const Title = styled(TextArea)`
   }
 `;
 
+const TagWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+`;
+
+const Tag = styled.div`
+  display: inline-flex;
+  height: 2.5rem;
+  align-items: center;
+  background-color: green;
+  border-radius: 1rem;
+  padding: 0 1rem;
+  color: white;
+  margin: 0 1rem 0.75rem 0;
+`;
+
+const TagInput = styled.input`
+  display: inline-flex;
+  border: none;
+  outline: none;
+  font-size: 1.25rem;
+`;
+
 const Content = styled.textarea`
   overflow-y: hidden;
   outline: none;
   border: 1px black solid;
   resize: none;
+  height: 100%;
 `;
 
 const Write = ({ text, onChangeText }) => {
+  const [data, setData] = useState({
+    tagList: [],
+  });
+
+  const [tag, onChangeTag, setTag] = useInput('');
+
+  const onKeyDownTag = useCallback(
+    (e) => {
+      const value = e.target.value;
+      if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        setTag('');
+        if (value === '') {
+          return null;
+        }
+        if (data.tagList.includes(value)) {
+          return null;
+        }
+        setData({
+          ...data,
+          tagList: data.tagList.concat(value),
+        });
+      }
+
+      if (value === '') {
+        if (e.key === 'Backspace') {
+          e.preventDefault();
+          setData({
+            ...data,
+            tagList: data.tagList.slice(0, data.tagList.length - 1),
+          });
+        }
+      }
+    },
+    [data],
+  );
+
   return (
     <Container>
       <Header>
-        <Title onHeightChange={(height) => console.log(height)} placeholder="제목을 입력해주세요." />
-        <div>----</div>
-        <div>태그를 입력하세요</div>
+        <Title onHeightChange={(height) => height} placeholder="제목을 입력해주세요." />
+        <TagWrapper>
+          {data.tagList.map((v, i) => (
+            <Tag key={i}>{v}</Tag>
+          ))}
+          <TagInput placeholder="태그를 입력해주세요." value={tag} onChange={onChangeTag} onKeyDown={onKeyDownTag} />
+        </TagWrapper>
       </Header>
       <Content value={text} onChange={onChangeText}></Content>
     </Container>
