@@ -1,7 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import TextArea from 'react-textarea-autosize';
 import useInput from '../../hooks/useInput';
+import ToolBar from './ToolBar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const Container = styled.div`
   display: flex;
@@ -10,7 +14,6 @@ const Container = styled.div`
 `;
 
 const Header = styled.div`
-  border: 1px solid black;
   display: flex;
   flex-direction: column;
   padding: 3rem 2rem 0 2rem;
@@ -58,12 +61,49 @@ const TagInput = styled.input`
   font-size: 1.25rem;
 `;
 
+const ContentWrapper = styled.div`
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+`;
+
 const Content = styled.textarea`
-  overflow-y: hidden;
+  overflow-y: auto;
   outline: none;
-  border: 1px black solid;
+  border: none;
   resize: none;
   height: 100%;
+  padding: 2rem;
+  font-size: 1.5rem;
+`;
+
+const BtnWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  height: 3rem;
+  padding: 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
+`;
+
+const ExitBtnWrapper = styled(Link)`
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  cursor: pointer;
+  color: black;
+`;
+
+const ExitSvg = styled(FontAwesomeIcon)`
+  margin-right: 1rem;
+`;
+
+const WriteBtn = styled.button`
+  border: none;
+  border-radius: 0.7rem;
+  background-color: greenyellow;
+  padding: 0 1rem;
+  font-size: 1rem;
+  cursor: pointer;
 `;
 
 const Write = ({ text, onChangeText }) => {
@@ -104,6 +144,11 @@ const Write = ({ text, onChangeText }) => {
     [data],
   );
 
+  const onClickHTag = useCallback((e) => {
+    const value = e.target.value;
+    console.log(value);
+  }, []);
+
   return (
     <Container>
       <Header>
@@ -115,7 +160,17 @@ const Write = ({ text, onChangeText }) => {
           <TagInput placeholder="태그를 입력해주세요." value={tag} onChange={onChangeTag} onKeyDown={onKeyDownTag} />
         </TagWrapper>
       </Header>
-      <Content value={text} onChange={onChangeText}></Content>
+      <ContentWrapper>
+        <ToolBar onClickHTag={onClickHTag} />
+        <Content value={text} onChange={onChangeText} placeholder="내용을 입력해주세요."></Content>
+      </ContentWrapper>
+      <BtnWrapper>
+        <ExitBtnWrapper to={'/'}>
+          <ExitSvg size="lg" icon={faArrowLeft} />
+          나가기
+        </ExitBtnWrapper>
+        <WriteBtn>작성하기</WriteBtn>
+      </BtnWrapper>
     </Container>
   );
 };
