@@ -21,6 +21,9 @@ const GlobalStyle = createGlobalStyle`
   a {
     text-decoration: none;
   }
+  .CodeMirror-wrap pre.CodeMirror-line {
+    word-break: break-word;
+  }
 `;
 
 /**

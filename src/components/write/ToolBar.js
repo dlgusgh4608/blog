@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;
-  padding: 0 2rem;
   flex-wrap: wrap;
   margin-bottom: 1rem;
 `;
@@ -39,13 +38,12 @@ const ToolBar = ({ onClickHTag }) => {
   return (
     <Container>
       {HTagList.map((v, i) => (
-        <ToolWrapper key={i} value={v} onClick={onClickHTag}>
+        <ToolWrapper key={i} value={v} onClick={() => onClickHTag(v)}>
           <HTag>
             H<span>{v}</span>
           </HTag>
         </ToolWrapper>
       ))}
-      <ToolWrapper>ㅇㅇ</ToolWrapper>
       <ToolWrapper>ㅇㅇ</ToolWrapper>
       <ToolWrapper>ㅇㅇ</ToolWrapper>
       <ToolWrapper>ㅇㅇ</ToolWrapper>

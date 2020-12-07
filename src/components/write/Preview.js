@@ -5,7 +5,9 @@ const Container = styled.div`
   display: flex;
   flex: 1 1 0%;
   flex-direction: column;
-  background-color: #f1f1f1;
+  background-color: white;
+  padding: 3rem;
+  word-break: break-word;
 `;
 
 const Preview = ({ markdown }) => {

@@ -1,11 +1,18 @@
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import CodeMirror from '@uiw/react-codemirror';
+import 'codemirror/keymap/sublime';
+import 'codemirror/theme/monokai.css';
 import React, { useCallback, useState } from 'react';
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import TextArea from 'react-textarea-autosize';
+import styled, { createGlobalStyle } from 'styled-components';
 import useInput from '../../hooks/useInput';
 import ToolBar from './ToolBar';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+
+// const GlobalStyle = createGlobalStyle`
+
+// `;
 
 const Container = styled.div`
   display: flex;
@@ -63,18 +70,9 @@ const TagInput = styled.input`
 
 const ContentWrapper = styled.div`
   display: flex;
+  padding: 0 2rem;
   height: 100%;
   flex-direction: column;
-`;
-
-const Content = styled.textarea`
-  overflow-y: auto;
-  outline: none;
-  border: none;
-  resize: none;
-  height: 100%;
-  padding: 2rem;
-  font-size: 1.5rem;
 `;
 
 const BtnWrapper = styled.div`
@@ -105,8 +103,7 @@ const WriteBtn = styled.button`
   font-size: 1rem;
   cursor: pointer;
 `;
-
-const Write = ({ text, onChangeText }) => {
+const Write = ({ text, onChangeText, onClickHTag }) => {
   const [data, setData] = useState({
     tagList: [],
   });
@@ -143,14 +140,9 @@ const Write = ({ text, onChangeText }) => {
     },
     [data],
   );
-
-  const onClickHTag = useCallback((e) => {
-    const value = e.target.value;
-    console.log(value);
-  }, []);
-
   return (
     <Container>
+      {/* <GlobalStyle /> */}
       <Header>
         <Title onHeightChange={(height) => height} placeholder="제목을 입력해주세요." />
         <TagWrapper>
@@ -162,7 +154,19 @@ const Write = ({ text, onChangeText }) => {
       </Header>
       <ContentWrapper>
         <ToolBar onClickHTag={onClickHTag} />
-        <Content value={text} onChange={onChangeText} placeholder="내용을 입력해주세요."></Content>
+        <CodeMirror
+          value={text}
+          onChange={onChangeText}
+          placeholder="내용을 입력해주세요."
+          options={{
+            theme: 'default',
+            tabSize: 2,
+            mode: 'markdown',
+            lineNumbers: false,
+            keyMap: 'sublime',
+            lineWrapping: true,
+          }}
+        />
       </ContentWrapper>
       <BtnWrapper>
         <ExitBtnWrapper to={'/'}>
