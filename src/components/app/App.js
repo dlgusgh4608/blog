@@ -24,6 +24,10 @@ const GlobalStyle = createGlobalStyle`
   .CodeMirror-wrap pre.CodeMirror-line {
     word-break: break-word;
   }
+  .CodeMirror {
+    font-size:1.2rem;
+    line-height:1.5;
+  }
 `;
 
 /**

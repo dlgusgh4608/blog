@@ -1,5 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import marked from 'marked';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/atom-one-dark.css';
 import WriteLayout from '../../components/layout/WriteLayout';
 import Preview from '../../components/write/Preview';
 import Write from '../../components/write/Write';
@@ -11,7 +13,12 @@ const PostWrite = () => {
   }, []);
 
   const markdown = () => {
-    const a = marked(text);
+    const a = marked(text, {
+      highlight: function (text, lang) {
+        const validLanguage = hljs.getLanguage(lang) ? lang : '';
+        return hljs.highlight(validLanguage, text).value;
+      },
+    });
     return { __html: a };
   };
 

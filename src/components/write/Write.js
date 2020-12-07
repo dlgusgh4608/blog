@@ -10,10 +10,6 @@ import styled, { createGlobalStyle } from 'styled-components';
 import useInput from '../../hooks/useInput';
 import ToolBar from './ToolBar';
 
-// const GlobalStyle = createGlobalStyle`
-
-// `;
-
 const Container = styled.div`
   display: flex;
   flex: 1 1 0%;
@@ -142,7 +138,6 @@ const Write = ({ text, onChangeText, onClickHTag }) => {
   );
   return (
     <Container>
-      {/* <GlobalStyle /> */}
       <Header>
         <Title onHeightChange={(height) => height} placeholder="제목을 입력해주세요." />
         <TagWrapper>
