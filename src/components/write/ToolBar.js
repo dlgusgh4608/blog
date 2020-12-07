@@ -32,13 +32,13 @@ const HTag = styled.div`
   }
 `;
 
-const ToolBar = ({ onClickHTag }) => {
+const ToolBar = ({ onClickHTag, props }) => {
   const HTagList = [1, 2, 3, 4];
 
   return (
     <Container>
       {HTagList.map((v, i) => (
-        <ToolWrapper key={i} value={v} onClick={() => onClickHTag(v)}>
+        <ToolWrapper key={i} value={v} onClick={() => onClickHTag(v, props)}>
           <HTag>
             H<span>{v}</span>
           </HTag>

@@ -5,15 +5,35 @@ const Container = styled.div`
   display: flex;
   flex: 1 1 0%;
   flex-direction: column;
-  background-color: white;
+`;
+
+const Wrapper = styled.div`
   padding: 3rem;
-  word-break: break-word;
+  height: 100%;
+  background-color: pink;
+
+  pre {
+    background-color: rgb(251, 252, 253);
+    padding: 1rem;
+    border-radius: 7px;
+    line-height: 1.5;
+    overflow-x: auto;
+  }
+
+  blockquote {
+    background-color: rgb(251, 252, 253);
+    border-left: 6px solid greenyellow;
+    margin: 2rem 0;
+    padding: 0.7rem;
+  }
 `;
 
 const Preview = ({ markdown }) => {
   return (
     <Container>
-      <div dangerouslySetInnerHTML={markdown()}></div>
+      <Wrapper>
+        <div dangerouslySetInnerHTML={markdown()}></div>
+      </Wrapper>
     </Container>
   );
 };

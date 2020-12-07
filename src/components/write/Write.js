@@ -136,6 +136,10 @@ const Write = ({ text, onChangeText, onClickHTag }) => {
     },
     [data],
   );
+
+  const Focus = (e) => {
+    console.log(e.lineInfo());
+  };
   return (
     <Container>
       <Header>
@@ -152,6 +156,7 @@ const Write = ({ text, onChangeText, onClickHTag }) => {
         <CodeMirror
           value={text}
           onChange={onChangeText}
+          onOverwriteToggle={Focus}
           placeholder="내용을 입력해주세요."
           options={{
             theme: 'default',

@@ -9,13 +9,14 @@ import Write from '../../components/write/Write';
 const PostWrite = () => {
   const [text, setText] = useState('');
   const onChangeText = useCallback((e) => {
+    console.log(e.lineInfo());
     setText(e.getValue());
   }, []);
 
   const markdown = () => {
     const a = marked(text, {
       highlight: function (text, lang) {
-        const validLanguage = hljs.getLanguage(lang) ? lang : '';
+        const validLanguage = hljs.getLanguage(lang) ? lang : 'plaintext';
         return hljs.highlight(validLanguage, text).value;
       },
     });
