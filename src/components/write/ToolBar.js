@@ -44,11 +44,12 @@ const ToolBar = ({ onClickHTag, props }) => {
           </HTag>
         </ToolWrapper>
       ))}
-      <ToolWrapper>ㅇㅇ</ToolWrapper>
-      <ToolWrapper>ㅇㅇ</ToolWrapper>
-      <ToolWrapper>ㅇㅇ</ToolWrapper>
-      <ToolWrapper>ㅇㅇ</ToolWrapper>
-      <ToolWrapper>ㅇㅇ</ToolWrapper>
+      <ToolWrapper>ㄹㅇ</ToolWrapper>
+      <ToolWrapper>ㅋㅋ</ToolWrapper>
+      <ToolWrapper>ㄹㅇ</ToolWrapper>
+      <ToolWrapper>ㅋㅋ</ToolWrapper>
+      <ToolWrapper>ㄹㅇ</ToolWrapper>
+      <ToolWrapper>ㅋㅋ</ToolWrapper>
     </Container>
   );
 };

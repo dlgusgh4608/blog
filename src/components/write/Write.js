@@ -99,7 +99,7 @@ const WriteBtn = styled.button`
   font-size: 1rem;
   cursor: pointer;
 `;
-const Write = ({ text, onChangeText, onClickHTag }) => {
+const Write = ({ text, onChangeText, onClickHTag, toggleDialog }) => {
   const [data, setData] = useState({
     tagList: [],
   });
@@ -137,9 +137,6 @@ const Write = ({ text, onChangeText, onClickHTag }) => {
     [data],
   );
 
-  const Focus = (e) => {
-    console.log(e.lineInfo());
-  };
   return (
     <Container>
       <Header>
@@ -156,7 +153,6 @@ const Write = ({ text, onChangeText, onClickHTag }) => {
         <CodeMirror
           value={text}
           onChange={onChangeText}
-          onOverwriteToggle={Focus}
           placeholder="내용을 입력해주세요."
           options={{
             theme: 'default',
@@ -173,7 +169,7 @@ const Write = ({ text, onChangeText, onClickHTag }) => {
           <ExitSvg size="lg" icon={faArrowLeft} />
           나가기
         </ExitBtnWrapper>
-        <WriteBtn>작성하기</WriteBtn>
+        <WriteBtn onClick={toggleDialog}>작성하기</WriteBtn>
       </BtnWrapper>
     </Container>
   );

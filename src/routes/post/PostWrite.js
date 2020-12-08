@@ -5,12 +5,18 @@ import 'highlight.js/styles/atom-one-dark.css';
 import WriteLayout from '../../components/layout/WriteLayout';
 import Preview from '../../components/write/Preview';
 import Write from '../../components/write/Write';
+import PostIntroduction from '../../components/write/PostIntroduction';
 
 const PostWrite = () => {
   const [text, setText] = useState('');
   const onChangeText = useCallback((e) => {
-    console.log(e.lineInfo());
     setText(e.getValue());
+  }, []);
+
+  const [isShown, setIsShown] = useState(false);
+
+  const toggleDialog = useCallback(() => {
+    setIsShown(true);
   }, []);
 
   const markdown = () => {
@@ -42,7 +48,8 @@ const PostWrite = () => {
 
   return (
     <WriteLayout>
-      <Write text={text} onChangeText={onChangeText} onClickHTag={onClickHTag} />
+      {isShown && <PostIntroduction />}
+      <Write text={text} onChangeText={onChangeText} onClickHTag={onClickHTag} toggleDialog={toggleDialog} />
       <Preview markdown={markdown} />
     </WriteLayout>
   );
