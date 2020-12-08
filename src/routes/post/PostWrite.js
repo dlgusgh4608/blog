@@ -1,11 +1,11 @@
-import React, { useCallback, useState } from 'react';
-import marked from 'marked';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/atom-one-dark.css';
+import marked from 'marked';
+import React, { useCallback, useState } from 'react';
 import WriteLayout from '../../components/layout/WriteLayout';
+import PostIntroduction from '../../components/write/PostIntroduction';
 import Preview from '../../components/write/Preview';
 import Write from '../../components/write/Write';
-import PostIntroduction from '../../components/write/PostIntroduction';
 
 const PostWrite = () => {
   const [text, setText] = useState('');
@@ -16,8 +16,8 @@ const PostWrite = () => {
   const [isShown, setIsShown] = useState(false);
 
   const toggleDialog = useCallback(() => {
-    setIsShown(true);
-  }, []);
+    setIsShown(!isShown);
+  }, [isShown, setIsShown]);
 
   const markdown = () => {
     const a = marked(text, {
@@ -29,27 +29,10 @@ const PostWrite = () => {
     return { __html: a };
   };
 
-  const onClickHTag = (value) => {
-    switch (value) {
-      case 1:
-        setText('# ' + text);
-        break;
-      case 2:
-        setText('## ' + text);
-        break;
-      case 3:
-        setText('### ' + text);
-        break;
-      default:
-        setText('#### ' + text);
-        break;
-    }
-  };
-
   return (
     <WriteLayout>
-      {isShown && <PostIntroduction />}
-      <Write text={text} onChangeText={onChangeText} onClickHTag={onClickHTag} toggleDialog={toggleDialog} />
+      {isShown && <PostIntroduction toggleDialog={toggleDialog} />}
+      <Write text={text} onChangeText={onChangeText} toggleDialog={toggleDialog} />
       <Preview markdown={markdown} />
     </WriteLayout>
   );

@@ -1,14 +1,14 @@
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CodeMirror from '@uiw/react-codemirror';
+import 'codemirror/theme/elegant.css';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/monokai.css';
 import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import TextArea from 'react-textarea-autosize';
-import styled, { createGlobalStyle } from 'styled-components';
+import styled from 'styled-components';
 import useInput from '../../hooks/useInput';
-import ToolBar from './ToolBar';
 
 const Container = styled.div`
   display: flex;
@@ -71,6 +71,13 @@ const ContentWrapper = styled.div`
   flex-direction: column;
 `;
 
+const Contour = styled.div`
+  width: 100%;
+  height: 0.2rem;
+  background-color: black;
+  margin: 1rem;
+`;
+
 const BtnWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -97,9 +104,10 @@ const WriteBtn = styled.button`
   background-color: greenyellow;
   padding: 0 1rem;
   font-size: 1rem;
+  outline: none;
   cursor: pointer;
 `;
-const Write = ({ text, onChangeText, onClickHTag, toggleDialog }) => {
+const Write = ({ text, onChangeText, toggleDialog }) => {
   const [data, setData] = useState({
     tagList: [],
   });
@@ -134,7 +142,7 @@ const Write = ({ text, onChangeText, onClickHTag, toggleDialog }) => {
         }
       }
     },
-    [data],
+    [data, setTag],
   );
 
   return (
@@ -146,20 +154,19 @@ const Write = ({ text, onChangeText, onClickHTag, toggleDialog }) => {
             <Tag key={i}>{v}</Tag>
           ))}
           <TagInput placeholder="태그를 입력해주세요." value={tag} onChange={onChangeTag} onKeyDown={onKeyDownTag} />
+          <Contour />
         </TagWrapper>
       </Header>
       <ContentWrapper>
-        <ToolBar onClickHTag={onClickHTag} />
         <CodeMirror
           value={text}
           onChange={onChangeText}
           placeholder="내용을 입력해주세요."
           options={{
-            theme: 'default',
+            theme: 'elegant',
             tabSize: 2,
             mode: 'markdown',
             lineNumbers: false,
-            keyMap: 'sublime',
             lineWrapping: true,
           }}
         />

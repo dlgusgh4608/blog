@@ -5,12 +5,16 @@ CREATE TABLE IF NOT EXISTS "users" (
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     nickname TEXT NOT NULL,
+    img TEXT,
     create_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS "posts" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID NOT NULL,
+    title TEXT NOT NULL,
+    title_content TEXT NOT NULL,
+    title_img TEXT,
     content TEXT NOT NULL,
     create_at TIMESTAMPTZ DEFAULT NOW(),
     update_at TIMESTAMPTZ DEFAULT NOW()

@@ -49,7 +49,20 @@ const BtnWrapper = styled.div`
   padding: 0 1rem;
 `;
 
-const PostIntroduction = () => {
+const Btn = styled.div`
+  padding: 0 1rem;
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 0.7rem;
+  background-color: green;
+  cursor: pointer;
+
+  :hover {
+    background-color: white;
+  }
+`;
+
+const PostIntroduction = ({ toggleDialog }) => {
   return (
     <Container>
       <Wrapper>
@@ -59,8 +72,8 @@ const PostIntroduction = () => {
           <Text placeholder="당신의 포스트를 짧게 소개해보세요."></Text>
         </TextWrapper>
         <BtnWrapper>
-          <button>취소</button>
-          <button>올리기</button>
+          <Btn onClick={toggleDialog}>취소</Btn>
+          <Btn>올리기</Btn>
         </BtnWrapper>
       </Wrapper>
     </Container>
