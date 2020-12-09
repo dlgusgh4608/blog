@@ -1,14 +1,13 @@
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CodeMirror from '@uiw/react-codemirror';
-import 'codemirror/theme/elegant.css';
 import 'codemirror/keymap/sublime';
+import 'codemirror/theme/elegant.css';
 import 'codemirror/theme/monokai.css';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import TextArea from 'react-textarea-autosize';
 import styled from 'styled-components';
-import useInput from '../../hooks/useInput';
 
 const Container = styled.div`
   display: flex;
@@ -107,48 +106,21 @@ const WriteBtn = styled.button`
   outline: none;
   cursor: pointer;
 `;
-const Write = ({ text, onChangeText, toggleDialog }) => {
-  const [data, setData] = useState({
-    tagList: [],
-  });
-
-  const [tag, onChangeTag, setTag] = useInput('');
-
-  const onKeyDownTag = useCallback(
-    (e) => {
-      const value = e.target.value;
-      if (e.key === 'Enter' || e.key === ',') {
-        e.preventDefault();
-        setTag('');
-        if (value === '') {
-          return null;
-        }
-        if (data.tagList.includes(value)) {
-          return null;
-        }
-        setData({
-          ...data,
-          tagList: data.tagList.concat(value),
-        });
-      }
-
-      if (value === '') {
-        if (e.key === 'Backspace') {
-          e.preventDefault();
-          setData({
-            ...data,
-            tagList: data.tagList.slice(0, data.tagList.length - 1),
-          });
-        }
-      }
-    },
-    [data, setTag],
-  );
+const Write = ({ text, onChangeText, title, onChangeTitle, tag, onChangeTag, onKeyDownTag, data, toggleDialog }) => {
+  const onClickWrite = useCallback(() => {
+    if (title === '') {
+      return alert('제목을 입력해주세요.');
+    }
+    if (text === '') {
+      return alert('내용을 입력해주세요.');
+    }
+    toggleDialog();
+  }, [title, text, toggleDialog]);
 
   return (
     <Container>
       <Header>
-        <Title onHeightChange={(height) => height} placeholder="제목을 입력해주세요." />
+        <Title onHeightChange={(height) => height} placeholder="제목을 입력해주세요." value={title} onChange={onChangeTitle} />
         <TagWrapper>
           {data.tagList.map((v, i) => (
             <Tag key={i}>{v}</Tag>
@@ -176,7 +148,7 @@ const Write = ({ text, onChangeText, toggleDialog }) => {
           <ExitSvg size="lg" icon={faArrowLeft} />
           나가기
         </ExitBtnWrapper>
-        <WriteBtn onClick={toggleDialog}>작성하기</WriteBtn>
+        <WriteBtn onClick={onClickWrite}>작성하기</WriteBtn>
       </BtnWrapper>
     </Container>
   );

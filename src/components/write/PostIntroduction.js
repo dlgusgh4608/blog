@@ -1,4 +1,6 @@
-import React from 'react';
+import { faImage } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -21,13 +23,56 @@ const Wrapper = styled.div`
   padding: 0 1rem;
   background-color: rgb(248, 249, 250);
 `;
+const ImgContainer = styled.div`
+  width: 100%;
+  position: relative;
+  padding-top: 55%;
+`;
+
+const ImgWrapper = styled.div`
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+`;
+
+const DefaultImg = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: gray;
+`;
+
+const ImgBtn = styled.button`
+  font-size: 1rem;
+  height: 2rem;
+  padding: 0 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  outline: none;
+  background-color: white;
+  cursor: pointer;
+`;
+
 const MainImg = styled.img`
   width: 100%;
+  height: 100%;
   object-fit: cover;
 `;
 
 const TextWrapper = styled.div`
   margin-top: 1.5rem;
+`;
+
+const Title = styled.h4`
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 0;
 `;
 const Text = styled.textarea`
   box-sizing: border-box;
@@ -39,6 +84,7 @@ const Text = styled.textarea`
   height: 7rem;
   padding: 0.5rem;
   font-size: 1.5rem;
+  margin-top: 1rem;
 `;
 
 const BtnWrapper = styled.div`
@@ -62,18 +108,48 @@ const Btn = styled.div`
   }
 `;
 
-const PostIntroduction = ({ toggleDialog }) => {
+const PostIntroduction = ({ toggleDialog, title, titleText, onChangeTitleText, onWrite, img, onChangeImg }) => {
+  const inputImg = useRef();
+
+  const onClickImg = useCallback(
+    (e) => {
+      e.preventDefault();
+      inputImg.current.click();
+    },
+    [inputImg],
+  );
+
+  const WriteCheck = useCallback(() => {
+    if (titleText === '') {
+      return alert('포스트 소개를 입력해주세요.');
+    }
+    onWrite();
+  }, [titleText, onWrite]);
+
   return (
     <Container>
       <Wrapper>
         <h3>포스트 미리보기</h3>
-        <MainImg src="https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile27.uf.tistory.com%2Fimage%2F9905EB345DF8CE050BE220" />
+        <ImgContainer>
+          <ImgWrapper>
+            {img ? (
+              <MainImg src={img.name} />
+            ) : (
+              <DefaultImg>
+                <FontAwesomeIcon icon={faImage} size={'7x'} />
+                <ImgBtn onClick={onClickImg}>대표 사진 선택</ImgBtn>
+                <input type="file" ref={inputImg} hidden onChange={onChangeImg} />
+              </DefaultImg>
+            )}
+          </ImgWrapper>
+        </ImgContainer>
         <TextWrapper>
-          <Text placeholder="당신의 포스트를 짧게 소개해보세요."></Text>
+          <Title>{title}</Title>
+          <Text placeholder="당신의 포스트를 짧게 소개해보세요." value={titleText} onChange={onChangeTitleText} />
         </TextWrapper>
         <BtnWrapper>
           <Btn onClick={toggleDialog}>취소</Btn>
-          <Btn>올리기</Btn>
+          <Btn onClick={WriteCheck}>올리기</Btn>
         </BtnWrapper>
       </Wrapper>
     </Container>

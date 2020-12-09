@@ -33,10 +33,17 @@ const Wrapper = styled.div`
   }
 `;
 
-const Preview = ({ markdown }) => {
+const Title = styled.h1`
+  font-size: 2.75rem;
+  margin-top: 2.5rem;
+  margin-bottom: 4rem;
+`;
+
+const Preview = ({ markdown, title }) => {
   return (
     <Container>
       <Wrapper>
+        <Title>{title}</Title>
         <div dangerouslySetInnerHTML={markdown()}></div>
       </Wrapper>
     </Container>
