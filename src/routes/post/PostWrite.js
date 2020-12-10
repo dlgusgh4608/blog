@@ -2,13 +2,17 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/atom-one-dark.css';
 import marked from 'marked';
 import React, { useCallback, useState } from 'react';
-import useInput from '../../hooks/useInput';
+import { useDispatch } from 'react-redux';
 import WriteLayout from '../../components/layout/WriteLayout';
 import PostIntroduction from '../../components/write/PostIntroduction';
 import Preview from '../../components/write/Preview';
 import Write from '../../components/write/Write';
+import useInput from '../../hooks/useInput';
+import { UPLOAD_IMAGE_REQUEST } from '../../reducer/post';
 
 const PostWrite = () => {
+  const dispatch = useDispatch();
+
   const [text, setText] = useState('');
   const onChangeText = useCallback((e) => {
     setText(e.getValue());
@@ -61,9 +65,15 @@ const PostWrite = () => {
     [data, setTag],
   );
 
-  const [img, setImg] = useState('');
   const onChangeImg = (e) => {
-    setImg(e.target.files[0]);
+    const imageFormData = new FormData();
+    [].forEach.call(e.target.files, (f) => {
+      imageFormData.append('image', f);
+    });
+    dispatch({
+      type: UPLOAD_IMAGE_REQUEST,
+      data: imageFormData,
+    });
   };
 
   const [titleText, onChangeTitleText] = useInput('');
@@ -79,15 +89,7 @@ const PostWrite = () => {
   return (
     <WriteLayout>
       {isShown && (
-        <PostIntroduction
-          toggleDialog={toggleDialog}
-          title={title}
-          titleText={titleText}
-          onChangeTitleText={onChangeTitleText}
-          onWrite={onWrite}
-          img={img}
-          onChangeImg={onChangeImg}
-        />
+        <PostIntroduction toggleDialog={toggleDialog} title={title} titleText={titleText} onChangeTitleText={onChangeTitleText} onWrite={onWrite} onChangeImg={onChangeImg} />
       )}
       <Write
         text={text}

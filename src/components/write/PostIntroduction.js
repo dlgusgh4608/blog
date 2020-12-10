@@ -1,6 +1,7 @@
 import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -108,7 +109,9 @@ const Btn = styled.div`
   }
 `;
 
-const PostIntroduction = ({ toggleDialog, title, titleText, onChangeTitleText, onWrite, img, onChangeImg }) => {
+const PostIntroduction = ({ toggleDialog, title, titleText, onChangeTitleText, onWrite, onChangeImg }) => {
+  const { imagePath } = useSelector((state) => state.post);
+
   const inputImg = useRef();
 
   const onClickImg = useCallback(
@@ -132,8 +135,8 @@ const PostIntroduction = ({ toggleDialog, title, titleText, onChangeTitleText, o
         <h3>포스트 미리보기</h3>
         <ImgContainer>
           <ImgWrapper>
-            {img ? (
-              <MainImg src={img.name} />
+            {imagePath ? (
+              <MainImg src={imagePath.data} />
             ) : (
               <DefaultImg>
                 <FontAwesomeIcon icon={faImage} size={'7x'} />
