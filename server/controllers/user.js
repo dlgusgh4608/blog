@@ -1,31 +1,25 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { isLoggedIn, isNotLoggedIn } = require('../middleware/auth');
 module.exports = (router, service) => {
-  router.get('/api/v1/user', async (req, res) => {
+  router.get('/api/v1/user', isLoggedIn, async (req, res) => {
     try {
-      const token = req.cookies.access_token;
-
-      if (!token) {
-        return res.status(403).json({ success: 'false', massage: 'not logged in' });
-      }
-      const decode = jwt.verify(token, req.app.get('jwt-secret'));
-      const result = await service.getUser(decode.user_id);
-      console.log(result);
-      const user = result.id;
-      return res.json({ data: result });
+      const userId = req.user;
+      const result = await service.getUser(userId);
+      res.status(200).json({ data: result });
     } catch (e) {
       res.json(e);
     }
   });
 
-  router.post('/api/v1/login', async (req, res) => {
+  router.post('/api/v1/login', isNotLoggedIn, async (req, res) => {
     try {
       const { email, password } = req.body;
       const secret = req.app.get('jwt-secret');
-      if (email == null) {
+      if (!email) {
         return res.status(400).json({ error: 'invalid', reason: 'email' });
       }
-      if (password == null) {
+      if (!password) {
         return res.status(400).json({ error: 'invalid', reason: 'password' });
       }
       const user = await service.login(email);
@@ -53,7 +47,7 @@ module.exports = (router, service) => {
           return res
             .cookie('access_token', token, { httpOnly: true, expires: new Date(Date.now() + 1000 * 60 * 60) })
             .status(200)
-            .json({ data: 'result' });
+            .json({ data: 'success' });
         },
       );
     } catch (e) {
@@ -61,15 +55,15 @@ module.exports = (router, service) => {
     }
   });
 
-  router.post(`/api/v1/signUp`, async (req, res) => {
+  router.post(`/api/v1/signUp`, isNotLoggedIn, async (req, res) => {
     try {
       const email = req.body.email;
       const password = req.body.password;
       const nickname = '.';
-      if (email == null) {
+      if (!email) {
         return res.status(400).json({ error: 'invalid', reason: 'email' });
       }
-      if (password == null) {
+      if (!password) {
         return res.status(400).json({ error: 'invalid', reason: 'password' });
       }
       const checkResult = await service.emailCheck(email);
@@ -78,7 +72,7 @@ module.exports = (router, service) => {
       }
       const hashPassword = await bcrypt.hash(password, 10);
       const result = await service.signUp(email, hashPassword, nickname);
-      if (result == null) {
+      if (!result) {
         return res.status(500).send('알 수 없는 오류가 발생했습니다.');
       }
       res.send('회원가입이 성공적으로 완료되었습니다.');
@@ -87,10 +81,10 @@ module.exports = (router, service) => {
     }
   });
 
-  router.post('/api/v1/emailCheck', async (req, res) => {
+  router.post('/api/v1/emailCheck', isNotLoggedIn, async (req, res) => {
     try {
       const email = req.body.email;
-      if (email == null) {
+      if (!email) {
         return res.status(400).json({ error: 'invalid', reason: 'email' });
       }
       const result = await service.emailCheck(email);

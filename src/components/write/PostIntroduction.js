@@ -1,7 +1,6 @@
 import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useCallback, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -109,9 +108,7 @@ const Btn = styled.div`
   }
 `;
 
-const PostIntroduction = ({ toggleDialog, title, titleText, onChangeTitleText, onWrite, onChangeImg }) => {
-  const { imagePath } = useSelector((state) => state.post);
-
+const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleContent, onWrite, onChangeImg, imagePath }) => {
   const inputImg = useRef();
 
   const onClickImg = useCallback(
@@ -123,11 +120,11 @@ const PostIntroduction = ({ toggleDialog, title, titleText, onChangeTitleText, o
   );
 
   const WriteCheck = useCallback(() => {
-    if (titleText === '') {
+    if (titleContent === '') {
       return alert('포스트 소개를 입력해주세요.');
     }
     onWrite();
-  }, [titleText, onWrite]);
+  }, [titleContent, onWrite]);
 
   return (
     <Container>
@@ -136,7 +133,7 @@ const PostIntroduction = ({ toggleDialog, title, titleText, onChangeTitleText, o
         <ImgContainer>
           <ImgWrapper>
             {imagePath ? (
-              <MainImg src={imagePath.data} />
+              <MainImg src={imagePath} />
             ) : (
               <DefaultImg>
                 <FontAwesomeIcon icon={faImage} size={'7x'} />
@@ -148,7 +145,7 @@ const PostIntroduction = ({ toggleDialog, title, titleText, onChangeTitleText, o
         </ImgContainer>
         <TextWrapper>
           <Title>{title}</Title>
-          <Text placeholder="당신의 포스트를 짧게 소개해보세요." value={titleText} onChange={onChangeTitleText} />
+          <Text placeholder="당신의 포스트를 짧게 소개해보세요." value={titleContent} onChange={onChangeTitleContent} />
         </TextWrapper>
         <BtnWrapper>
           <Btn onClick={toggleDialog}>취소</Btn>

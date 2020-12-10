@@ -1,29 +1,35 @@
 import hljs from 'highlight.js';
 import 'highlight.js/styles/atom-one-dark.css';
 import marked from 'marked';
-import React, { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import WriteLayout from '../../components/layout/WriteLayout';
 import PostIntroduction from '../../components/write/PostIntroduction';
 import Preview from '../../components/write/Preview';
 import Write from '../../components/write/Write';
 import useInput from '../../hooks/useInput';
-import { UPLOAD_IMAGE_REQUEST } from '../../reducer/post';
+import { UPLOAD_IMAGE_REQUEST, ADD_POST_REQUEST } from '../../reducer/post';
 
-const PostWrite = () => {
+const PostWrite = (props) => {
   const dispatch = useDispatch();
+  const { imagePath, addPostSuccess } = useSelector((state) => state.post);
 
-  const [text, setText] = useState('');
-  const onChangeText = useCallback((e) => {
-    setText(e.getValue());
+  useEffect(() => {
+    // props.history.push('/');
+  }, []);
+
+  const [content, setContent] = useState('');
+  const onChangeContent = useCallback((e) => {
+    setContent(e.getValue());
   }, []);
 
   const markdown = () => {
-    const mark = marked(text, {
+    const mark = marked(content, {
       highlight: function (code, lang) {
         const validLanguage = hljs.getLanguage(lang) ? lang : 'plaintext';
         return hljs.highlight(validLanguage, code).value;
       },
+      breaks: true,
     });
     return { __html: mark };
   };
@@ -67,16 +73,14 @@ const PostWrite = () => {
 
   const onChangeImg = (e) => {
     const imageFormData = new FormData();
-    [].forEach.call(e.target.files, (f) => {
-      imageFormData.append('image', f);
-    });
+    imageFormData.append('image', e.target.files[0]);
     dispatch({
       type: UPLOAD_IMAGE_REQUEST,
       data: imageFormData,
     });
   };
 
-  const [titleText, onChangeTitleText] = useInput('');
+  const [titleContent, onChangeTitleContent] = useInput('');
 
   const [isShown, setIsShown] = useState(false);
 
@@ -84,16 +88,44 @@ const PostWrite = () => {
     setIsShown(!isShown);
   }, [isShown, setIsShown]);
 
-  const onWrite = useCallback(() => {}, []);
+  const onWrite = useCallback(() => {
+    if (imagePath) {
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('titleContent', titleContent);
+      formData.append('content', content);
+      formData.append('imagePath', imagePath);
+      return dispatch({
+        type: ADD_POST_REQUEST,
+        data: formData,
+      });
+    }
+    dispatch({
+      type: ADD_POST_REQUEST,
+      data: {
+        title,
+        titleContent,
+        content,
+      },
+    });
+  }, [title, titleContent, imagePath, content]);
 
   return (
     <WriteLayout>
       {isShown && (
-        <PostIntroduction toggleDialog={toggleDialog} title={title} titleText={titleText} onChangeTitleText={onChangeTitleText} onWrite={onWrite} onChangeImg={onChangeImg} />
+        <PostIntroduction
+          toggleDialog={toggleDialog}
+          title={title}
+          titleContent={titleContent}
+          onChangeTitleContent={onChangeTitleContent}
+          onWrite={onWrite}
+          onChangeImg={onChangeImg}
+          imagePath={imagePath}
+        />
       )}
       <Write
-        text={text}
-        onChangeText={onChangeText}
+        content={content}
+        onChangeContent={onChangeContent}
         title={title}
         onChangeTitle={onChangeTitle}
         tag={tag}

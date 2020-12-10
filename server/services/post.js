@@ -12,8 +12,13 @@ class PostService {
     return result.rows;
   }
 
-  async createPost(userId, content) {
-    const result = await this._pool.query(`INSERT INTO posts(user_id, content) VALUES ($1, $2)`, [userId, content]);
+  async createPost(userId, title, titleContent, content) {
+    const result = await this._pool.query(`INSERT INTO posts(user_id, title, title_content, content) VALUES ($1, $2, $3, $4) RETURNING id`, [userId, title, titleContent, content]);
+    return result.rows[0];
+  }
+
+  async updatePostImage(postId, imagePath) {
+    const result = await this._pool.query('UPDATE posts SET img_path = $2 WHERE id = $1', [postId, imagePath]);
     return result.rows[0];
   }
 

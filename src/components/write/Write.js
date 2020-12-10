@@ -106,16 +106,16 @@ const WriteBtn = styled.button`
   outline: none;
   cursor: pointer;
 `;
-const Write = ({ text, onChangeText, title, onChangeTitle, tag, onChangeTag, onKeyDownTag, data, toggleDialog }) => {
+const Write = ({ content, onChangeContent, title, onChangeTitle, tag, onChangeTag, onKeyDownTag, data, toggleDialog }) => {
   const onClickWrite = useCallback(() => {
     if (title === '') {
       return alert('제목을 입력해주세요.');
     }
-    if (text === '') {
+    if (content === '') {
       return alert('내용을 입력해주세요.');
     }
     toggleDialog();
-  }, [title, text, toggleDialog]);
+  }, [title, content, toggleDialog]);
 
   return (
     <Container>
@@ -131,8 +131,8 @@ const Write = ({ text, onChangeText, title, onChangeTitle, tag, onChangeTag, onK
       </Header>
       <ContentWrapper>
         <CodeMirror
-          value={text}
-          onChange={onChangeText}
+          value={content}
+          onChange={onChangeContent}
           placeholder="내용을 입력해주세요."
           options={{
             theme: 'elegant',

@@ -1,5 +1,7 @@
-const upload = require('../upload');
+const upload = require('../middleware/upload');
+const { isLoggedIn, isNotLoggedIn } = require('../middleware/auth');
 
+//포스트 여러게
 module.exports = (router, service) => {
   router.get('/api/v1/post', async (req, res) => {
     try {
@@ -10,10 +12,11 @@ module.exports = (router, service) => {
     }
   });
 
+  //포스트 상세보기
   router.get('/api/v1/post/:postId', async (req, res) => {
     try {
       const postId = req.params.postId;
-      if (postId == null) {
+      if (!postId) {
         return res.status(400).json({ error: 'invalid', reason: 'postId' });
       }
       const result = await service.post(postId);
@@ -23,21 +26,34 @@ module.exports = (router, service) => {
     }
   });
 
-  router.put('/api/v1/post/:userId/:content', async (req, res) => {
-    //userId 서버에 저장할거 필요.
+  //포스트 작성
+  router.post('/api/v1/addPost', isLoggedIn, upload.none(), async (req, res) => {
     try {
-      const content = req.params.content;
-      const userId = req.params.userId;
-      if (content == null) {
+      const userId = req.user;
+      const { title, titleContent, content, imagePath } = req.body;
+
+      if (!title) {
+        return res.status(400).json({ error: 'invalid', reason: 'title' });
+      }
+      if (!titleContent) {
+        return res.status(400).json({ error: 'invalid', reason: 'titleContent' });
+      }
+      if (!content) {
         return res.status(400).json({ error: 'invalid', reason: 'content' });
       }
-      const result = await service.createPost(userId, content);
-      res.status(200).json({ data: result });
+      const postId = await service.createPost(userId, title, titleContent, content);
+      if (imagePath) {
+        const result = await service.updatePostImage(postId.id, imagePath);
+        console.log(result);
+      }
+
+      res.status(200).json({ data: 'success' });
     } catch (e) {
       res.json(e);
     }
   });
 
+  //포스트 삭제
   router.delete('/api/v1/post/:postId', async (req, res) => {
     const postId = req.params.postId;
     if (postId == null) {
@@ -47,20 +63,22 @@ module.exports = (router, service) => {
     res.status(200).json({ data: result });
   });
 
+  //포스트 수정
   router.put('/api/v1/updatePost/:userId/:postId/:content', async (req, res) => {
     // 받아온 userId와 서버에 있는 userId와 비교해야함.
     const postId = req.params.postId;
     const content = req.params.content;
-    if (postId == null) {
+    if (!postId) {
       return res.status(400).json({ error: 'invalid', reason: 'postId' });
     }
-    if (content == null) {
+    if (!content) {
       return res.status(400).json({ error: 'invalid', reason: 'content' });
     }
     const result = await service.updatePost(postId, content);
     res.status(200).json({ data: result });
   });
 
+  //이미지 업로드
   router.post('/api/v1/imageUpload', upload.single('image'), (req, res) => {
     const filename = req.file.location;
     res.json({ data: filename });
