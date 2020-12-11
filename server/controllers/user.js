@@ -59,7 +59,8 @@ module.exports = (router, service) => {
     try {
       const email = req.body.email;
       const password = req.body.password;
-      const nickname = '.';
+      const nickname = email.match(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@/i)[0] + 'blog.io';
+
       const check = email.match(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i);
 
       if (!email || !check) {

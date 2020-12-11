@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { LOAD_MY_INFO_REQUEST } from '../../reducer/user';
 import Header from '../header/Header';
 import LoginMainPage from '../login/LoginMainPage';
-import { LOAD_MY_INFO_REQUEST } from '../../reducer/user';
 
 const Wrapper = styled.div``;
 

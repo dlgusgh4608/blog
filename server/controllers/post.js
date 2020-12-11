@@ -13,9 +13,9 @@ module.exports = (router, service) => {
   });
 
   //포스트 상세보기
-  router.get('/api/v1/post/:postId', async (req, res) => {
+  router.post('/api/v1/loadPost', async (req, res) => {
     try {
-      const postId = req.params.postId;
+      const postId = req.body.postId;
       if (!postId) {
         return res.status(400).json({ error: 'invalid', reason: 'postId' });
       }

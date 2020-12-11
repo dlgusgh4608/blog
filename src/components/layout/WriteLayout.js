@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
+const Wrapper = styled.div`
   display: flex;
   height: 100%;
   width: 100%;
 `;
 
 const WriteLayout = ({ children }) => {
-  return <Container>{children}</Container>;
+  return <Wrapper>{children}</Wrapper>;
 };
 
 export default WriteLayout;

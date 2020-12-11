@@ -29,7 +29,7 @@ const PostWrite = ({ history }) => {
 
   const markdown = () => {
     const mark = marked(content, {
-      highlight: function (code, lang) {
+      highlight: (code, lang) => {
         const validLanguage = hljs.getLanguage(lang) ? lang : 'plaintext';
         return hljs.highlight(validLanguage, code).value;
       },
@@ -127,6 +127,7 @@ const PostWrite = ({ history }) => {
           onWrite={onWrite}
           onChangeImg={onChangeImg}
           imagePath={imagePath}
+          addPostLoading={addPostLoading}
         />
       )}
       <Write

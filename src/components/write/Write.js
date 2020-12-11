@@ -11,8 +11,13 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;
-  flex: 1 1 0%;
+  width: 50%;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
   flex-direction: column;
+  height: 100%;
 `;
 
 const Header = styled.div`
@@ -65,9 +70,10 @@ const TagInput = styled.input`
 
 const ContentWrapper = styled.div`
   display: flex;
-  padding: 0 2rem;
-  height: 100%;
+  padding-left: 2rem;
   flex-direction: column;
+  flex: 1 1 0%;
+  overflow-y: hidden;
 `;
 
 const Contour = styled.div`
@@ -119,37 +125,39 @@ const Write = ({ content, onChangeContent, title, onChangeTitle, tag, onChangeTa
 
   return (
     <Container>
-      <Header>
-        <Title onHeightChange={(height) => height} placeholder="제목을 입력해주세요." value={title} onChange={onChangeTitle} />
-        <TagWrapper>
-          {data.tagList.map((v, i) => (
-            <Tag key={i}>{v}</Tag>
-          ))}
-          <TagInput placeholder="태그를 입력해주세요." value={tag} onChange={onChangeTag} onKeyDown={onKeyDownTag} />
-          <Contour />
-        </TagWrapper>
-      </Header>
-      <ContentWrapper>
-        <CodeMirror
-          value={content}
-          onChange={onChangeContent}
-          placeholder="내용을 입력해주세요."
-          options={{
-            theme: 'elegant',
-            tabSize: 2,
-            mode: 'markdown',
-            lineNumbers: false,
-            lineWrapping: true,
-          }}
-        />
-      </ContentWrapper>
-      <BtnWrapper>
-        <ExitBtnWrapper to={'/'}>
-          <ExitSvg size="lg" icon={faArrowLeft} />
-          나가기
-        </ExitBtnWrapper>
-        <WriteBtn onClick={onClickWrite}>작성하기</WriteBtn>
-      </BtnWrapper>
+      <Wrapper>
+        <Header>
+          <Title onHeightChange={(height) => height} placeholder="제목을 입력해주세요." value={title} onChange={onChangeTitle} />
+          <TagWrapper>
+            {data.tagList.map((v, i) => (
+              <Tag key={i}>{v}</Tag>
+            ))}
+            <TagInput placeholder="태그를 입력해주세요." value={tag} onChange={onChangeTag} onKeyDown={onKeyDownTag} />
+            <Contour />
+          </TagWrapper>
+        </Header>
+        <ContentWrapper>
+          <CodeMirror
+            value={content}
+            onChange={onChangeContent}
+            placeholder="내용을 입력해주세요."
+            options={{
+              theme: 'elegant',
+              tabSize: 2,
+              mode: 'markdown',
+              lineNumbers: false,
+              lineWrapping: true,
+            }}
+          />
+        </ContentWrapper>
+        <BtnWrapper>
+          <ExitBtnWrapper to={'/'}>
+            <ExitSvg size="lg" icon={faArrowLeft} />
+            나가기
+          </ExitBtnWrapper>
+          <WriteBtn onClick={onClickWrite}>작성하기</WriteBtn>
+        </BtnWrapper>
+      </Wrapper>
     </Container>
   );
 };

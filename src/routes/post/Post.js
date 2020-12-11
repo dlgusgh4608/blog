@@ -1,20 +1,33 @@
 import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import MainLayout from '../../components/layout/MainLayout';
 import Footer from '../../components/post/Footer';
 import Header from '../../components/post/Header';
 import Main from '../../components/post/Main';
+import { LOAD_POST_REQUEST } from '../../reducer/post';
 
 const Post = ({ match }) => {
+  const dispatch = useDispatch();
+  const postId = match.params.postId;
+  const { post } = useSelector((state) => state.post);
   useEffect(() => {
-    console.log(match.params.postId);
-    console.log(match.params.title);
-  }, [match]);
+    dispatch({
+      type: LOAD_POST_REQUEST,
+      data: {
+        postId,
+      },
+    });
+  }, [postId]);
 
   return (
     <MainLayout>
-      <Header />
-      <Main />
-      <Footer />
+      {post && (
+        <>
+          <Header post={post} />
+          <Main post={post} />
+          <Footer post={post} />
+        </>
+      )}
     </MainLayout>
   );
 };

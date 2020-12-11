@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import UserLogo from './UserLogo';
 
 const HeaderContainer = styled.header`
   height: 4rem;
@@ -64,14 +65,13 @@ const SearchBtn = styled(FontAwesomeIcon)`
 
 const Header = ({ toggleDialog }) => {
   const { me } = useSelector((state) => state.user);
+  const { post } = useSelector((state) => state.post);
 
   return (
     <>
       <HeaderContainer>
         <HeaderWrapper>
-          <Head>
-            <Logo to={'/'}>blog</Logo>
-          </Head>
+          <Head>{post ? <UserLogo post={post} /> : <Logo to={'/'}>blog</Logo>}</Head>
           <Head>
             <Search href="/">
               <SearchBtn icon={faSearch} />

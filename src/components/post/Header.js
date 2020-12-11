@@ -40,13 +40,21 @@ const Tag = styled(Link)`
   border-radius: 1rem;
 `;
 
-const Header = () => {
+const Header = ({ post }) => {
+  const postDate = post.create_at;
+
+  const yyyy = postDate.substr(0, 4);
+  const mm = postDate.substr(5, 2);
+  const dd = postDate.substr(8, 2);
+
+  const date = yyyy + '년' + mm + '월' + dd + '일';
+
   return (
     <Container>
-      <Title>제목띠</Title>
-      <Host>작성자</Host>
+      <Title>{post.title}</Title>
+      <Host>{post.nickname}</Host>
       <At>·</At>
-      <span>2020년 12월 31일</span>
+      <span>{date}</span>
       <TagWrapper>
         <Tag to={'/'}>CS</Tag>
         <Tag to={'/'}>nodejs</Tag>

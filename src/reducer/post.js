@@ -1,5 +1,5 @@
 export const initialState = {
-  mainPosts: [],
+  posts: [],
   post: null,
   imagePath: null,
   imageUploadSuccess: false,
@@ -8,6 +8,9 @@ export const initialState = {
   addPostSuccess: false,
   addPostLoading: false,
   addPostError: null,
+  loadPostSuccess: false,
+  loadPostLoading: false,
+  loadPostError: null,
 };
 
 export const UPLOAD_IMAGE_REQUEST = 'UPLOAD_IMAGE_REQUEST';
@@ -18,8 +21,32 @@ export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
 
+export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
+export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
+export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOAD_POST_REQUEST:
+      return {
+        ...state,
+        loadPostLoading: true,
+        loadPostSuccess: false,
+        loadPostError: null,
+      };
+    case LOAD_POST_SUCCESS:
+      return {
+        ...state,
+        loadPostLoading: false,
+        loadPostSuccess: true,
+        post: action.data.data,
+      };
+    case LOAD_POST_FAILURE:
+      return {
+        ...state,
+        loadPostLoading: false,
+        loadPostError: action.error,
+      };
     case UPLOAD_IMAGE_REQUEST:
       return {
         ...state,

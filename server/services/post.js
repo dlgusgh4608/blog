@@ -8,8 +8,11 @@ class PostService {
   }
 
   async post(postId) {
-    const result = await this._pool.query(`SELECT id, content, FROM posts WHERE id = $1`, [postId]);
-    return result.rows;
+    const result = await this._pool.query(
+      `SELECT user_id, users.nickname AS nickname, users.img_path AS user_img, title, title_content, content, posts.create_at AS create_at FROM posts LEFT JOIN users ON posts.user_id = users.id WHERE posts.id = $1`,
+      [postId],
+    );
+    return result.rows[0];
   }
 
   async createPost(userId, title, titleContent, content) {

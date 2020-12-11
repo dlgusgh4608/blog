@@ -2,6 +2,7 @@ import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useCallback, useRef } from 'react';
 import styled from 'styled-components';
+import Spinner from '../spinner/Spinner';
 
 const Container = styled.div`
   position: fixed;
@@ -123,7 +124,7 @@ const WriteBtn = styled.button`
   }
 `;
 
-const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleContent, onWrite, onChangeImg, imagePath }) => {
+const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleContent, onWrite, onChangeImg, imagePath, addPostLoading }) => {
   const inputImg = useRef();
 
   const onClickImg = useCallback(
@@ -168,7 +169,7 @@ const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleCont
         </TextWrapper>
         <BtnWrapper>
           <BackBtn onClick={toggleDialog}>뒤로가기</BackBtn>
-          <WriteBtn onClick={WriteCheck}>작성하기</WriteBtn>
+          <WriteBtn onClick={WriteCheck}>{addPostLoading ? <Spinner /> : '작성하기'}</WriteBtn>
         </BtnWrapper>
       </Wrapper>
     </Container>

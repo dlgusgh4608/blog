@@ -1,5 +1,3 @@
-import { bindActionCreators } from 'redux';
-
 export const initialState = {
   loadMyInfoSuccess: false,
   loadMyInfoLoading: false,

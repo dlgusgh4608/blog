@@ -48,7 +48,7 @@ const Hr = styled.div`
   margin-bottom: 5rem;
 `;
 
-const Footer = () => {
+const Footer = ({ post }) => {
   return (
     <Container>
       <HostWrapper>
@@ -56,8 +56,8 @@ const Footer = () => {
           <Img src="https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile27.uf.tistory.com%2Fimage%2F9905EB345DF8CE050BE220" />
         </ImgWrapper>
         <NameWrapper>
-          <HostName to={'/'}>이현호</HostName>
-          <HostBlog>이현호의 블로그</HostBlog>
+          <HostName to={'/'}>{post.nickname}</HostName>
+          <HostBlog>{post.nickname} 님의 블로그</HostBlog>
         </NameWrapper>
       </HostWrapper>
       <Hr />
