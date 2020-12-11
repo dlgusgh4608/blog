@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import MainLayout from '../../components/layout/MainLayout';
+import Footer from '../../components/post/Footer';
 import Header from '../../components/post/Header';
 import Main from '../../components/post/Main';
-import Footer from '../../components/post/Footer';
 
-const Post = () => {
+const Post = ({ match }) => {
+  useEffect(() => {
+    console.log(match.params.postId);
+    console.log(match.params.title);
+  }, [match]);
+
   return (
     <MainLayout>
       <Header />

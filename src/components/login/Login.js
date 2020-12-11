@@ -113,7 +113,7 @@ const SignUp = styled.div`
   }
 `;
 
-const Login = ({ toggleDialog, switchHandler }) => {
+const Login = ({ toggleDialog, switchHandler, errorAlert }) => {
   const dispatch = useDispatch();
   const { loginSuccess, loginLoading, loginError } = useSelector((state) => state.user);
   const [email, onChangeEmail, setEmail] = useInput('');
@@ -123,15 +123,12 @@ const Login = ({ toggleDialog, switchHandler }) => {
     if (loginSuccess) {
       toggleDialog();
     }
-  }, [loginSuccess]);
-
-  useEffect(() => {
     if (loginError) {
-      alert('가입되지 않은 이메일이거나 비밀번호가 틀렸습니다.');
+      errorAlert('이메일 혹은 비밀번호가 틀렸습니다.');
       setEmail('');
       setPassword('');
     }
-  }, [loginError]);
+  }, [loginSuccess, loginError, toggleDialog, errorAlert]);
 
   const onSubmit = useCallback(
     (e) => {

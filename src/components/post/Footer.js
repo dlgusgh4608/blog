@@ -48,35 +48,6 @@ const Hr = styled.div`
   margin-bottom: 5rem;
 `;
 
-const PostContainer = styled.div`
-  border: 1px solid black;
-  display: flex;
-`;
-
-const PreviousPostContainer = styled.div`
-  flex: 1 1 0%;
-`;
-
-const NextPostContainer = styled.div`
-  flex: 1 1 0%;
-  margin-left: 2rem;
-`;
-
-const PreviousPostWrapper = styled.a`
-  display: flex;
-  align-items: center;
-  height: 3rem;
-  background-color: gray;
-`;
-
-const NextPostWrapper = styled.a`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  height: 3rem;
-  background-color: gray;
-`;
-
 const Footer = () => {
   return (
     <Container>
@@ -90,14 +61,7 @@ const Footer = () => {
         </NameWrapper>
       </HostWrapper>
       <Hr />
-      <PostContainer>
-        <PreviousPostContainer>
-          <PreviousPostWrapper>이전페이지</PreviousPostWrapper>
-        </PreviousPostContainer>
-        <NextPostContainer>
-          <NextPostWrapper>다음페이지</NextPostWrapper>
-        </NextPostContainer>
-      </PostContainer>
+      <div>댓글</div>
     </Container>
   );
 };

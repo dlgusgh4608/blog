@@ -20,7 +20,6 @@ function emailCheckAPI(data) {
 }
 function* emailCheck(action) {
   try {
-    console.log(action.data);
     const result = yield call(emailCheckAPI, action.data);
     yield put({
       type: EMAIL_CHECK_SUCCESS,
@@ -39,7 +38,6 @@ function signUpAPI(data) {
 }
 function* signUp(action) {
   try {
-    console.log(action.data);
     const result = yield call(signUpAPI, action.data);
     yield put({
       type: SIGN_UP_SUCCESS,

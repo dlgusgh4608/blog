@@ -66,7 +66,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         emailCheckLoading: false,
-        emailCheckSuccess: action.data,
+        emailCheckSuccess: true,
       };
     case EMAIL_CHECK_FAILURE:
       return {

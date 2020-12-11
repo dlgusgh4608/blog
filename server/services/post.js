@@ -13,7 +13,12 @@ class PostService {
   }
 
   async createPost(userId, title, titleContent, content) {
-    const result = await this._pool.query(`INSERT INTO posts(user_id, title, title_content, content) VALUES ($1, $2, $3, $4) RETURNING id`, [userId, title, titleContent, content]);
+    const result = await this._pool.query(`INSERT INTO posts(user_id, title, title_content, content) VALUES ($1, $2, $3, $4) RETURNING id, title`, [
+      userId,
+      title,
+      titleContent,
+      content,
+    ]);
     return result.rows[0];
   }
 

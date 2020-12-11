@@ -45,16 +45,7 @@ const GlobalStyle = createGlobalStyle`
  */
 
 const App = () => {
-  const { loginSuccess } = useSelector((state) => state.user);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    if (loginSuccess) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, []);
 
   return (
     <>
@@ -67,7 +58,7 @@ const App = () => {
             return (
               <Switch>
                 <Route path={'/write'} exact={true} component={PostWrite} />
-                <Route path={'/post'} exact={true} component={Post} />
+                <Route path={'/post/:postId/:title'} exact={true} component={Post} />
                 <Route path={'/old'} exact={true} component={Main} />
                 <Route path={'/recent'} exact={true} component={Main} />
                 <Redirect from={'/'} exact={true} to={'/recent'} />

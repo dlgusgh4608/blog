@@ -48,16 +48,16 @@ const Header = () => {
       <At>·</At>
       <span>2020년 12월 31일</span>
       <TagWrapper>
-        <Tag>CS</Tag>
-        <Tag>nodejs</Tag>
-        <Tag>javascript</Tag>
-        <Tag>react</Tag>
-        <Tag>react</Tag>
-        <Tag>react</Tag>
-        <Tag>react</Tag>
-        <Tag>react</Tag>
-        <Tag>react</Tag>
-        <Tag>react</Tag>
+        <Tag to={'/'}>CS</Tag>
+        <Tag to={'/'}>nodejs</Tag>
+        <Tag to={'/'}>javascript</Tag>
+        <Tag to={'/'}>react</Tag>
+        <Tag to={'/'}>react</Tag>
+        <Tag to={'/'}>react</Tag>
+        <Tag to={'/'}>react</Tag>
+        <Tag to={'/'}>react</Tag>
+        <Tag to={'/'}>react</Tag>
+        <Tag to={'/'}>react</Tag>
       </TagWrapper>
     </Container>
   );

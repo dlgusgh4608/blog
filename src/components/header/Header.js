@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import InfoButton from './InfoButton';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -35,7 +36,7 @@ const Head = styled.div`
   font-size: 1.4rem;
 `;
 
-const Logo = styled.a`
+const Logo = styled(Link)`
   color: black;
   cursor: pointer;
 `;
@@ -69,7 +70,7 @@ const Header = ({ toggleDialog }) => {
       <HeaderContainer>
         <HeaderWrapper>
           <Head>
-            <Logo>blog</Logo>
+            <Logo to={'/'}>blog</Logo>
           </Head>
           <Head>
             <Search href="/">

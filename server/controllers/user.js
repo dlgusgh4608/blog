@@ -26,10 +26,10 @@ module.exports = (router, service) => {
       if (user) {
         const result = await bcrypt.compare(password, user.password);
         if (!result) {
-          return res.status(400).send('비번틀림.');
+          return res.status(400).json({ error: 'error', msg: '없는 이메일이거나 비밀번호가 잘못되었습니다.' });
         }
       } else {
-        return res.status(400).send('아이디 없음.');
+        return res.status(400).json({ error: 'error', msg: '없는 이메일이거나 비밀번호가 잘못되었습니다.' });
       }
       const payload = {
         user_id: user.id,
@@ -60,7 +60,9 @@ module.exports = (router, service) => {
       const email = req.body.email;
       const password = req.body.password;
       const nickname = '.';
-      if (!email) {
+      const check = email.match(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i);
+
+      if (!email || !check) {
         return res.status(400).json({ error: 'invalid', reason: 'email' });
       }
       if (!password) {
@@ -68,14 +70,14 @@ module.exports = (router, service) => {
       }
       const checkResult = await service.emailCheck(email);
       if (checkResult.length) {
-        return res.status(403).send('이미 가입되어있는 이메일 입니다.');
+        return res.status(403).json({ error: 'overlapEmail', msg: '이미 가입되어있는 이메일 입니다.' });
       }
       const hashPassword = await bcrypt.hash(password, 10);
       const result = await service.signUp(email, hashPassword, nickname);
       if (!result) {
-        return res.status(500).send('알 수 없는 오류가 발생했습니다.');
+        return res.status(500).send('알 수 없는 오류가 발생했습니다. 다시 시도해주시기 바랍니다.');
       }
-      res.send('회원가입이 성공적으로 완료되었습니다.');
+      res.status(200).json({ data: 'success' });
     } catch (e) {
       res.json(e);
     }
@@ -84,14 +86,15 @@ module.exports = (router, service) => {
   router.post('/api/v1/emailCheck', isNotLoggedIn, async (req, res) => {
     try {
       const email = req.body.email;
-      if (!email) {
+      const check = email.match(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i);
+      if (!email || !check) {
         return res.status(400).json({ error: 'invalid', reason: 'email' });
       }
       const result = await service.emailCheck(email);
       if (result.length) {
-        return res.status(403).send('이미 가입되어있는 이메일 입니다.');
+        return res.status(403).json({ error: 'overlapEmail', msg: '이미 가입되어있는 이메일 입니다.' });
       }
-      res.status(200).send('사용할 수 있는 이메일 입니다.');
+      res.status(200).json({ data: 'success' });
     } catch (e) {
       res.json(e);
     }

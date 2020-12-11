@@ -1,5 +1,6 @@
 export const initialState = {
   mainPosts: [],
+  post: null,
   imagePath: null,
   imageUploadSuccess: false,
   imageUploadLoading: false,
@@ -51,6 +52,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         addPostLoading: false,
         addPostSuccess: true,
+        post: action.data.data,
       };
     case ADD_POST_FAILURE:
       return {

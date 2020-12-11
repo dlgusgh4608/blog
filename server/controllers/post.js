@@ -41,13 +41,11 @@ module.exports = (router, service) => {
       if (!content) {
         return res.status(400).json({ error: 'invalid', reason: 'content' });
       }
-      const postId = await service.createPost(userId, title, titleContent, content);
+      const result = await service.createPost(userId, title, titleContent, content);
       if (imagePath) {
-        const result = await service.updatePostImage(postId.id, imagePath);
-        console.log(result);
+        await service.updatePostImage(result.id, imagePath);
       }
-
-      res.status(200).json({ data: 'success' });
+      res.status(200).json({ data: result });
     } catch (e) {
       res.json(e);
     }

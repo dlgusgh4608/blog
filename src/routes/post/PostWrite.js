@@ -8,15 +8,19 @@ import PostIntroduction from '../../components/write/PostIntroduction';
 import Preview from '../../components/write/Preview';
 import Write from '../../components/write/Write';
 import useInput from '../../hooks/useInput';
-import { UPLOAD_IMAGE_REQUEST, ADD_POST_REQUEST } from '../../reducer/post';
+import { ADD_POST_REQUEST, UPLOAD_IMAGE_REQUEST } from '../../reducer/post';
 
-const PostWrite = (props) => {
+const PostWrite = ({ history }) => {
   const dispatch = useDispatch();
-  const { imagePath, addPostSuccess } = useSelector((state) => state.post);
+  const { imagePath, addPostLoading, addPostSuccess, post } = useSelector((state) => state.post);
 
   useEffect(() => {
-    // props.history.push('/');
-  }, []);
+    if (addPostSuccess) {
+      const postId = post.id;
+      const postTitle = post.title.replace(/ /g, '-');
+      history.push(`/post/${postId}/${postTitle}`);
+    }
+  });
 
   const [content, setContent] = useState('');
   const onChangeContent = useCallback((e) => {
@@ -89,25 +93,27 @@ const PostWrite = (props) => {
   }, [isShown, setIsShown]);
 
   const onWrite = useCallback(() => {
+    const trimTitle = title.trim().replace(/\s{2,}/g, ' ');
     if (imagePath) {
       const formData = new FormData();
-      formData.append('title', title);
+      formData.append('title', trimTitle);
       formData.append('titleContent', titleContent);
       formData.append('content', content);
       formData.append('imagePath', imagePath);
-      return dispatch({
+      dispatch({
         type: ADD_POST_REQUEST,
         data: formData,
       });
+    } else {
+      dispatch({
+        type: ADD_POST_REQUEST,
+        data: {
+          title: trimTitle,
+          titleContent,
+          content,
+        },
+      });
     }
-    dispatch({
-      type: ADD_POST_REQUEST,
-      data: {
-        title,
-        titleContent,
-        content,
-      },
-    });
   }, [title, titleContent, imagePath, content]);
 
   return (

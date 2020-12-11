@@ -95,12 +95,27 @@ const BtnWrapper = styled.div`
   padding: 0 1rem;
 `;
 
-const Btn = styled.div`
+const BackBtn = styled.div`
   padding: 0 1rem;
   font-size: 1.4rem;
   border: none;
   border-radius: 0.7rem;
   background-color: green;
+  color: black;
+  cursor: pointer;
+
+  :hover {
+    background-color: white;
+  }
+`;
+
+const WriteBtn = styled.button`
+  padding: 0 1rem;
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 0.7rem;
+  background-color: green;
+  color: black;
   cursor: pointer;
 
   :hover {
@@ -119,12 +134,16 @@ const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleCont
     [inputImg],
   );
 
-  const WriteCheck = useCallback(() => {
-    if (titleContent === '') {
-      return alert('포스트 소개를 입력해주세요.');
-    }
-    onWrite();
-  }, [titleContent, onWrite]);
+  const WriteCheck = useCallback(
+    (e) => {
+      if (titleContent === '') {
+        e.preventDefault();
+        return alert('포스트 소개를 입력해주세요.');
+      }
+      onWrite();
+    },
+    [titleContent, onWrite],
+  );
 
   return (
     <Container>
@@ -148,8 +167,8 @@ const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleCont
           <Text placeholder="당신의 포스트를 짧게 소개해보세요." value={titleContent} onChange={onChangeTitleContent} />
         </TextWrapper>
         <BtnWrapper>
-          <Btn onClick={toggleDialog}>취소</Btn>
-          <Btn onClick={WriteCheck}>올리기</Btn>
+          <BackBtn onClick={toggleDialog}>뒤로가기</BackBtn>
+          <WriteBtn onClick={WriteCheck}>작성하기</WriteBtn>
         </BtnWrapper>
       </Wrapper>
     </Container>

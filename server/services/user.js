@@ -12,16 +12,15 @@ class UserService {
   }
   async emailCheck(email) {
     const result = await this._pool.query(`SELECT email FROM users WHERE email = $1`, [email]);
-    return result.rows[0];
+    return result.rows;
   }
   async signUp(email, password, nickname) {
     const result = await this._pool.query(`INSERT INTO users(email, password, nickname) VALUES($1, $2, $3)`, [email, password, nickname]);
-    console.log(result);
-    return result.rows[0];
+    return result.rowCount;
   }
   async userDelete(userId) {
     const result = await this._pool.query('DELETE FROM users FROM id = $1', [userId]);
-    return result.rows[0];
+    return result.rowCount;
   }
 }
 

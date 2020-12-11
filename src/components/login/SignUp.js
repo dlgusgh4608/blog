@@ -154,31 +154,20 @@ const ErrorSpan = styled.span`
   color: red;
 `;
 
-const SuccessSpan = styled.span`
-  color: yellowgreen;
-`;
-
-const SignUp = ({ toggleDialog, switchHandler }) => {
-  const { emailCheckSuccess, emailCheckLoading, emailCheckError, signUpSuccess, signUpError } = useSelector((state) => state.user);
+const SignUp = ({ toggleDialog, switchHandler, successAlert, errorAlert }) => {
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (emailCheckSuccess) {
-      setCheckError(false);
-    }
-  }, [emailCheckSuccess]);
-
+  const { signUpSuccess, emailCheckError, emailCheckLoading, emailCheckSuccess } = useSelector((state) => state.user);
   useEffect(() => {
     if (signUpSuccess) {
-      alert('회원가입에 성공하셨습니다.');
+      successAlert('회원가입이 성공적으로 완료되었습니다.');
       switchHandler();
+    } else if (emailCheckSuccess) {
+      successAlert('사용하실수 있는 이메일입니다.');
     }
-  }, [signUpSuccess]);
-  useEffect(() => {
-    if (signUpError) {
-      alert(signUpError);
+    if (emailCheckError) {
+      errorAlert(emailCheckError.msg);
     }
-  }, [signUpError]);
+  }, [signUpSuccess, emailCheckError, emailCheckSuccess, switchHandler, successAlert, errorAlert]);
 
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState(false);
@@ -194,14 +183,13 @@ const SignUp = ({ toggleDialog, switchHandler }) => {
 
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(false);
-  const [check, setCheck] = useState('');
-  const [checkError, setCheckError] = useState(false);
-
   const onChangeEmail = useCallback((e) => {
     const testEmail = e.target.value;
     setEmail(testEmail);
-    setEmailError(!testEmail.match(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i));
+    setEmailError(!testEmail.match(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i));
   }, []);
+
+  const [check, setCheck] = useState('');
   const onEmailCheck = useCallback(
     (e) => {
       e.preventDefault();
@@ -214,7 +202,7 @@ const SignUp = ({ toggleDialog, switchHandler }) => {
         data: { email },
       });
     },
-    [email],
+    [email, dispatch],
   );
 
   const onSubmit = useCallback(
@@ -224,10 +212,10 @@ const SignUp = ({ toggleDialog, switchHandler }) => {
         return setPasswordError(true);
       }
       if (check !== email) {
-        return setCheckError(true);
+        return errorAlert('중복확인을 시도해주세요.');
       }
       if (emailCheckError) {
-        return setCheckError(true);
+        return errorAlert(emailCheckError.msg);
       }
       dispatch({
         type: SIGN_UP_REQUEST,
@@ -237,7 +225,7 @@ const SignUp = ({ toggleDialog, switchHandler }) => {
         },
       });
     },
-    [email, password, check, passwordCheck],
+    [email, password, check, passwordCheck, emailCheckError, errorAlert],
   );
 
   return (
@@ -257,9 +245,7 @@ const SignUp = ({ toggleDialog, switchHandler }) => {
               <SignUpForm onSubmit={onSubmit}>
                 <SpanWrapper>
                   <h4>이메일</h4>
-                  {emailCheckError && <ErrorSpan>{emailCheckError}</ErrorSpan>}
                   {emailError && <ErrorSpan>이메일형식으로 입력해주세요!</ErrorSpan>}
-                  {emailCheckSuccess && <SuccessSpan>{emailCheckSuccess}</SuccessSpan>}
                 </SpanWrapper>
                 <EmailInputWrapper>
                   <EmailInput type="email" required value={email} onChange={onChangeEmail} placeholder="이메일을 입력해주세요." />
@@ -273,7 +259,7 @@ const SignUp = ({ toggleDialog, switchHandler }) => {
                 </SpanWrapper>
 
                 <PasswordInput type="password" required value={passwordCheck} onChange={onChangePasswordCheck} placeholder="비밀번호를 한번더 입력해주세요." />
-                <SignUpButton type="submit">{checkError ? '중복확인을 시도 해주세요.' : '회원가입'}</SignUpButton>
+                <SignUpButton type="submit">회원가입</SignUpButton>
               </SignUpForm>
               <SignUpFooter>
                 <FooterSpan>이미 아이디가 있으신가요?</FooterSpan>
