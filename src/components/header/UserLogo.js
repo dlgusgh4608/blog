@@ -4,10 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHSquare } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
-const Wrapper = styled.div`
-  color: black;
-`;
-
 const Home = styled(Link)`
   color: black;
   margin-right: 1rem;
@@ -21,12 +17,12 @@ const User = styled(Link)`
 
 const UserLogo = ({ post }) => {
   return (
-    <Wrapper>
+    <>
       <Home to={'/'}>
         <FontAwesomeIcon icon={faHSquare} />
       </Home>
-      <User to={`/${post.nickname}`}>{post.nickname}</User>
-    </Wrapper>
+      <User to={`/${post.user_id}/${post.nickname}`}>{post.nickname}</User>
+    </>
   );
 };
 

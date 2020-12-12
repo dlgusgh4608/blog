@@ -97,12 +97,17 @@ const BtnWrapper = styled.div`
 `;
 
 const BackBtn = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 2rem;
+  width: 25%;
   padding: 0 1rem;
   font-size: 1.4rem;
   border: none;
   border-radius: 0.7rem;
   background-color: green;
   color: black;
+  box-sizing: border-box;
   cursor: pointer;
 
   :hover {
@@ -111,12 +116,18 @@ const BackBtn = styled.div`
 `;
 
 const WriteBtn = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+  width: 25%;
   padding: 0 1rem;
   font-size: 1.4rem;
   border: none;
   border-radius: 0.7rem;
   background-color: green;
   color: black;
+  box-sizing: border-box;
   cursor: pointer;
 
   :hover {

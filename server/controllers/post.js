@@ -1,9 +1,9 @@
 const upload = require('../middleware/upload');
 const { isLoggedIn, isNotLoggedIn } = require('../middleware/auth');
 
-//포스트 여러게
 module.exports = (router, service) => {
-  router.get('/api/v1/post', async (req, res) => {
+  //메인 화면
+  router.get('/api/v1/posts', async (req, res) => {
     try {
       const result = await service.posts();
       res.status(200).json({ data: result });
@@ -11,6 +11,8 @@ module.exports = (router, service) => {
       res.json(e);
     }
   });
+
+  //개인화면
 
   //포스트 상세보기
   router.post('/api/v1/loadPost', async (req, res) => {
@@ -20,6 +22,7 @@ module.exports = (router, service) => {
         return res.status(400).json({ error: 'invalid', reason: 'postId' });
       }
       const result = await service.post(postId);
+      console.log(result);
       res.status(200).json({ data: result });
     } catch (e) {
       res.json(e);

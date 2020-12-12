@@ -16,8 +16,8 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   display: flex;
+  flex: 1 1 0%;
   flex-direction: column;
-  height: 100%;
 `;
 
 const Header = styled.div`
@@ -86,9 +86,11 @@ const Contour = styled.div`
 const BtnWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 3rem;
+  height: 4rem;
+  width: 100%;
   padding: 0.5rem;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
+  box-sizing: border-box;
 `;
 
 const ExitBtnWrapper = styled(Link)`

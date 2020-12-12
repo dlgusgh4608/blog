@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import Main from '../../routes/main/Main';
-import PostWrite from '../../routes/post/PostWrite';
 import Post from '../../routes/post/Post';
+import PostWrite from '../../routes/write/PostWrite';
+import Info from '../../routes/user/Info';
 
 const GlobalStyle = createGlobalStyle`
   html{
@@ -61,6 +61,7 @@ const App = () => {
                 <Route path={'/post/:postId/:title'} exact={true} component={Post} />
                 <Route path={'/old'} exact={true} component={Main} />
                 <Route path={'/recent'} exact={true} component={Main} />
+                <Route path={'/user/:nickname/:userId'} exact={true} component={Info} />
                 <Redirect from={'/'} exact={true} to={'/recent'} />
               </Switch>
             );

@@ -3,7 +3,9 @@ class PostService {
     this._pool = pool;
   }
   async posts() {
-    const result = await this._pool.query(`SELECT id, content FROM posts`);
+    const result = await this._pool.query(
+      `SELECT posts.id AS post_id, title, title_content, posts.img_path AS post_img, user_id, nickname, users.img_path AS user_img FROM posts LEFT JOIN users ON posts.user_id = users.id ORDER BY posts.create_at DESC`,
+    );
     return result.rows;
   }
 

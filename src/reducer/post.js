@@ -11,6 +11,12 @@ export const initialState = {
   loadPostSuccess: false,
   loadPostLoading: false,
   loadPostError: null,
+  loadMainPostsSuccess: false,
+  loadMainPostsLoading: false,
+  loadMainPostsError: null,
+  loadUserPostsSuccess: false,
+  loadUserPostsLoading: false,
+  loadUserPostsError: null,
 };
 
 export const UPLOAD_IMAGE_REQUEST = 'UPLOAD_IMAGE_REQUEST';
@@ -25,8 +31,56 @@ export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
 export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
 export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
 
+export const LOAD_MAIN_POSTS_REQUEST = 'LOAD_MAIN_POSTS_REQUEST';
+export const LOAD_MAIN_POSTS_SUCCESS = 'LOAD_MAIN_POSTS_SUCCESS';
+export const LOAD_MAIN_POSTS_FAILURE = 'LOAD_MAIN_POSTS_FAILURE';
+
+export const LOAD_USER_POSTS_REQUEST = 'LOAD_USER_POSTS_REQUEST';
+export const LOAD_USER_POSTS_SUCCESS = 'LOAD_USER_POSTS_SUCCESS';
+export const LOAD_USER_POSTS_FAILURE = 'LOAD_USER_POSTS_FAILURE';
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOAD_USER_POSTS_REQUEST:
+      return {
+        ...state,
+        loadUserPostsLoading: true,
+        loadUserPostsSuccess: false,
+        loadUserPostsError: null,
+      };
+    case LOAD_USER_POSTS_SUCCESS:
+      return {
+        ...state,
+        loadUserPostsLoading: false,
+        loadUserPostsSuccess: true,
+      };
+    case LOAD_USER_POSTS_FAILURE:
+      return {
+        ...state,
+        loadUserPostsLoading: false,
+        loadUserPostsError: action.error,
+      };
+    case LOAD_MAIN_POSTS_REQUEST:
+      return {
+        ...state,
+        loadMainPostsLoading: true,
+        loadMainPostsSuccess: false,
+        loadMainPostsError: null,
+      };
+    case LOAD_MAIN_POSTS_SUCCESS:
+      return {
+        ...state,
+        loadMainPostsLoading: false,
+        loadMainPostsSuccess: true,
+        post: null,
+        posts: action.data.data,
+      };
+    case LOAD_MAIN_POSTS_FAILURE:
+      return {
+        ...state,
+        loadMainPostsLoading: false,
+        loadMainPostsError: action.error,
+      };
     case LOAD_POST_REQUEST:
       return {
         ...state,
@@ -40,6 +94,7 @@ const reducer = (state = initialState, action) => {
         loadPostLoading: false,
         loadPostSuccess: true,
         post: action.data.data,
+        posts: [],
       };
     case LOAD_POST_FAILURE:
       return {

@@ -6,9 +6,9 @@ import Header from '../../components/post/Header';
 import Main from '../../components/post/Main';
 import { LOAD_POST_REQUEST } from '../../reducer/post';
 
-const Post = ({ match }) => {
+const Post = (props) => {
   const dispatch = useDispatch();
-  const postId = match.params.postId;
+  const postId = props.match.params.postId;
   const { post } = useSelector((state) => state.post);
   useEffect(() => {
     dispatch({
@@ -18,7 +18,6 @@ const Post = ({ match }) => {
       },
     });
   }, [postId]);
-
   return (
     <MainLayout>
       {post && (

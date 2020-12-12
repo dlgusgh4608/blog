@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import MainLayout from '../../components/layout/MainLayout';
 import MenuList from '../../components/main/MenuList';
 import PostItem from '../../components/main/PostItem';
+import { LOAD_MAIN_POSTS_REQUEST } from '../../reducer/post';
 
 const MainContainer = styled.div`
   width: 1728px;
@@ -40,6 +42,17 @@ const PostWrapper = styled.main`
 
 const Main = ({ location }) => {
   const type = location.pathname.replace('/', '');
+  const dispatch = useDispatch();
+  const { posts } = useSelector((state) => state.post);
+
+  useEffect(() => {
+    if (type === 'old') {
+      return;
+    }
+    dispatch({
+      type: LOAD_MAIN_POSTS_REQUEST,
+    });
+  }, [type]);
   return (
     <MainLayout>
       <MainContainer>
@@ -48,14 +61,9 @@ const Main = ({ location }) => {
         </MenuWrapper>
         <MainWrapper>
           <PostWrapper>
-            <PostItem />
-            <PostItem />
-            <PostItem />
-            <PostItem />
-            <PostItem />
-            <PostItem />
-            <PostItem />
-            <PostItem />
+            {posts.map((v) => (
+              <PostItem key={v.post_id} data={v} />
+            ))}
           </PostWrapper>
         </MainWrapper>
       </MainContainer>

@@ -9,6 +9,7 @@ import Preview from '../../components/write/Preview';
 import Write from '../../components/write/Write';
 import useInput from '../../hooks/useInput';
 import { ADD_POST_REQUEST, UPLOAD_IMAGE_REQUEST } from '../../reducer/post';
+import { withRouter } from 'react-router-dom';
 
 const PostWrite = ({ history }) => {
   const dispatch = useDispatch();
@@ -146,4 +147,4 @@ const PostWrite = ({ history }) => {
   );
 };
 
-export default PostWrite;
+export default withRouter(PostWrite);

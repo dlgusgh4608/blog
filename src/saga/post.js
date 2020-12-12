@@ -10,6 +10,12 @@ import {
   LOAD_POST_FAILURE,
   LOAD_POST_REQUEST,
   LOAD_POST_SUCCESS,
+  LOAD_MAIN_POSTS_REQUEST,
+  LOAD_USER_POSTS_REQUEST,
+  LOAD_MAIN_POSTS_SUCCESS,
+  LOAD_MAIN_POSTS_FAILURE,
+  LOAD_USER_POSTS_SUCCESS,
+  LOAD_USER_POSTS_FAILURE,
 } from '../reducer/post';
 
 function imageUploadAPI(data) {
@@ -69,6 +75,44 @@ function* loadPost(action) {
   }
 }
 
+function loadMainPostsAPI() {
+  return axios.get('/v1/posts');
+}
+
+function* loadMainPosts(action) {
+  const result = yield call(loadMainPostsAPI);
+  try {
+    yield put({
+      type: LOAD_MAIN_POSTS_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: LOAD_MAIN_POSTS_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
+function loadUserPostsAPI(data) {
+  return axios.post('/v1/loadUserPosts', data);
+}
+
+function* loadUserPosts(action) {
+  const result = yield call(loadUserPostsAPI, action.data);
+  try {
+    yield put({
+      type: LOAD_USER_POSTS_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: LOAD_USER_POSTS_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
 function* watchImageUpload() {
   yield takeLatest(UPLOAD_IMAGE_REQUEST, imageUpload);
 }
@@ -78,7 +122,13 @@ function* watchAddPost() {
 function* watchLoadPost() {
   yield takeLatest(LOAD_POST_REQUEST, loadPost);
 }
+function* watchLoadMainPosts() {
+  yield takeLatest(LOAD_MAIN_POSTS_REQUEST, loadMainPosts);
+}
+function* watchLoadUserPosts() {
+  yield takeLatest(LOAD_USER_POSTS_REQUEST, loadUserPosts);
+}
 
 export default function* postSaga() {
-  yield all([fork(watchImageUpload), fork(watchAddPost), fork(watchLoadPost)]);
+  yield all([fork(watchImageUpload), fork(watchAddPost), fork(watchLoadPost), fork(watchLoadMainPosts), fork(watchLoadUserPosts)]);
 }

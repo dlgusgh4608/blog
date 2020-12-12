@@ -39,6 +39,7 @@ const MainImage = styled.img`
 
 const PostMainContainer = styled.div`
   display: flex;
+  flex: 1 1 0%;
   flex-direction: column;
   padding: 1rem;
 `;
@@ -113,21 +114,20 @@ const Heart = styled.div`
   margin-right: 0.5rem;
 `;
 
-const PostItem = () => {
+const PostItem = ({ data }) => {
   return (
     <PostContainer>
-      <PostHeader to={'/post'}>
-        <ImageWrapper>
-          <MainImage src="https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile27.uf.tistory.com%2Fimage%2F9905EB345DF8CE050BE220" />
-        </ImageWrapper>
-      </PostHeader>
+      {data.post_img && (
+        <PostHeader to={`/post/${data.post_id}/${data.title}`}>
+          <ImageWrapper>
+            <MainImage src={data.post_img} />
+          </ImageWrapper>
+        </PostHeader>
+      )}
       <PostMainContainer>
-        <PostMainWrapper to={'/post'}>
-          <PostTitle>제목ddddddddddddddddddddddddddddddddddddd</PostTitle>
-          <PostContent>
-            글내 요요요요요용글내
-            요요요요요용글내요요요요요용글내요요요요요용글내요요요요요용글내요요요요요용글내요요요요요용글내요요요요요용글내요요요요요용글내요요요요요용글내요요요요요용글내
-          </PostContent>
+        <PostMainWrapper to={`/post/${data.post_id}/${data.title}`}>
+          <PostTitle>{data.title}</PostTitle>
+          <PostContent>{data.title_content}</PostContent>
         </PostMainWrapper>
         <PostCommentWrapper>
           <span>2020년 31월 23일</span>
@@ -136,10 +136,10 @@ const PostItem = () => {
         </PostCommentWrapper>
       </PostMainContainer>
       <PostFooterContainer>
-        <PostHostWrapper to={'/post'}>
-          <PostHostImg src="https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile27.uf.tistory.com%2Fimage%2F9905EB345DF8CE050BE220" />
+        <PostHostWrapper to={`/user/${data.nickname}/${data.user_id}`}>
+          <PostHostImg src={data.user_img} />
           <PostHostNameWrapper>
-            by <PostHostName>이현호</PostHostName>
+            by <PostHostName>{data.nickname}</PostHostName>
           </PostHostNameWrapper>
         </PostHostWrapper>
         <Likes>
