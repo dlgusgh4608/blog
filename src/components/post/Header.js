@@ -40,7 +40,7 @@ const Tag = styled(Link)`
   border-radius: 1rem;
 `;
 
-const Header = ({ post }) => {
+const Header = ({ post, tags }) => {
   const postDate = post.create_at;
 
   const yyyy = postDate.substr(0, 4);
@@ -56,16 +56,11 @@ const Header = ({ post }) => {
       <At>·</At>
       <span>{date}</span>
       <TagWrapper>
-        <Tag to={'/'}>CS</Tag>
-        <Tag to={'/'}>nodejs</Tag>
-        <Tag to={'/'}>javascript</Tag>
-        <Tag to={'/'}>react</Tag>
-        <Tag to={'/'}>react</Tag>
-        <Tag to={'/'}>react</Tag>
-        <Tag to={'/'}>react</Tag>
-        <Tag to={'/'}>react</Tag>
-        <Tag to={'/'}>react</Tag>
-        <Tag to={'/'}>react</Tag>
+        {tags.map((v) => (
+          <Tag to={'/'} key={v.id}>
+            {v.content}
+          </Tag>
+        ))}
       </TagWrapper>
     </Container>
   );

@@ -12,7 +12,7 @@ module.exports = (router, service) => {
     }
   });
 
-  //개인화면
+  //내 포스트
 
   //포스트 상세보기
   router.post('/api/v1/loadPost', async (req, res) => {
@@ -21,7 +21,10 @@ module.exports = (router, service) => {
       if (!postId) {
         return res.status(400).json({ error: 'invalid', reason: 'postId' });
       }
-      const result = await service.post(postId);
+      const result = {};
+
+      result.post = await service.post(postId);
+      result['tags'] = await service.postTag(postId);
       console.log(result);
       res.status(200).json({ data: result });
     } catch (e) {
@@ -33,8 +36,7 @@ module.exports = (router, service) => {
   router.post('/api/v1/addPost', isLoggedIn, upload.none(), async (req, res) => {
     try {
       const userId = req.user;
-      const { title, titleContent, content, imagePath } = req.body;
-
+      const { title, titleContent, content, imagePath, tags } = req.body;
       if (!title) {
         return res.status(400).json({ error: 'invalid', reason: 'title' });
       }
@@ -44,11 +46,20 @@ module.exports = (router, service) => {
       if (!content) {
         return res.status(400).json({ error: 'invalid', reason: 'content' });
       }
-      const result = await service.createPost(userId, title, titleContent, content);
+      const result = await service.createPost(userId, title, titleContent, content, tags);
       if (imagePath) {
         await service.updatePostImage(result.id, imagePath);
       }
-      res.status(200).json({ data: result });
+
+      if (tags) {
+        if (!Array.isArray(tags)) {
+          const arrTags = Array.from(tags.split(','));
+          await Promise.all(arrTags.map((tag) => service.createPostTags(result.id, tag)));
+        } else {
+          await Promise.all(tags.map((tag) => service.createPostTags(result.id, tag)));
+        }
+      }
+      result.res.status(200).json({ data: result });
     } catch (e) {
       res.json(e);
     }
@@ -79,7 +90,7 @@ module.exports = (router, service) => {
     res.status(200).json({ data: result });
   });
 
-  //이미지 업로드
+  //이미지 업로드 및 미리보기
   router.post('/api/v1/imageUpload', upload.single('image'), (req, res) => {
     const filename = req.file.location;
     res.json({ data: filename });

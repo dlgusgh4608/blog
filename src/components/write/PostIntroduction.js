@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import Spinner from '../spinner/Spinner';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   position: fixed;
@@ -115,7 +116,7 @@ const BackBtn = styled.div`
   }
 `;
 
-const WriteBtn = styled.button`
+const WriteBtn = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -146,16 +147,16 @@ const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleCont
     [inputImg],
   );
 
-  const WriteCheck = useCallback(
-    (e) => {
-      if (titleContent === '') {
-        e.preventDefault();
-        return alert('포스트 소개를 입력해주세요.');
-      }
-      onWrite();
-    },
-    [titleContent, onWrite],
-  );
+  // const WriteCheck = useCallback(
+  //   (e) => {
+  //     if (titleContent === '') {
+  //       e.preventDefault();
+  //       return alert('포스트 소개를 입력해주세요.');
+  //     }
+  //     onWrite();
+  //   },
+  //   [titleContent, onWrite],
+  // );
 
   return (
     <Container>
@@ -180,7 +181,9 @@ const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleCont
         </TextWrapper>
         <BtnWrapper>
           <BackBtn onClick={toggleDialog}>뒤로가기</BackBtn>
-          <WriteBtn onClick={WriteCheck}>{addPostLoading ? <Spinner /> : '작성하기'}</WriteBtn>
+          <WriteBtn onClick={onWrite} to={'/'}>
+            {addPostLoading ? <Spinner /> : '작성하기'}
+          </WriteBtn>
         </BtnWrapper>
       </Wrapper>
     </Container>

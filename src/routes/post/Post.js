@@ -22,9 +22,9 @@ const Post = (props) => {
     <MainLayout>
       {post && (
         <>
-          <Header post={post} />
-          <Main post={post} />
-          <Footer post={post} />
+          <Header post={post.post} tags={post.tags} />
+          <Main post={post.post} />
+          <Footer post={post.post} />
         </>
       )}
     </MainLayout>

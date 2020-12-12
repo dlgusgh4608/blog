@@ -40,4 +40,3 @@ CREATE TABLE IF NOT EXISTS "liked" (
     post_id UUID NOT NULL,
     user_id UUID NOT NULL
 );
-

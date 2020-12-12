@@ -1,27 +1,19 @@
 import hljs from 'highlight.js';
 import 'highlight.js/styles/atom-one-dark.css';
 import marked from 'marked';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import WriteLayout from '../../components/layout/WriteLayout';
 import PostIntroduction from '../../components/write/PostIntroduction';
 import Preview from '../../components/write/Preview';
 import Write from '../../components/write/Write';
 import useInput from '../../hooks/useInput';
 import { ADD_POST_REQUEST, UPLOAD_IMAGE_REQUEST } from '../../reducer/post';
-import { withRouter } from 'react-router-dom';
 
-const PostWrite = ({ history }) => {
+const PostWrite = () => {
   const dispatch = useDispatch();
-  const { imagePath, addPostLoading, addPostSuccess, post } = useSelector((state) => state.post);
-
-  useEffect(() => {
-    if (addPostSuccess) {
-      const postId = post.id;
-      const postTitle = post.title.replace(/ /g, '-');
-      history.push(`/post/${postId}/${postTitle}`);
-    }
-  });
+  const { imagePath, addPostLoading } = useSelector((state) => state.post);
 
   const [content, setContent] = useState('');
   const onChangeContent = useCallback((e) => {
@@ -38,8 +30,6 @@ const PostWrite = ({ history }) => {
     });
     return { __html: mark };
   };
-
-  const [title, onChangeTitle] = useInput('');
 
   const [data, setData] = useState({
     tagList: [],
@@ -85,6 +75,7 @@ const PostWrite = ({ history }) => {
     });
   };
 
+  const [title, onChangeTitle] = useInput('');
   const [titleContent, onChangeTitleContent] = useInput('');
 
   const [isShown, setIsShown] = useState(false);
@@ -93,29 +84,40 @@ const PostWrite = ({ history }) => {
     setIsShown(!isShown);
   }, [isShown, setIsShown]);
 
-  const onWrite = useCallback(() => {
-    const trimTitle = title.trim().replace(/\s{2,}/g, ' ');
-    if (imagePath) {
-      const formData = new FormData();
-      formData.append('title', trimTitle);
-      formData.append('titleContent', titleContent);
-      formData.append('content', content);
-      formData.append('imagePath', imagePath);
-      dispatch({
-        type: ADD_POST_REQUEST,
-        data: formData,
-      });
-    } else {
-      dispatch({
-        type: ADD_POST_REQUEST,
-        data: {
-          title: trimTitle,
-          titleContent,
-          content,
-        },
-      });
-    }
-  }, [title, titleContent, imagePath, content]);
+  const onWrite = useCallback(
+    (e) => {
+      const trimTitle = title.trim().replace(/\s{2,}/g, ' ');
+      const trimTag = new Set(data.tagList.map((v) => v.trim()));
+      const tags = Array.from(trimTag).filter((v) => v !== '');
+      if (titleContent === '') {
+        e.preventDefault();
+        return alert('글을 입력해주세요');
+      }
+      if (imagePath) {
+        const formData = new FormData();
+        formData.append('title', trimTitle);
+        formData.append('titleContent', titleContent);
+        formData.append('content', content);
+        formData.append('imagePath', imagePath);
+        formData.append('tags', tags);
+        dispatch({
+          type: ADD_POST_REQUEST,
+          data: formData,
+        });
+      } else {
+        dispatch({
+          type: ADD_POST_REQUEST,
+          data: {
+            title: trimTitle,
+            titleContent,
+            content,
+            tags,
+          },
+        });
+      }
+    },
+    [title, titleContent, imagePath, content, data],
+  );
 
   return (
     <WriteLayout>

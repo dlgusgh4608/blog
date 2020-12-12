@@ -3,7 +3,7 @@ class UserService {
     this._pool = pool;
   }
   async getUser(id) {
-    const result = await this._pool.query(`SELECT id, img_path FROM users WHERE id = $1`, [id]);
+    const result = await this._pool.query(`SELECT id, nickname, img_path FROM users WHERE id = $1`, [id]);
     return result.rows[0];
   }
   async login(email) {

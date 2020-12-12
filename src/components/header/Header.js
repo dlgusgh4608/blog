@@ -9,6 +9,7 @@ import UserLogo from './UserLogo';
 
 const HeaderContainer = styled.header`
   height: 4rem;
+  box-shadow: 0px 0px 4px gray;
 `;
 
 const HeaderWrapper = styled.div`
@@ -71,12 +72,12 @@ const Header = ({ toggleDialog }) => {
     <>
       <HeaderContainer>
         <HeaderWrapper>
-          <Head>{post ? <UserLogo post={post} /> : <Logo to={'/'}>blog</Logo>}</Head>
+          <Head>{post ? <UserLogo post={post.post} /> : <Logo to={'/'}>blog</Logo>}</Head>
           <Head>
             <Search href="/">
               <SearchBtn icon={faSearch} />
             </Search>
-            {me ? <InfoButton /> : <LoginBtn onClick={toggleDialog}>로그인</LoginBtn>}
+            {me ? <InfoButton me={me} /> : <LoginBtn onClick={toggleDialog}>로그인</LoginBtn>}
           </Head>
         </HeaderWrapper>
       </HeaderContainer>

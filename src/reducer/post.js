@@ -89,6 +89,7 @@ const reducer = (state = initialState, action) => {
         loadPostError: null,
       };
     case LOAD_POST_SUCCESS:
+      console.log(action.data.data);
       return {
         ...state,
         loadPostLoading: false,
@@ -134,7 +135,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         addPostLoading: false,
         addPostSuccess: true,
-        post: action.data.data,
+        imagePath: null,
       };
     case ADD_POST_FAILURE:
       return {
