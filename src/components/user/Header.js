@@ -45,15 +45,15 @@ const Hr = styled.div`
   background-color: black;
 `;
 
-const Header = () => {
+const Header = ({ user }) => {
   return (
     <Container>
       <UserImgWrapper>
-        <UserImg src="https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile27.uf.tistory.com%2Fimage%2F9905EB345DF8CE050BE220" />
+        <UserImg src={user.img_path} />
       </UserImgWrapper>
       <WelcomeWrapper>
         <Welcome>어서오세요!</Welcome>
-        <UserNickname>이현호님의 블로그 입니다.</UserNickname>
+        <UserNickname>{user.nickname} 님의 블로그 입니다.</UserNickname>
       </WelcomeWrapper>
       <Hr />
     </Container>

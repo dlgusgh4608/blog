@@ -9,6 +9,11 @@ class PostService {
     );
     return result.rows;
   }
+  //유저 포스트
+  async userPosts(userId) {
+    const result = await this._pool.query(`SELECT id, title, title_content, img_path, create_at FROM posts WHERE user_id = $1`, [userId]);
+    return result.rows;
+  }
   //포스트 상세보기
   async post(postId) {
     const result = await this._pool.query(
@@ -17,7 +22,6 @@ class PostService {
     );
     return result.rows[0];
   }
-  //포스트 상세보기 태그
   async postTag(postId) {
     const result = await this._pool.query(`SELECT id, content FROM tags WHERE post_id = $1`, [postId]);
     return result.rows;

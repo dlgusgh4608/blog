@@ -58,11 +58,10 @@ const App = () => {
             return (
               <Switch>
                 <Route path={'/write'} exact={true} component={PostWrite} />
-                <Route path={'/post/:postId/:title'} exact={true} component={Post} />
+                <Route path={'/:postId/:title/:userId'} exact={true} component={Post} />
                 <Route path={'/old'} exact={true} component={Main} />
-                <Route path={'/recent'} exact={true} component={Main} />
-                <Route path={'/user/:nickname/:userId'} exact={true} component={Info} />
-                <Redirect from={'/'} exact={true} to={'/recent'} />
+                <Route path={'/'} exact={true} component={Main} />
+                <Route path={'/:nickname/:userId'} exact={true} component={Info} />
               </Switch>
             );
         }

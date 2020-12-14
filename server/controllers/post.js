@@ -12,7 +12,23 @@ module.exports = (router, service) => {
     }
   });
 
-  //내 포스트
+  //유저 포스트
+  router.post('/api/v1/userPosts', async (req, res) => {
+    try {
+      const userId = req.body.id;
+      if (!userId) {
+        return res.status(400).json({ error: 'invalid', reason: 'id' });
+      }
+      const result = await service.userPosts(userId);
+      const tags = await Promise.all(result.map((v) => service.postTag(v.id)));
+      for (let i = 0; i < result.length; i++) {
+        result[i]['tags'] = tags[i];
+      }
+      res.status(200).json({ data: result });
+    } catch (e) {
+      res.json(e);
+    }
+  });
 
   //포스트 상세보기
   router.post('/api/v1/loadPost', async (req, res) => {
@@ -25,7 +41,6 @@ module.exports = (router, service) => {
 
       result.post = await service.post(postId);
       result['tags'] = await service.postTag(postId);
-      console.log(result);
       res.status(200).json({ data: result });
     } catch (e) {
       res.json(e);

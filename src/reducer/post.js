@@ -1,5 +1,6 @@
 export const initialState = {
   posts: [],
+  userPosts: [],
   post: null,
   imagePath: null,
   imageUploadSuccess: false,
@@ -53,6 +54,8 @@ const reducer = (state = initialState, action) => {
         ...state,
         loadUserPostsLoading: false,
         loadUserPostsSuccess: true,
+        posts: [],
+        userPosts: action.data.data,
       };
     case LOAD_USER_POSTS_FAILURE:
       return {
@@ -74,6 +77,7 @@ const reducer = (state = initialState, action) => {
         loadMainPostsSuccess: true,
         post: null,
         posts: action.data.data,
+        userPosts: [],
       };
     case LOAD_MAIN_POSTS_FAILURE:
       return {
@@ -89,13 +93,13 @@ const reducer = (state = initialState, action) => {
         loadPostError: null,
       };
     case LOAD_POST_SUCCESS:
-      console.log(action.data.data);
       return {
         ...state,
         loadPostLoading: false,
         loadPostSuccess: true,
         post: action.data.data,
         posts: [],
+        userPosts: [],
       };
     case LOAD_POST_FAILURE:
       return {

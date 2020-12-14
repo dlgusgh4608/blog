@@ -35,29 +35,59 @@ const TitleContent = styled.div`
   word-break: break-word;
 `;
 
+const TagWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const Tag = styled.div`
+  border-radius: 1rem;
+  background-color: pink;
+  margin-top: 1rem;
+  margin-right: 1rem;
+  padding: 0 0.7rem;
+  cursor: pointer;
+`;
+
 const Footer = styled.div`
   display: flex;
   margin-top: 1.5rem;
   font-size: 1rem;
   color: grey;
 `;
+
 const At = styled.span`
   margin: 0 0.5rem;
 `;
 
-const Post = () => {
+const Hr = styled.div`
+  margin: 4rem 0;
+  height: 1px;
+  width: 100%;
+  background-color: black;
+`;
+
+const Post = ({ post }) => {
   return (
     <Container>
-      <ImgWrapper>
-        <PostImg src="https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile27.uf.tistory.com%2Fimage%2F9905EB345DF8CE050BE220" />
-      </ImgWrapper>
-      <Title>제목입니다.</Title>
-      <TitleContent>설명입니다.</TitleContent>
+      {post.img_path && (
+        <ImgWrapper>
+          <PostImg src={post.img_path} />
+        </ImgWrapper>
+      )}
+      <Title>{post.title}</Title>
+      <TitleContent>{post.title_content}</TitleContent>
+      <TagWrapper>
+        {post.tags.map((v) => (
+          <Tag key={v.id}>{v.content}</Tag>
+        ))}
+      </TagWrapper>
       <Footer>
-        <span>2020년 09월 04일</span>
+        <span>{post.create_at}</span>
         <At>·</At>
-        <span>95000개의 댓글</span>
+        <span>7777개의 댓글</span>
       </Footer>
+      <Hr />
     </Container>
   );
 };

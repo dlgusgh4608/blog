@@ -65,14 +65,13 @@ const SearchBtn = styled(FontAwesomeIcon)`
 `;
 
 const Header = ({ toggleDialog }) => {
-  const { me } = useSelector((state) => state.user);
-  const { post } = useSelector((state) => state.post);
+  const { me, user } = useSelector((state) => state.user);
 
   return (
     <>
       <HeaderContainer>
         <HeaderWrapper>
-          <Head>{post ? <UserLogo post={post.post} /> : <Logo to={'/'}>blog</Logo>}</Head>
+          <Head>{user ? <UserLogo user={user} /> : <Logo to={'/'}>blog</Logo>}</Head>
           <Head>
             <Search href="/">
               <SearchBtn icon={faSearch} />

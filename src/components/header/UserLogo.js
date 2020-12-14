@@ -15,13 +15,13 @@ const User = styled(Link)`
   cursor: pointer;
 `;
 
-const UserLogo = ({ post }) => {
+const UserLogo = ({ user }) => {
   return (
     <>
       <Home to={'/'}>
         <FontAwesomeIcon icon={faHSquare} />
       </Home>
-      <User to={`/${post.user_id}/${post.nickname}`}>{post.nickname}</User>
+      <User to={`/${user.nickname}/${user.id}`}>{user.nickname}</User>
     </>
   );
 };

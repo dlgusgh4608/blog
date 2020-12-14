@@ -1,21 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const SearchWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const SearchInput = styled.input`
-  height: 2.5rem;
-  font-size: 1rem;
-  padding: 0 0.5rem;
-  box-sizing: border-box;
 `;
 
 const TagWrapper = styled.div`
@@ -25,22 +14,46 @@ const TagWrapper = styled.div`
   padding: 0.5rem;
 `;
 
-const Tag = styled.div`
+const Tag = styled(Link)`
+  display: flex;
+  color: black;
+  flex-shrink: 0;
   font-size: 0.8rem;
   background-color: greenyellow;
   border-radius: 1rem;
   padding: 0.2rem 0.7rem;
+  margin-right: 1rem;
 `;
 
-const Search = () => {
+const Search = ({ posts }) => {
+  const allTags = [];
+
+  for (let i = 0; i < posts.length; i++) {
+    for (let y = 0; y < posts[i].tags.length; y++) {
+      allTags.push(posts[i].tags[y].content);
+    }
+  }
+
+  const tags = allTags.reduce((x, y) => {
+    x[y] = ++x[y] || 1;
+    return x;
+  }, {});
+
+  const tagName = Object.keys(tags);
+  const tagNum = Object.values(tags);
+
   return (
     <Container>
-      <SearchWrapper>
-        <SearchInput placeholder="검색어를 입력해주세요." />
-      </SearchWrapper>
-      <TagWrapper>
-        <Tag>전체보기 (7)</Tag>
-      </TagWrapper>
+      {allTags[0] && (
+        <TagWrapper>
+          <Tag>전체보기 ({tagName.length})</Tag>
+          {tagName.map((v, i = 0) => (
+            <Tag key={i} to={(location) => `${location.pathname}?tag=${v}`}>
+              {v} ({tagNum[i]})
+            </Tag>
+          ))}
+        </TagWrapper>
+      )}
     </Container>
   );
 };

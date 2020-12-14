@@ -79,7 +79,7 @@ function loadMainPostsAPI() {
   return axios.get('/v1/posts');
 }
 
-function* loadMainPosts(action) {
+function* loadMainPosts() {
   const result = yield call(loadMainPostsAPI);
   try {
     yield put({
@@ -95,7 +95,7 @@ function* loadMainPosts(action) {
 }
 
 function loadUserPostsAPI(data) {
-  return axios.post('/v1/loadUserPosts', data);
+  return axios.post('/v1/userPosts', data);
 }
 
 function* loadUserPosts(action) {

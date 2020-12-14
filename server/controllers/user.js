@@ -12,6 +12,16 @@ module.exports = (router, service) => {
     }
   });
 
+  router.post('/api/v1/user', async (req, res) => {
+    try {
+      const { userId } = req.body;
+      const result = await service.getUser(userId);
+      res.status(200).json({ data: result });
+    } catch (e) {
+      res.json(e);
+    }
+  });
+
   router.post('/api/v1/login', isNotLoggedIn, async (req, res) => {
     try {
       const { email, password } = req.body;

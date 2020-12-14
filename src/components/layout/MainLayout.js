@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { LOAD_MY_INFO_REQUEST } from '../../reducer/user';
+import { LOAD_MY_INFO_REQUEST, LOAD_USER_INFO_REQUEST, REMOVE_USER_INFO } from '../../reducer/user';
 import Header from '../header/Header';
 import LoginMainPage from '../login/LoginMainPage';
 
 const Wrapper = styled.div``;
 
-const MainLayout = ({ children }) => {
+const MainLayout = ({ children, userId }) => {
   const dispatch = useDispatch();
   const [isShown, setIsShown] = useState(false);
 
@@ -20,7 +20,19 @@ const MainLayout = ({ children }) => {
     dispatch({
       type: LOAD_MY_INFO_REQUEST,
     });
-  }, [isShown]);
+    if (userId) {
+      dispatch({
+        type: LOAD_USER_INFO_REQUEST,
+        data: {
+          userId,
+        },
+      });
+    } else {
+      dispatch({
+        type: REMOVE_USER_INFO,
+      });
+    }
+  }, [isShown, userId]);
   return (
     <>
       {isShown && <LoginMainPage toggleDialog={toggleDialog} />}

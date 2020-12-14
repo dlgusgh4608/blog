@@ -2,6 +2,9 @@ export const initialState = {
   loadMyInfoSuccess: false,
   loadMyInfoLoading: false,
   loadMyInfoError: null,
+  loadUserInfoSuccess: false,
+  loadUserInfoLoading: false,
+  loadUserInfoError: null,
   emailCheckSuccess: false,
   emailCheckLoading: false,
   emailCheckError: null,
@@ -12,11 +15,16 @@ export const initialState = {
   signUpLoading: false,
   signUpError: null,
   me: null,
+  user: null,
 };
 
 export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
 export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
 export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
+
+export const LOAD_USER_INFO_REQUEST = 'LOAD_USER_INFO_REQUEST';
+export const LOAD_USER_INFO_SUCCESS = 'LOAD_USER_INFO_SUCCESS';
+export const LOAD_USER_INFO_FAILURE = 'LOAD_USER_INFO_FAILURE';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -30,8 +38,38 @@ export const EMAIL_CHECK_REQUEST = 'EMAIL_CHECK_REQUEST';
 export const EMAIL_CHECK_SUCCESS = 'EMAIL_CHECK_SUCCESS';
 export const EMAIL_CHECK_FAILURE = 'EMAIL_CHECK_FAILURE';
 
+export const REMOVE_USER_INFO = 'REMOVE_USER_INFO';
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOAD_USER_INFO_REQUEST:
+      return {
+        ...state,
+        loadUserInfoLoading: true,
+        loadUserInfoSuccess: false,
+        loadUserInfoError: null,
+      };
+    case LOAD_USER_INFO_SUCCESS:
+      return {
+        ...state,
+        loadUserInfoLoading: false,
+        loadUserInfoSuccess: true,
+        user: action.data.data,
+      };
+    case LOAD_USER_INFO_FAILURE:
+      return {
+        ...state,
+        loadUserInfoLoading: false,
+        loadUserInfoError: action.error,
+      };
+    case REMOVE_USER_INFO:
+      return {
+        ...state,
+        loadUserInfoLoading: true,
+        loadUserInfoSuccess: false,
+        loadUserInfoError: null,
+        user: null,
+      };
     case LOAD_MY_INFO_REQUEST:
       return {
         ...state,
