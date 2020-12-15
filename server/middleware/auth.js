@@ -8,6 +8,7 @@ exports.isLoggedIn = (req, res, next) => {
 
   const decode = jwt.verify(token, req.app.get('jwt-secret'));
   const result = decode.user_id;
+  req.token = token;
   req.user = result;
   next();
 };

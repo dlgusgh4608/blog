@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { isLoggedIn, isNotLoggedIn } = require('../middleware/auth');
 module.exports = (router, service) => {
+  //내 정보 가져오기
   router.get('/api/v1/user', isLoggedIn, async (req, res) => {
     try {
       const userId = req.user;
@@ -12,6 +13,7 @@ module.exports = (router, service) => {
     }
   });
 
+  //지금 접속해있는 유저 정보 가져오기
   router.post('/api/v1/user', async (req, res) => {
     try {
       const { userId } = req.body;
@@ -21,7 +23,7 @@ module.exports = (router, service) => {
       res.json(e);
     }
   });
-
+  //로그인
   router.post('/api/v1/login', isNotLoggedIn, async (req, res) => {
     try {
       const { email, password } = req.body;
@@ -64,7 +66,16 @@ module.exports = (router, service) => {
       res.json(e);
     }
   });
-
+  //로그아웃
+  router.post('/api/v1/logout', isLoggedIn, async (req, res) => {
+    try {
+      const token = (req.token = '');
+      res.status(200).cookie('access_token', token).json({ result: 'success' });
+    } catch (e) {
+      res.json(e);
+    }
+  });
+  //회원가입
   router.post(`/api/v1/signUp`, isNotLoggedIn, async (req, res) => {
     try {
       const email = req.body.email;
@@ -93,7 +104,7 @@ module.exports = (router, service) => {
       res.json(e);
     }
   });
-
+  //이메일 체크
   router.post('/api/v1/emailCheck', isNotLoggedIn, async (req, res) => {
     try {
       const email = req.body.email;

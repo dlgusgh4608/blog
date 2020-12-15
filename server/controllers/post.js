@@ -52,6 +52,7 @@ module.exports = (router, service) => {
     try {
       const userId = req.user;
       const { title, titleContent, content, imagePath, tags } = req.body;
+      console.log(title);
       if (!title) {
         return res.status(400).json({ error: 'invalid', reason: 'title' });
       }
@@ -61,7 +62,7 @@ module.exports = (router, service) => {
       if (!content) {
         return res.status(400).json({ error: 'invalid', reason: 'content' });
       }
-      const result = await service.createPost(userId, title, titleContent, content, tags);
+      const result = await service.createPost(userId, title, titleContent, content);
       if (imagePath) {
         await service.updatePostImage(result.id, imagePath);
       }
@@ -91,17 +92,38 @@ module.exports = (router, service) => {
   });
 
   //포스트 수정
-  router.put('/api/v1/updatePost/:userId/:postId/:content', async (req, res) => {
-    // 받아온 userId와 서버에 있는 userId와 비교해야함.
-    const postId = req.params.postId;
-    const content = req.params.content;
-    if (!postId) {
-      return res.status(400).json({ error: 'invalid', reason: 'postId' });
+  router.post('/api/v1/updatePost', isLoggedIn, upload.none(), async (req, res) => {
+    const tokenId = req.user;
+    const { postId, userId, title, titleContent, content, imagePath, tags } = req.body;
+
+    if (tokenId !== userId) {
+      return res.status(400).json({ error: 'host different' });
+    }
+    if (!title) {
+      return res.status(400).json({ error: 'invalid', reason: 'title' });
+    }
+    if (!titleContent) {
+      return res.status(400).json({ error: 'invalid', reason: 'titleContent' });
     }
     if (!content) {
       return res.status(400).json({ error: 'invalid', reason: 'content' });
     }
-    const result = await service.updatePost(postId, content);
+    if (!postId) {
+      return res.status(400).json({ error: 'post not defined', reason: 'postId' });
+    }
+    const result = await service.updatePost(postId, title, titleContent, content);
+    if (imagePath) {
+      await service.updatePostImage(postId, imagePath);
+    }
+    await service.deleteTag(postId);
+    if (tags) {
+      if (!Array.isArray(tags)) {
+        const arrTags = Array.from(tags.split(','));
+        await Promise.all(arrTags.map((tag) => service.createPostTags(postId, tag)));
+      } else {
+        await Promise.all(tags.map((tag) => service.createPostTags(postId, tag)));
+      }
+    }
     res.status(200).json({ data: result });
   });
 

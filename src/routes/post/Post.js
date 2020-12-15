@@ -10,20 +10,23 @@ const Post = ({ match }) => {
   const dispatch = useDispatch();
   const postId = match.params.postId;
   const userId = match.params.userId;
-  const { post } = useSelector((state) => state.post);
+  const { post, updatePostLoading } = useSelector((state) => state.post);
+  const { me } = useSelector((state) => state.user);
   useEffect(() => {
-    dispatch({
-      type: LOAD_POST_REQUEST,
-      data: {
-        postId,
-      },
-    });
-  }, [postId]);
+    if (!updatePostLoading) {
+      dispatch({
+        type: LOAD_POST_REQUEST,
+        data: {
+          postId,
+        },
+      });
+    }
+  }, [postId, updatePostLoading]);
   return (
     <MainLayout userId={userId}>
       {post && (
         <>
-          <Header post={post.post} tags={post.tags} />
+          <Header post={post.post} tags={post.tags} userId={userId} me={me} postId={postId} />
           <Main post={post.post} />
           <Footer post={post.post} />
         </>

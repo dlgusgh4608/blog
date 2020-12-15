@@ -11,6 +11,9 @@ export const initialState = {
   loginSuccess: false,
   loginLoading: false,
   loginError: null,
+  logoutSuccess: false,
+  logoutLoading: false,
+  logoutError: null,
   signUpSuccess: false,
   signUpLoading: false,
   signUpError: null,
@@ -29,6 +32,10 @@ export const LOAD_USER_INFO_FAILURE = 'LOAD_USER_INFO_FAILURE';
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+
+export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
 
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
@@ -147,6 +154,27 @@ const reducer = (state = initialState, action) => {
         ...state,
         loginLoading: false,
         loginError: action.error,
+      };
+    case LOGOUT_REQUEST:
+      return {
+        ...state,
+        logoutLoading: true,
+        logoutSuccess: false,
+        logoutError: null,
+      };
+    case LOGOUT_SUCCESS:
+      return {
+        ...state,
+        logoutLoading: false,
+        logoutSuccess: true,
+        loginSuccess: false,
+        me: null,
+      };
+    case LOGOUT_FAILURE:
+      return {
+        ...state,
+        logoutLoading: false,
+        logoutError: action.error,
       };
     default:
       return state;

@@ -1,10 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import CommentWrapper from './comment/CommentWrapper';
 
 const Container = styled.div`
   width: 700px;
   margin: 15rem auto 10rem auto;
+
+  @media (max-width: 750px) {
+    width: 100%;
+  }
 `;
 
 const HostWrapper = styled.div`
@@ -61,7 +66,7 @@ const Footer = ({ post }) => {
         </NameWrapper>
       </HostWrapper>
       <Hr />
-      <div>댓글</div>
+      <CommentWrapper postId={post.post_id} />
     </Container>
   );
 };

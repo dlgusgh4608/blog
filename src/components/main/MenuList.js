@@ -37,7 +37,6 @@ const MenuList = ({ type }) => {
         <Tab to={'/old'}>역순</Tab>
         <Underbar type={type} />
       </Sort>
-      <div>:</div>
     </>
   );
 };

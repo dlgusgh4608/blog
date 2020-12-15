@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Search from './Search';
-import Post from './Post';
+import PostContainer from './PostContainer';
 
 const Container = styled.div`
   display: flex;
@@ -15,13 +15,13 @@ const PostWrapper = styled.div`
   flex-direction: column;
 `;
 
-const Main = ({ posts }) => {
+const Main = ({ posts, query }) => {
   return (
     <Container>
-      <Search posts={posts} />
+      <Search posts={posts} query={query} />
       <PostWrapper>
         {posts.map((v) => (
-          <Post key={v.id} post={v} />
+          <PostContainer key={v.id} post={v} query={query} />
         ))}
       </PostWrapper>
     </Container>

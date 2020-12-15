@@ -9,6 +9,9 @@ export const initialState = {
   addPostSuccess: false,
   addPostLoading: false,
   addPostError: null,
+  updatePostSuccess: false,
+  updatePostLoading: false,
+  updatePostError: null,
   loadPostSuccess: false,
   loadPostLoading: false,
   loadPostError: null,
@@ -18,6 +21,9 @@ export const initialState = {
   loadUserPostsSuccess: false,
   loadUserPostsLoading: false,
   loadUserPostsError: null,
+  addCommentSuccess: false,
+  addCommentLoading: false,
+  addCommentError: null,
 };
 
 export const UPLOAD_IMAGE_REQUEST = 'UPLOAD_IMAGE_REQUEST';
@@ -27,6 +33,10 @@ export const UPLOAD_IMAGE_FAILURE = 'UPLOAD_IMAGE_FAILURE';
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
+
+export const UPDATE_POST_REQUEST = 'UPDATE_POST_REQUEST';
+export const UPDATE_POST_SUCCESS = 'UPDATE_POST_SUCCESS';
+export const UPDATE_POST_FAILURE = 'UPDATE_POST_FAILURE';
 
 export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
 export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
@@ -40,8 +50,31 @@ export const LOAD_USER_POSTS_REQUEST = 'LOAD_USER_POSTS_REQUEST';
 export const LOAD_USER_POSTS_SUCCESS = 'LOAD_USER_POSTS_SUCCESS';
 export const LOAD_USER_POSTS_FAILURE = 'LOAD_USER_POSTS_FAILURE';
 
+export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
+export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
+export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case ADD_COMMENT_REQUEST:
+      return {
+        ...state,
+        addCommentLoading: true,
+        addCommentSuccess: false,
+        addCommentError: null,
+      };
+    case ADD_COMMENT_SUCCESS:
+      return {
+        ...state,
+        addCommentLoading: false,
+        addCommentSuccess: true,
+      };
+    case ADD_COMMENT_FAILURE:
+      return {
+        ...state,
+        addCommentLoading: false,
+        addCommentError: action.error,
+      };
     case LOAD_USER_POSTS_REQUEST:
       return {
         ...state,
@@ -146,6 +179,26 @@ const reducer = (state = initialState, action) => {
         ...state,
         addPostLoading: false,
         addPostError: action.error,
+      };
+    case UPDATE_POST_REQUEST:
+      return {
+        ...state,
+        updatePostLoading: true,
+        updatePostSuccess: false,
+        updatePostError: null,
+      };
+    case UPDATE_POST_SUCCESS:
+      return {
+        ...state,
+        updatePostLoading: false,
+        updatePostSuccess: true,
+        imagePath: null,
+      };
+    case UPDATE_POST_FAILURE:
+      return {
+        ...state,
+        updatePostLoading: false,
+        updatePostError: action.error,
       };
     default:
       return state;

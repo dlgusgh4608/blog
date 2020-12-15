@@ -51,6 +51,7 @@ const Tag = styled.div`
 
 const Footer = styled.div`
   display: flex;
+  align-items: center;
   margin-top: 1.5rem;
   font-size: 1rem;
   color: grey;
@@ -68,6 +69,14 @@ const Hr = styled.div`
 `;
 
 const Post = ({ post }) => {
+  const postDate = post.create_at;
+
+  const yyyy = postDate.substr(0, 4);
+  const mm = postDate.substr(5, 2);
+  const dd = postDate.substr(8, 2);
+
+  const date = yyyy + '년' + mm + '월' + dd + '일';
+
   return (
     <Container>
       {post.img_path && (
@@ -83,7 +92,7 @@ const Post = ({ post }) => {
         ))}
       </TagWrapper>
       <Footer>
-        <span>{post.create_at}</span>
+        <span>{date}</span>
         <At>·</At>
         <span>7777개의 댓글</span>
       </Footer>

@@ -23,6 +23,10 @@ const Container = styled.div`
     padding: 0.7rem;
     overflow-x: auto;
   }
+
+  @media (max-width: 750px) {
+    width: 100%;
+  }
 `;
 
 const Main = ({ post }) => {

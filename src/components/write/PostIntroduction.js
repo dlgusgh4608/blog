@@ -136,7 +136,7 @@ const WriteBtn = styled(Link)`
   }
 `;
 
-const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleContent, onWrite, onChangeImg, imagePath, addPostLoading }) => {
+const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleContent, onWrite, onChangeImg, imagePath, state, onModify }) => {
   const inputImg = useRef();
 
   const onClickImg = useCallback(
@@ -181,9 +181,15 @@ const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleCont
         </TextWrapper>
         <BtnWrapper>
           <BackBtn onClick={toggleDialog}>뒤로가기</BackBtn>
-          <WriteBtn onClick={onWrite} to={'/'}>
-            {addPostLoading ? <Spinner /> : '작성하기'}
-          </WriteBtn>
+          {state ? (
+            <WriteBtn onClick={onModify} to={`/${state.postId}/${title}/${state.userId}`}>
+              수정하기
+            </WriteBtn>
+          ) : (
+            <WriteBtn onClick={onWrite} to={'/'}>
+              작성하기
+            </WriteBtn>
+          )}
         </BtnWrapper>
       </Wrapper>
     </Container>

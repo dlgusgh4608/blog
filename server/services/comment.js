@@ -2,11 +2,7 @@ class CommentService {
   constructor(pool) {
     this._pool = pool;
   }
-  async getComment(postId) {
-    const result = await this._pool.query(`SELECT id, user_id, content FROM comments WHERE post_id = $1`, [postId]);
-    return result.rows;
-  }
-
+  //댓글 작성
   async createComment(userId, postId, content) {
     const result = await this._pool.query(`INSERT INTO comments(user_id, post_id, content) VALUES ($1, $2, $3)`, [userId, postId, content]);
     return result.rows[0];

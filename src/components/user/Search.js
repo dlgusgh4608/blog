@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const Container = styled.div`
@@ -15,17 +15,17 @@ const TagWrapper = styled.div`
 `;
 
 const Tag = styled(Link)`
+  background-color: ${({ query, value }) => (query === value ? css`rgb(18, 184, 134)` : css`rgb(241, 243, 245)`)};
   display: flex;
   color: black;
   flex-shrink: 0;
   font-size: 0.8rem;
-  background-color: greenyellow;
   border-radius: 1rem;
   padding: 0.2rem 0.7rem;
   margin-right: 1rem;
 `;
 
-const Search = ({ posts }) => {
+const Search = ({ posts, query }) => {
   const allTags = [];
 
   for (let i = 0; i < posts.length; i++) {
@@ -46,9 +46,11 @@ const Search = ({ posts }) => {
     <Container>
       {allTags[0] && (
         <TagWrapper>
-          <Tag>전체보기 ({tagName.length})</Tag>
+          <Tag to={(location) => ({ pathname: location.pathname })} query={query.tag}>
+            전체보기 ({tagName.length})
+          </Tag>
           {tagName.map((v, i = 0) => (
-            <Tag key={i} to={(location) => `${location.pathname}?tag=${v}`}>
+            <Tag key={i} to={(location) => `${location.pathname}?tag=${v}`} query={query.tag} value={v}>
               {v} ({tagNum[i]})
             </Tag>
           ))}

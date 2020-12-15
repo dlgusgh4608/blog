@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch } from 'react-redux';
+import { LOGOUT_REQUEST } from '../../reducer/user';
 
 const CreatePostBtn = styled(Link)`
   display: flex;
@@ -78,13 +80,27 @@ const DownMenu = styled(Link)`
   }
 `;
 
+const LogoutBtn = styled.div`
+  color: black;
+  padding: 0.7rem 0 0.7rem 1rem;
+
+  :hover {
+    background-color: gray;
+  }
+`;
+
 const InfoButton = ({ me }) => {
+  const dispatch = useDispatch();
   const [isShow, setIsShow] = useState(false);
 
   const toggleMenu = useCallback(() => {
     setIsShow(!isShow);
   }, [isShow]);
-
+  const onLogout = () => {
+    dispatch({
+      type: LOGOUT_REQUEST,
+    });
+  };
   return (
     <>
       <CreatePostBtn to={'/write'}>새 글 작성</CreatePostBtn>
@@ -96,9 +112,9 @@ const InfoButton = ({ me }) => {
           <DownIcon icon={faCaretDown} />
           {isShow && (
             <DownMenuWrapper>
-              <DownMenu to={`/user/${me.nickname}/${me.id}`}>내 블로그</DownMenu>
+              <DownMenu to={`/${me.nickname}/${me.id}`}>내 블로그</DownMenu>
               <DownMenu to={'/c'}>설정</DownMenu>
-              <DownMenu to={'/x'}>로그아웃</DownMenu>
+              <LogoutBtn onClick={onLogout}>로그아웃</LogoutBtn>
             </DownMenuWrapper>
           )}
         </DownMenuContainer>

@@ -16,6 +16,12 @@ import {
   LOAD_MAIN_POSTS_FAILURE,
   LOAD_USER_POSTS_SUCCESS,
   LOAD_USER_POSTS_FAILURE,
+  ADD_COMMENT_SUCCESS,
+  ADD_COMMENT_FAILURE,
+  ADD_COMMENT_REQUEST,
+  UPDATE_POST_REQUEST,
+  UPDATE_POST_SUCCESS,
+  UPDATE_POST_FAILURE,
 } from '../reducer/post';
 
 function imageUploadAPI(data) {
@@ -51,6 +57,25 @@ function* addPost(action) {
   } catch (e) {
     yield put({
       type: ADD_POST_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
+function updatePostAPI(data) {
+  return axios.post('/v1/updatePost', data);
+}
+
+function* updatePost(action) {
+  const result = yield call(updatePostAPI, action.data);
+  try {
+    yield put({
+      type: UPDATE_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: UPDATE_POST_FAILURE,
       error: e.response.data,
     });
   }
@@ -113,11 +138,33 @@ function* loadUserPosts(action) {
   }
 }
 
+function addCommentAPI(data) {
+  return axios.post(`/v1/comment`, data);
+}
+
+function* addComment(action) {
+  const result = yield call(addCommentAPI, action.data);
+  try {
+    yield put({
+      type: ADD_COMMENT_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: ADD_COMMENT_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
 function* watchImageUpload() {
   yield takeLatest(UPLOAD_IMAGE_REQUEST, imageUpload);
 }
 function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, addPost);
+}
+function* watchUpdatePost() {
+  yield takeLatest(UPDATE_POST_REQUEST, updatePost);
 }
 function* watchLoadPost() {
   yield takeLatest(LOAD_POST_REQUEST, loadPost);
@@ -128,7 +175,10 @@ function* watchLoadMainPosts() {
 function* watchLoadUserPosts() {
   yield takeLatest(LOAD_USER_POSTS_REQUEST, loadUserPosts);
 }
+function* watchAddComment() {
+  yield takeLatest(ADD_COMMENT_REQUEST, addComment);
+}
 
 export default function* postSaga() {
-  yield all([fork(watchImageUpload), fork(watchAddPost), fork(watchLoadPost), fork(watchLoadMainPosts), fork(watchLoadUserPosts)]);
+  yield all([fork(watchImageUpload), fork(watchAddPost), fork(watchUpdatePost), fork(watchLoadPost), fork(watchLoadMainPosts), fork(watchLoadUserPosts), fork(watchAddComment)]);
 }

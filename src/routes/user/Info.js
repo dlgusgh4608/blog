@@ -16,7 +16,7 @@ const Container = styled.div`
 const Info = (props) => {
   const dispatch = useDispatch();
   const id = props.match.params.userId;
-  console.log(queryString.parse(props.location.search));
+  const query = queryString.parse(props.location.search);
   const { userPosts } = useSelector((state) => state.post);
   const { user } = useSelector((state) => state.user);
 
@@ -33,7 +33,7 @@ const Info = (props) => {
     <MainLayout userId={id}>
       <Container>
         {user && <Header user={user} />}
-        {userPosts && <Main posts={userPosts} />}
+        {userPosts && <Main posts={userPosts} query={query} />}
       </Container>
     </MainLayout>
   );

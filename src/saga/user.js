@@ -16,6 +16,9 @@ import {
   LOAD_USER_INFO_REQUEST,
   LOAD_USER_INFO_SUCCESS,
   LOAD_USER_INFO_FAILURE,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAILURE,
 } from '../reducer/user';
 
 function emailCheckAPI(data) {
@@ -72,6 +75,24 @@ function* login(action) {
   }
 }
 
+function logoutAPI(data) {
+  return axios.post('/v1/logout', data);
+}
+function* logout(action) {
+  try {
+    const result = yield call(logoutAPI, action.data);
+    yield put({
+      type: LOGOUT_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: LOGOUT_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
 function loadMyInfoAPI() {
   return axios.get('/v1/user');
 }
@@ -117,6 +138,9 @@ function* watchSignUp() {
 function* watchLogin() {
   yield takeLatest(LOGIN_REQUEST, login);
 }
+function* watchLogout() {
+  yield takeLatest(LOGOUT_REQUEST, logout);
+}
 function* watchLoadMyInfo() {
   yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo);
 }
@@ -125,5 +149,5 @@ function* watchLoadUserInfo() {
 }
 
 export default function* userSaga() {
-  yield all([fork(watchEmailCheck), fork(watchSignUp), fork(watchLogin), fork(watchLoadMyInfo), fork(watchLoadUserInfo)]);
+  yield all([fork(watchEmailCheck), fork(watchSignUp), fork(watchLogin), fork(watchLogout), fork(watchLoadMyInfo), fork(watchLoadUserInfo)]);
 }

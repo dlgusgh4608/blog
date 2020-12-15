@@ -5,23 +5,24 @@ class PostService {
   //메인화면
   async posts() {
     const result = await this._pool.query(
-      `SELECT posts.id AS post_id, title, title_content, posts.img_path AS post_img, user_id, nickname, users.img_path AS user_img FROM posts LEFT JOIN users ON posts.user_id = users.id ORDER BY posts.create_at DESC`,
+      `SELECT posts.id AS post_id, title, title_content, posts.img_path AS post_img, user_id, nickname, users.img_path AS user_img, posts.create_at AS create_at FROM posts LEFT JOIN users ON posts.user_id = users.id ORDER BY posts.create_at DESC`,
     );
     return result.rows;
   }
   //유저 포스트
   async userPosts(userId) {
-    const result = await this._pool.query(`SELECT id, title, title_content, img_path, create_at FROM posts WHERE user_id = $1`, [userId]);
+    const result = await this._pool.query(`SELECT id, title, title_content, img_path, create_at FROM posts WHERE user_id = $1 ORDER BY create_at DESC`, [userId]);
     return result.rows;
   }
   //포스트 상세보기
   async post(postId) {
     const result = await this._pool.query(
-      `SELECT user_id, users.nickname AS nickname, users.img_path AS user_img, title, title_content, content, posts.create_at AS create_at FROM posts LEFT JOIN users ON posts.user_id = users.id WHERE posts.id = $1`,
+      `SELECT user_id, users.nickname AS nickname, users.img_path AS user_img, title, title_content, content, posts.img_path AS post_img, posts.create_at AS create_at FROM posts LEFT JOIN users ON posts.user_id = users.id WHERE posts.id = $1`,
       [postId],
     );
     return result.rows[0];
   }
+  //포스트 태그
   async postTag(postId) {
     const result = await this._pool.query(`SELECT id, content FROM tags WHERE post_id = $1`, [postId]);
     return result.rows;
@@ -47,8 +48,13 @@ class PostService {
     return result.rows[0];
   }
   //포스트 수정
-  async updatePost(postId, content) {
-    const result = await this._pool.query(`UPDATE posts SET content = $2 WHERE id = $1`, [postId, content]);
+  async updatePost(postId, title, titleContent, content) {
+    const result = await this._pool.query(`UPDATE posts SET title = $2, title_content = $3, content = $4 WHERE id = $1`, [postId, title, titleContent, content]);
+    return result.rows[0];
+  }
+  //태그 삭제
+  async deleteTag(postId) {
+    const result = await this._pool.query(`DELETE FROM tags WHERE post_id = $1`, [postId]);
     return result.rows[0];
   }
 }
