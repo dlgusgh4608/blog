@@ -124,14 +124,14 @@ const PostItem = ({ data }) => {
   return (
     <PostContainer>
       {data.post_img && (
-        <PostHeader to={`/${data.post_id}/${data.title}/${data.user_id}`}>
+        <PostHeader to={`/${data.post_id}/${data.user_id}/${data.title}`}>
           <ImageWrapper>
             <MainImage src={data.post_img} />
           </ImageWrapper>
         </PostHeader>
       )}
       <PostMainContainer>
-        <PostMainWrapper to={`/${data.post_id}/${data.title}/${data.user_id}`}>
+        <PostMainWrapper to={`/${data.post_id}/${data.user_id}/${data.title}`}>
           <PostTitle>{data.title}</PostTitle>
           <PostContent>{data.title_content}</PostContent>
         </PostMainWrapper>
@@ -142,7 +142,7 @@ const PostItem = ({ data }) => {
         </PostCommentWrapper>
       </PostMainContainer>
       <PostFooterContainer>
-        <PostHostWrapper to={`/${data.nickname}/${data.user_id}`}>
+        <PostHostWrapper to={`/${data.user_id}/${data.nickname}`}>
           <PostHostImg src={data.user_img} />
           <PostHostNameWrapper>
             by <PostHostName>{data.nickname}</PostHostName>

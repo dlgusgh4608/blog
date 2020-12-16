@@ -43,10 +43,10 @@ const PostWrapper = styled.main`
 const Main = ({ location }) => {
   const type = location.pathname.replace('/', '');
   const dispatch = useDispatch();
-  const { posts, addPostLoading } = useSelector((state) => state.post);
+  const { posts, addPostLoading, removePostLoading } = useSelector((state) => state.post);
 
   useEffect(() => {
-    if (!addPostLoading) {
+    if (!addPostLoading && !removePostLoading) {
       if (type === 'old') {
         return;
       }
@@ -54,7 +54,7 @@ const Main = ({ location }) => {
         type: LOAD_MAIN_POSTS_REQUEST,
       });
     }
-  }, [type, addPostLoading]);
+  }, [type, addPostLoading, removePostLoading]);
   return (
     <MainLayout>
       <MainContainer>

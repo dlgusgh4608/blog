@@ -22,11 +22,12 @@ const Post = ({ match }) => {
       });
     }
   }, [postId, updatePostLoading]);
+
   return (
     <MainLayout userId={userId}>
       {post && (
         <>
-          <Header post={post.post} tags={post.tags} userId={userId} me={me} postId={postId} />
+          <Header post={post.post} tags={post.tags} liker={post.liker} userId={userId} me={me} postId={postId} />
           <Main post={post.post} />
           <Footer post={post.post} />
         </>

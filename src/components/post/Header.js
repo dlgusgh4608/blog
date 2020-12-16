@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import RemoveDialog from '../../components/post/RemoveDialog';
+import { REMOVE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../../reducer/post';
+import ColorHeart from '../svg/ColorHeart';
+import Heart from '../svg/Heart';
 
 const Container = styled.div`
   width: 700px;
@@ -60,17 +65,9 @@ const HeartBtn = styled.button`
   }
 `;
 
-const Heart = styled.span`
-  font-size: 2rem;
-  @media (max-width: 1024px) {
-    font-size: 1rem;
-  }
-`;
-
 const HeartCount = styled.span`
-  font-size: 1rem;
+  font-size: 0.8rem;
   @media (max-width: 1024px) {
-    font-size: 0.8rem;
     margin-left: 0.5rem;
   }
 `;
@@ -123,7 +120,9 @@ const Tag = styled(Link)`
   border-radius: 1rem;
 `;
 
-const Header = ({ post, tags, userId, me, postId }) => {
+const Header = ({ post, tags, liker, userId, me, postId }) => {
+  const dispatch = useDispatch();
+
   const postDate = post.create_at;
 
   const yyyy = postDate.substr(0, 4);
@@ -132,8 +131,44 @@ const Header = ({ post, tags, userId, me, postId }) => {
 
   const date = yyyy + '년' + mm + '월' + dd + '일';
 
+  const [isShown, setIsShown] = useState(false);
+  const onToggleRemoveDialog = useCallback(() => {
+    setIsShown(!isShown);
+  }, [isShown]);
+
+  const onRemove = useCallback(() => {
+    dispatch({
+      type: REMOVE_POST_REQUEST,
+      data: {
+        userId: me.id,
+        postId,
+      },
+    });
+  }, [postId]);
+
+  const onLike = useCallback(() => {
+    dispatch({
+      type: LIKE_POST_REQUEST,
+      data: {
+        postId,
+      },
+    });
+  }, [postId]);
+
+  const onUnlike = useCallback(() => {
+    dispatch({
+      type: UNLIKE_POST_REQUEST,
+      data: {
+        postId,
+      },
+    });
+  }, [postId]);
+
+  const liked = liker.find((v) => v.user_id === me.id);
+
   return (
     <Container>
+      {isShown && <RemoveDialog onRemove={onRemove} onToggleRemoveDialog={onToggleRemoveDialog} />}
       <Title>{post.title}</Title>
       <UserWrapper>
         <InfoWrapper>
@@ -142,10 +177,17 @@ const Header = ({ post, tags, userId, me, postId }) => {
           <span>{date}</span>
         </InfoWrapper>
         <HideWrapper>
-          <HeartBtn>
-            <Heart>❤️</Heart>
-            <HeartCount>999</HeartCount>
-          </HeartBtn>
+          {liked ? (
+            <HeartBtn onClick={onUnlike}>
+              <ColorHeart />
+              <HeartCount>{liker.length}</HeartCount>
+            </HeartBtn>
+          ) : (
+            <HeartBtn onClick={onLike}>
+              <Heart />
+              <HeartCount>{liker.length}</HeartCount>
+            </HeartBtn>
+          )}
           {me && userId === me.id && (
             <HostWrapper>
               <Modified
@@ -157,7 +199,7 @@ const Header = ({ post, tags, userId, me, postId }) => {
                 수정
               </Modified>
               <At>·</At>
-              <Delete>삭제</Delete>
+              <Delete onClick={onToggleRemoveDialog}>삭제</Delete>
             </HostWrapper>
           )}
         </HideWrapper>

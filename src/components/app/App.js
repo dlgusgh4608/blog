@@ -58,10 +58,10 @@ const App = () => {
             return (
               <Switch>
                 <Route path={'/write'} exact={true} component={PostWrite} />
-                <Route path={'/:postId/:title/:userId'} exact={true} component={Post} />
+                <Route path={'/:postId/:userId/:title'} exact={true} component={Post} />
                 <Route path={'/old'} exact={true} component={Main} />
                 <Route path={'/'} exact={true} component={Main} />
-                <Route path={'/:nickname/:userId'} exact={true} component={Info} />
+                <Route path={'/:userId/:nickname'} exact={true} component={Info} />
               </Switch>
             );
         }

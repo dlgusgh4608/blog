@@ -24,6 +24,15 @@ export const initialState = {
   addCommentSuccess: false,
   addCommentLoading: false,
   addCommentError: null,
+  removePostSuccess: false,
+  removePostLoading: false,
+  removePostError: null,
+  likePostSuccess: false,
+  likePostLoading: false,
+  likePostError: null,
+  unlikePostSuccess: false,
+  unlikePostLoading: false,
+  unlikePostError: null,
 };
 
 export const UPLOAD_IMAGE_REQUEST = 'UPLOAD_IMAGE_REQUEST';
@@ -54,8 +63,87 @@ export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
 
+export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
+export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
+export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
+
+export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST';
+export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS';
+export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE';
+
+export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
+export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
+export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case LIKE_POST_REQUEST:
+      return {
+        ...state,
+        likePostLoading: true,
+        likePostSuccess: false,
+        likePostError: null,
+      };
+    case LIKE_POST_SUCCESS: {
+      const post = state.post;
+      const liker = post.liker.concat(action.data);
+      post.liker = liker;
+      return {
+        ...state,
+        likePostLoading: false,
+        likePostSuccess: true,
+        post,
+      };
+    }
+    case LIKE_POST_FAILURE:
+      return {
+        ...state,
+        likePostLoading: false,
+        likePostError: action.error,
+      };
+    case UNLIKE_POST_REQUEST:
+      return {
+        ...state,
+        unlikePostLoading: true,
+        unlikePostSuccess: false,
+        unlikePostError: null,
+      };
+    case UNLIKE_POST_SUCCESS:
+      const post = state.post;
+      const liker = post.liker.filter((v) => v.user_id !== action.data.user_id);
+      post.liker = liker;
+      return {
+        ...state,
+        unlikePostLoading: false,
+        unlikePostSuccess: true,
+        post,
+      };
+    case UNLIKE_POST_FAILURE:
+      return {
+        ...state,
+        unlikePostLoading: false,
+        unlikePostError: action.error,
+      };
+    case REMOVE_POST_REQUEST:
+      return {
+        ...state,
+        removePostLoading: true,
+        removePostSuccess: false,
+        removePostError: null,
+        post: null,
+      };
+    case REMOVE_POST_SUCCESS:
+      return {
+        ...state,
+        removePostLoading: false,
+        removePostSuccess: true,
+      };
+    case REMOVE_POST_FAILURE:
+      return {
+        ...state,
+        removePostLoading: false,
+        removePostError: action.error,
+      };
     case ADD_COMMENT_REQUEST:
       return {
         ...state,
@@ -81,13 +169,13 @@ const reducer = (state = initialState, action) => {
         loadUserPostsLoading: true,
         loadUserPostsSuccess: false,
         loadUserPostsError: null,
+        posts: [],
       };
     case LOAD_USER_POSTS_SUCCESS:
       return {
         ...state,
         loadUserPostsLoading: false,
         loadUserPostsSuccess: true,
-        posts: [],
         userPosts: action.data.data,
       };
     case LOAD_USER_POSTS_FAILURE:
@@ -102,15 +190,15 @@ const reducer = (state = initialState, action) => {
         loadMainPostsLoading: true,
         loadMainPostsSuccess: false,
         loadMainPostsError: null,
+        post: null,
+        userPosts: [],
       };
     case LOAD_MAIN_POSTS_SUCCESS:
       return {
         ...state,
         loadMainPostsLoading: false,
         loadMainPostsSuccess: true,
-        post: null,
         posts: action.data.data,
-        userPosts: [],
       };
     case LOAD_MAIN_POSTS_FAILURE:
       return {
@@ -124,6 +212,8 @@ const reducer = (state = initialState, action) => {
         loadPostLoading: true,
         loadPostSuccess: false,
         loadPostError: null,
+        posts: [],
+        userPosts: [],
       };
     case LOAD_POST_SUCCESS:
       return {
@@ -131,8 +221,6 @@ const reducer = (state = initialState, action) => {
         loadPostLoading: false,
         loadPostSuccess: true,
         post: action.data.data,
-        posts: [],
-        userPosts: [],
       };
     case LOAD_POST_FAILURE:
       return {
@@ -186,6 +274,7 @@ const reducer = (state = initialState, action) => {
         updatePostLoading: true,
         updatePostSuccess: false,
         updatePostError: null,
+        post: null,
       };
     case UPDATE_POST_SUCCESS:
       return {

@@ -1,9 +1,7 @@
-import { faImage } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useCallback, useRef } from 'react';
 import styled from 'styled-components';
-import Spinner from '../spinner/Spinner';
 import { Link } from 'react-router-dom';
+import ImageIcon from '../svg/ImageIcon';
 
 const Container = styled.div`
   position: fixed;
@@ -168,7 +166,7 @@ const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleCont
               <MainImg src={imagePath} />
             ) : (
               <DefaultImg>
-                <FontAwesomeIcon icon={faImage} size={'7x'} />
+                <ImageIcon />
                 <ImgBtn onClick={onClickImg}>대표 사진 선택</ImgBtn>
                 <input type="file" ref={inputImg} hidden onChange={onChangeImg} />
               </DefaultImg>
@@ -182,7 +180,7 @@ const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleCont
         <BtnWrapper>
           <BackBtn onClick={toggleDialog}>뒤로가기</BackBtn>
           {state ? (
-            <WriteBtn onClick={onModify} to={`/${state.postId}/${title}/${state.userId}`}>
+            <WriteBtn onClick={onModify} to={`/${state.postId}/${state.userId}/${title}`}>
               수정하기
             </WriteBtn>
           ) : (

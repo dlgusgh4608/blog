@@ -5,7 +5,10 @@ class PostService {
   //메인화면
   async posts() {
     const result = await this._pool.query(
-      `SELECT posts.id AS post_id, title, title_content, posts.img_path AS post_img, user_id, nickname, users.img_path AS user_img, posts.create_at AS create_at FROM posts LEFT JOIN users ON posts.user_id = users.id ORDER BY posts.create_at DESC`,
+      `SELECT posts.id AS post_id, title, title_content, posts.img_path AS post_img, user_id, nickname, users.img_path AS user_img, posts.create_at AS create_at 
+      FROM posts LEFT JOIN users 
+      ON posts.user_id = users.id 
+      ORDER BY posts.create_at DESC`,
     );
     return result.rows;
   }
@@ -17,14 +20,22 @@ class PostService {
   //포스트 상세보기
   async post(postId) {
     const result = await this._pool.query(
-      `SELECT user_id, users.nickname AS nickname, users.img_path AS user_img, title, title_content, content, posts.img_path AS post_img, posts.create_at AS create_at FROM posts LEFT JOIN users ON posts.user_id = users.id WHERE posts.id = $1`,
+      `SELECT user_id, users.nickname AS nickname, users.img_path AS user_img, title, title_content, content, posts.img_path AS post_img, posts.create_at AS create_at 
+      FROM posts LEFT JOIN users 
+      ON posts.user_id = users.id 
+      WHERE posts.id = $1`,
       [postId],
     );
     return result.rows[0];
   }
-  //포스트 태그
+  //포스트 태그 목록
   async postTag(postId) {
     const result = await this._pool.query(`SELECT id, content FROM tags WHERE post_id = $1`, [postId]);
+    return result.rows;
+  }
+  //좋아요 목록
+  async postLiker(postId) {
+    const result = await this._pool.query(`SELECT user_id FROM liked WHERE post_id = $1`, [postId]);
     return result.rows;
   }
   //포스트 만들기
@@ -45,7 +56,7 @@ class PostService {
   //포스트 삭제
   async deletePost(postId) {
     const result = await this._pool.query(`DELETE FROM posts WHERE id = $1`, [postId]);
-    return result.rows[0];
+    return result.rowCount;
   }
   //포스트 수정
   async updatePost(postId, title, titleContent, content) {
@@ -55,6 +66,16 @@ class PostService {
   //태그 삭제
   async deleteTag(postId) {
     const result = await this._pool.query(`DELETE FROM tags WHERE post_id = $1`, [postId]);
+    return result.rows[0];
+  }
+  //좋아용
+  async likePost(userId, postId) {
+    const result = await this._pool.query(`INSERT INTO liked (post_id, user_id) VALUES ($1, $2) RETURNING user_id`, [postId, userId]);
+    return result.rows[0];
+  }
+  //좋아용 취소
+  async unlikePost(userId, postId) {
+    const result = await this._pool.query(`DELETE FROM liked WHERE post_id = $1 AND user_id = $2 RETURNING user_id`, [postId, userId]);
     return result.rows[0];
   }
 }

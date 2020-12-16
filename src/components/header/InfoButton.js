@@ -1,10 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
 import { LOGOUT_REQUEST } from '../../reducer/user';
+import DownIcon from '../svg/DownIcon';
 
 const CreatePostBtn = styled(Link)`
   display: flex;
@@ -51,11 +50,6 @@ const UserImg = styled.img`
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-`;
-
-const DownIcon = styled(FontAwesomeIcon)`
-  color: gray;
-  margin-left: 0.5rem;
 `;
 
 const DownMenuWrapper = styled.div`
@@ -109,7 +103,7 @@ const InfoButton = ({ me }) => {
           <ImgWrapper>
             <UserImg src={me.img_path} />
           </ImgWrapper>
-          <DownIcon icon={faCaretDown} />
+          <DownIcon />
           {isShow && (
             <DownMenuWrapper>
               <DownMenu to={`/${me.nickname}/${me.id}`}>내 블로그</DownMenu>

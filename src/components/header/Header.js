@@ -3,9 +3,8 @@ import { Link } from 'react-router-dom';
 import InfoButton from './InfoButton';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import UserLogo from './UserLogo';
+import SearchIcon from '../svg/SearchIcon';
 
 const HeaderContainer = styled.header`
   height: 4rem;
@@ -60,10 +59,6 @@ const LoginBtn = styled.button`
   cursor: pointer;
 `;
 
-const SearchBtn = styled(FontAwesomeIcon)`
-  color: black;
-`;
-
 const Header = ({ toggleDialog }) => {
   const { me, user } = useSelector((state) => state.user);
 
@@ -74,7 +69,7 @@ const Header = ({ toggleDialog }) => {
           <Head>{user ? <UserLogo user={user} /> : <Logo to={'/'}>blog</Logo>}</Head>
           <Head>
             <Search href="/">
-              <SearchBtn icon={faSearch} />
+              <SearchIcon />
             </Search>
             {me ? <InfoButton me={me} /> : <LoginBtn onClick={toggleDialog}>로그인</LoginBtn>}
           </Head>

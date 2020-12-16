@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHSquare } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import LogoIcon from '../svg/LogoIcon';
 
 const Home = styled(Link)`
   color: black;
@@ -19,9 +18,9 @@ const UserLogo = ({ user }) => {
   return (
     <>
       <Home to={'/'}>
-        <FontAwesomeIcon icon={faHSquare} />
+        <LogoIcon />
       </Home>
-      <User to={`/${user.nickname}/${user.id}`}>{user.nickname}</User>
+      <User to={`/${user.id}/${user.nickname}`}>{user.nickname}</User>
     </>
   );
 };

@@ -1,5 +1,3 @@
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/elegant.css';
@@ -8,6 +6,7 @@ import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import TextArea from 'react-textarea-autosize';
 import styled from 'styled-components';
+import LeftArrowIcon from '../svg/LeftArrowIcon';
 
 const Container = styled.div`
   display: flex;
@@ -101,10 +100,6 @@ const ExitBtnWrapper = styled(Link)`
   color: black;
 `;
 
-const ExitSvg = styled(FontAwesomeIcon)`
-  margin-right: 1rem;
-`;
-
 const WriteBtn = styled.button`
   border: none;
   border-radius: 0.7rem;
@@ -154,7 +149,7 @@ const Write = ({ content, onChangeContent, title, onChangeTitle, tag, onChangeTa
         </ContentWrapper>
         <BtnWrapper>
           <ExitBtnWrapper to={'/'}>
-            <ExitSvg size="lg" icon={faArrowLeft} />
+            <LeftArrowIcon />
             나가기
           </ExitBtnWrapper>
           <WriteBtn onClick={onClickWrite}>작성하기</WriteBtn>

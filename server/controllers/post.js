@@ -20,7 +20,7 @@ module.exports = (router, service) => {
         return res.status(400).json({ error: 'invalid', reason: 'id' });
       }
       const result = await service.userPosts(userId);
-      const tags = await Promise.all(result.map((v) => service.postTag(v.id)));
+      const tags = await Promise.all(result.map((v) => service.postTag(v.id))); //태그 가져오기
       for (let i = 0; i < result.length; i++) {
         result[i]['tags'] = tags[i];
       }
@@ -40,7 +40,8 @@ module.exports = (router, service) => {
       const result = {};
 
       result.post = await service.post(postId);
-      result['tags'] = await service.postTag(postId);
+      result['tags'] = await service.postTag(postId); //태그 가져오기
+      result['liker'] = await service.postLiker(postId); //좋아요 가져오기
       res.status(200).json({ data: result });
     } catch (e) {
       res.json(e);
@@ -52,7 +53,6 @@ module.exports = (router, service) => {
     try {
       const userId = req.user;
       const { title, titleContent, content, imagePath, tags } = req.body;
-      console.log(title);
       if (!title) {
         return res.status(400).json({ error: 'invalid', reason: 'title' });
       }
@@ -70,9 +70,9 @@ module.exports = (router, service) => {
       if (tags) {
         if (!Array.isArray(tags)) {
           const arrTags = Array.from(tags.split(','));
-          await Promise.all(arrTags.map((tag) => service.createPostTags(result.id, tag)));
+          await Promise.all(arrTags.map((tag) => service.createPostTags(result.id, tag))); //태그 만들기
         } else {
-          await Promise.all(tags.map((tag) => service.createPostTags(result.id, tag)));
+          await Promise.all(tags.map((tag) => service.createPostTags(result.id, tag))); //태그 만들기
         }
       }
       result.res.status(200).json({ data: result });
@@ -82,54 +82,104 @@ module.exports = (router, service) => {
   });
 
   //포스트 삭제
-  router.delete('/api/v1/post/:postId', async (req, res) => {
-    const postId = req.params.postId;
-    if (postId == null) {
-      return res.status(400).json({ error: 'invalid', reason: 'postId' });
+  router.delete('/api/v1/post/:postId/', isLoggedIn, async (req, res) => {
+    try {
+      const tokenId = req.user;
+      const postId = req.params.postId;
+      const userId = req.params.userId;
+      if (tokenId !== userId) {
+        return res.status(400).json({ error: 'host different' });
+      }
+      if (!postId) {
+        return res.status(400).json({ error: 'invalid', reason: 'postId' });
+      }
+      const result = await service.deletePost(postId);
+      if (!result) {
+        return res.status(400).json({ error: 'error' });
+      }
+      res.status(200).json({ data: 'success' });
+    } catch (e) {
+      res.json(e);
     }
-    const result = await service.deletePost(postId);
-    res.status(200).json({ data: result });
   });
 
   //포스트 수정
   router.post('/api/v1/updatePost', isLoggedIn, upload.none(), async (req, res) => {
-    const tokenId = req.user;
-    const { postId, userId, title, titleContent, content, imagePath, tags } = req.body;
+    try {
+      const tokenId = req.user;
+      const { postId, userId, title, titleContent, content, imagePath, tags } = req.body;
 
-    if (tokenId !== userId) {
-      return res.status(400).json({ error: 'host different' });
-    }
-    if (!title) {
-      return res.status(400).json({ error: 'invalid', reason: 'title' });
-    }
-    if (!titleContent) {
-      return res.status(400).json({ error: 'invalid', reason: 'titleContent' });
-    }
-    if (!content) {
-      return res.status(400).json({ error: 'invalid', reason: 'content' });
-    }
-    if (!postId) {
-      return res.status(400).json({ error: 'post not defined', reason: 'postId' });
-    }
-    const result = await service.updatePost(postId, title, titleContent, content);
-    if (imagePath) {
-      await service.updatePostImage(postId, imagePath);
-    }
-    await service.deleteTag(postId);
-    if (tags) {
-      if (!Array.isArray(tags)) {
-        const arrTags = Array.from(tags.split(','));
-        await Promise.all(arrTags.map((tag) => service.createPostTags(postId, tag)));
-      } else {
-        await Promise.all(tags.map((tag) => service.createPostTags(postId, tag)));
+      if (tokenId !== userId) {
+        return res.status(400).json({ error: 'host different' });
       }
+      if (!title) {
+        return res.status(400).json({ error: 'invalid', reason: 'title' });
+      }
+      if (!titleContent) {
+        return res.status(400).json({ error: 'invalid', reason: 'titleContent' });
+      }
+      if (!content) {
+        return res.status(400).json({ error: 'invalid', reason: 'content' });
+      }
+      if (!postId) {
+        return res.status(400).json({ error: 'post not defined', reason: 'postId' });
+      }
+      const result = await service.updatePost(postId, title, titleContent, content);
+      if (imagePath) {
+        await service.updatePostImage(postId, imagePath);
+      }
+      await service.deleteTag(postId);
+      if (tags) {
+        if (!Array.isArray(tags)) {
+          const arrTags = Array.from(tags.split(','));
+          await Promise.all(arrTags.map((tag) => service.createPostTags(postId, tag))); //태그 만들기
+        } else {
+          await Promise.all(tags.map((tag) => service.createPostTags(postId, tag))); //태그 만들기
+        }
+      }
+      res.status(200).json({ data: result });
+    } catch (e) {
+      res.json(e);
     }
-    res.status(200).json({ data: result });
   });
 
   //이미지 업로드 및 미리보기
   router.post('/api/v1/imageUpload', upload.single('image'), (req, res) => {
-    const filename = req.file.location;
-    res.json({ data: filename });
+    try {
+      const filename = req.file.location;
+      res.json({ data: filename });
+    } catch (e) {
+      res.json(e);
+    }
+  });
+  //좋아용
+  router.patch('/api/v1/like/:postId', isLoggedIn, async (req, res) => {
+    try {
+      const userId = req.user;
+      const { postId } = req.params;
+
+      if (!postId) {
+        return res.status(400).json({ error: 'invalid', reason: 'postId' });
+      }
+      const result = await service.likePost(userId, postId);
+      res.status(200).json(result);
+    } catch (e) {
+      res.json(e);
+    }
+  });
+  //좋아용 취소
+  router.delete('/api/v1/like/:postId', isLoggedIn, async (req, res) => {
+    try {
+      const userId = req.user;
+      const { postId } = req.params;
+
+      if (!postId) {
+        return res.status(400).json({ error: 'invalid', reason: 'postId' });
+      }
+      const result = await service.unlikePost(userId, postId);
+      res.status(200).json(result);
+    } catch (e) {
+      res.json(e);
+    }
   });
 };
