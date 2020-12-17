@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import TextArea from 'react-textarea-autosize';
+import useInput from '../../../hooks/useInput';
+import { useDispatch } from 'react-redux';
+import { ADD_COMMENT_REQUEST } from '../../../reducer/post';
 
 const Container = styled.div`
   display: flex;
@@ -39,10 +42,28 @@ const Hr = styled.div`
   background-color: black;
 `;
 
-const CommentForm = ({ onClickAdd, comment, onChangeComment }) => {
+const CommentForm = ({ postId, me, comments, toggleDialog }) => {
+  const dispatch = useDispatch();
+  const [comment, onChangeComment, setComment] = useInput('');
+  const onClickAdd = useCallback(() => {
+    if (!me) {
+      return toggleDialog();
+    }
+    if (!comment) {
+      return alert('댓글을 입력해주세요.');
+    }
+    setComment('');
+    dispatch({
+      type: ADD_COMMENT_REQUEST,
+      data: {
+        postId,
+        content: comment,
+      },
+    });
+  }, [postId, comment, me]);
   return (
     <Container>
-      <h3>7777개의 댓글</h3>
+      <h3>{comments.length} 개의 댓글</h3>
       <CommentText placeholder="댓글을 작성해보세요." value={comment} onChange={onChangeComment}></CommentText>
       <BtnWrapper>
         <CommentBtn onClick={onClickAdd}>댓글 작성</CommentBtn>

@@ -31,6 +31,9 @@ import {
   UNLIKE_POST_REQUEST,
   UNLIKE_POST_SUCCESS,
   UNLIKE_POST_FAILURE,
+  UPDATE_COMMENT_REQUEST,
+  UPDATE_COMMENT_SUCCESS,
+  UPDATE_COMMENT_FAILURE,
 } from '../reducer/post';
 
 function imageUploadAPI(data) {
@@ -166,6 +169,25 @@ function* addComment(action) {
   }
 }
 
+function updateCommentAPI(data) {
+  return axios.post(`/v1/updateComment`, data);
+}
+
+function* updateComment(action) {
+  const result = yield call(updateCommentAPI, action.data);
+  try {
+    yield put({
+      type: UPDATE_COMMENT_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: UPDATE_COMMENT_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
 function removePostAPI(data) {
   return axios.delete(`/v1/post/${data.postId}/${data.userId}`);
 }
@@ -244,6 +266,9 @@ function* watchLoadUserPosts() {
 function* watchAddComment() {
   yield takeLatest(ADD_COMMENT_REQUEST, addComment);
 }
+function* watchUpdateComment() {
+  yield takeLatest(UPDATE_COMMENT_REQUEST, updateComment);
+}
 function* watchRemovePost() {
   yield takeLatest(REMOVE_POST_REQUEST, removePost);
 }
@@ -263,6 +288,7 @@ export default function* postSaga() {
     fork(watchLoadMainPosts),
     fork(watchLoadUserPosts),
     fork(watchAddComment),
+    fork(watchUpdateComment),
     fork(watchRemovePost),
     fork(watchLikePost),
     fork(watchUnlikePost),

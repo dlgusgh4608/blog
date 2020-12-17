@@ -43,6 +43,7 @@ module.exports = (router, service) => {
       } else {
         return res.status(400).json({ error: 'error', msg: '없는 이메일이거나 비밀번호가 잘못되었습니다.' });
       }
+      const result = await service.getUser(user.id);
       const payload = {
         user_id: user.id,
       };
@@ -59,7 +60,7 @@ module.exports = (router, service) => {
           return res
             .cookie('access_token', token, { httpOnly: true, expires: new Date(Date.now() + 1000 * 60 * 60) })
             .status(200)
-            .json({ data: 'success' });
+            .json(result);
         },
       );
     } catch (e) {

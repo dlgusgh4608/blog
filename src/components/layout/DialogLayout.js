@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -10,20 +10,11 @@ const Container = styled.div`
   height: 100%;
   align-items: center;
   justify-content: center;
+  background-color: rgba(249, 249, 249, 0.7);
   z-index: 999;
 `;
 
 const DialogLayout = ({ children }) => {
-  const [isShown, setIsShown] = useState(false);
-
-  useEffect(() => {
-    isShown ? (document.body.overflowY = 'hidden') : (document.body.overflowY = 'initial');
-  }, [isShown]);
-
-  const toggleDialog = useCallback(() => {
-    setIsShown(!isShown);
-  }, [isShown, setIsShown]);
-
   return <Container>{children}</Container>;
 };
 

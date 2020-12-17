@@ -1,19 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
-const Container = styled.div`
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(249, 249, 249, 0.7);
-  z-index: 999;
-`;
+import DialogLayout from '../layout/DialogLayout';
 
 const Wrapper = styled.div`
   display: flex;
@@ -69,7 +57,7 @@ const Btn = styled(Link)`
 
 const RemoveDialog = ({ onRemove, onToggleRemoveDialog }) => {
   return (
-    <Container>
+    <DialogLayout>
       <Wrapper>
         <Title>포스트 삭제</Title>
         <Ask>정말 삭제하시겠습니까?</Ask>
@@ -80,7 +68,7 @@ const RemoveDialog = ({ onRemove, onToggleRemoveDialog }) => {
           </Btn>
         </BtnWrapper>
       </Wrapper>
-    </Container>
+    </DialogLayout>
   );
 };
 

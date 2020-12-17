@@ -148,6 +148,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         loginLoading: false,
         loginSuccess: true,
+        me: action.data,
       };
     case LOGIN_FAILURE:
       return {

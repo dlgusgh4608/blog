@@ -31,10 +31,10 @@ class PostService {
   //포스트 댓글 목록
   async postComment(postId) {
     const result = await this._pool.query(
-      `SELECT users.id AS user_id, nickname, users.img_path AS user_img, comments.id AS id, content, comments.create_at AS create_at
+      `SELECT users.id AS user_id, nickname, users.img_path AS user_img, comments.id AS id, content, comments.create_at AS create_at, comments.update_at AS update_at
     FROM users RIGHT JOIN comments
     ON users.id = comments.user_id
-    WHERE comments.post_id = $1`,
+    WHERE comments.post_id = $1 ORDER BY comments.create_at ASC`,
       [postId],
     );
     return result.rows;
@@ -93,9 +93,27 @@ class PostService {
     const result = await this._pool.query(`DELETE FROM liked WHERE post_id = $1 AND user_id = $2 RETURNING user_id`, [postId, userId]);
     return result.rows[0];
   }
+  //댓글 하나 가져오기
+  async getComment(commentId) {
+    const result = await this._pool.query(
+      `SELECT user_id, nickname, img_path AS user_img, comments.id AS id, content, comments.create_at AS create_at, comments.update_at AS update_at
+      FROM users RIGHT JOIN comments
+      ON users.id = comments.user_id
+      WHERE comments.id = $1
+      `,
+      [commentId],
+    );
+    return result.rows[0];
+  }
+
   //댓글 작성
   async addComment(userId, postId, content) {
-    const result = await this._pool.query(`INSERT INTO comments (user_id, post_id, content) VALUES ($1, $2, $3) RETURNING id, content, create_at`, [userId, postId, content]);
+    const result = await this._pool.query(`INSERT INTO comments (user_id, post_id, content) VALUES ($1, $2, $3) RETURNING id `, [userId, postId, content]);
+    return result.rows[0];
+  }
+  //댓글 수정
+  async updateComment(id, content) {
+    const result = await this._pool.query(`UPDATE comments SET content = $2, update_at = NOW() WHERE id = $1 RETURNING id`, [id, content]);
     return result.rows[0];
   }
 }

@@ -11,10 +11,6 @@ const MainLayout = ({ children, userId }) => {
   const dispatch = useDispatch();
   const [isShown, setIsShown] = useState(false);
 
-  const toggleDialog = useCallback(() => {
-    setIsShown(!isShown);
-  }, [isShown, setIsShown]);
-
   useEffect(() => {
     isShown ? (document.body.style.overflowY = 'hidden') : (document.body.style.overflowY = 'initial');
     dispatch({
@@ -32,7 +28,11 @@ const MainLayout = ({ children, userId }) => {
         type: REMOVE_USER_INFO,
       });
     }
-  }, [isShown, userId]);
+  }, [userId, isShown]);
+
+  const toggleDialog = useCallback(() => {
+    setIsShown(!isShown);
+  }, [isShown]);
   return (
     <>
       {isShown && <LoginMainPage toggleDialog={toggleDialog} />}

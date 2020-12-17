@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/atom-one-dark.css';
 import marked from 'marked';
+import useInput from '../../../hooks/useInput';
+import TextArea from 'react-textarea-autosize';
+import { useDispatch } from 'react-redux';
+import { UPDATE_COMMENT_REQUEST } from '../../../reducer/post';
 
 const Container = styled.div`
   display: flex;
@@ -100,6 +104,48 @@ const CommentWrapper = styled.div`
   }
 `;
 
+const HiddenWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const HiddenBtnWrapper = styled.div`
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const ModifyTextArea = styled(TextArea)`
+  resize: none;
+  outline: none;
+  width: 100%;
+  min-height: 6rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  font-size: 1.3rem;
+`;
+
+const Cancel = styled.button`
+  border: none;
+  border-radius: 0.5rem;
+  background-color: gray;
+  height: 2rem;
+  padding: 0 1rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+`;
+
+const Modify = styled.button`
+  border: none;
+  border-radius: 0.5rem;
+  background-color: greenyellow;
+  height: 2rem;
+  padding: 0 1rem;
+  font-size: 1.2rem;
+  margin-left: 1rem;
+  cursor: pointer;
+`;
+
 const Hr = styled.div`
   height: 1px;
   background-color: black;
@@ -107,16 +153,41 @@ const Hr = styled.div`
   margin-bottom: 2rem;
 `;
 
-const Comment = ({ data, userId }) => {
+const Comment = ({ data, me, postId }) => {
+  const dispatch = useDispatch();
   const commentDate = data.create_at;
   const yyyy = commentDate.substr(0, 4);
   const mm = commentDate.substr(5, 2);
   const dd = commentDate.substr(8, 2);
 
   const date = yyyy + '년' + mm + '월' + dd + '일';
+  const content = data.content;
+  const [modifyContent, onChangeModifyContent, setModifyContent] = useInput(content);
+  const [showModify, setShowModify] = useState(false);
+
+  const toggleModify = useCallback(() => {
+    setShowModify(!showModify);
+  }, [showModify]);
+
+  const onCancel = useCallback(() => {
+    setModifyContent(content);
+    setShowModify(!showModify);
+  }, [showModify, content]);
+
+  const onModify = useCallback(() => {
+    dispatch({
+      type: UPDATE_COMMENT_REQUEST,
+      data: {
+        id: data.id,
+        userId: me.id,
+        content: modifyContent,
+      },
+    });
+    setShowModify(!showModify);
+  }, [modifyContent, showModify, me]);
 
   const markdown = () => {
-    const mark = marked(data.content, {
+    const mark = marked(content, {
       highlight: (code, lang) => {
         const validLanguage = hljs.getLanguage(lang) ? lang : 'plaintext';
         return hljs.highlight(validLanguage, code).value;
@@ -139,12 +210,22 @@ const Comment = ({ data, userId }) => {
           </CommentInfo>
         </UserWrapper>
         <HostWrapper>
-          <ModifyBtn>수정</ModifyBtn>
+          <ModifyBtn onClick={toggleModify}>수정</ModifyBtn>
           <DeleteBtn>삭제</DeleteBtn>
         </HostWrapper>
       </Wrapper>
       <CommentWrapper>
-        <div dangerouslySetInnerHTML={markdown()}></div>
+        {showModify ? (
+          <HiddenWrapper>
+            <ModifyTextArea value={modifyContent} onChange={onChangeModifyContent}></ModifyTextArea>
+            <HiddenBtnWrapper>
+              <Cancel onClick={onCancel}>취소</Cancel>
+              <Modify onClick={onModify}>수정</Modify>
+            </HiddenBtnWrapper>
+          </HiddenWrapper>
+        ) : (
+          <div dangerouslySetInnerHTML={markdown()}></div>
+        )}
       </CommentWrapper>
       <Hr />
     </Container>

@@ -194,7 +194,38 @@ module.exports = (router, service) => {
       if (!content) {
         return res.status(400).json({ err: 'invalid', reason: 'content' });
       }
-      const result = await service.addComment(userId, postId, content);
+      const comment = await service.addComment(userId, postId, content);
+
+      if (!comment.id) {
+        return res.status(400).json({ err: 'query Error' });
+      }
+      const result = await service.getComment(comment.id);
+
+      res.status(200).json(result);
+    } catch (e) {
+      res.json(e);
+    }
+  });
+  //댓글 수정
+  router.post('/api/v1/updateComment', isLoggedIn, async (req, res) => {
+    try {
+      const tokenId = req.user;
+      const { id, userId, content } = req.body;
+
+      if (tokenId !== userId) {
+        return res.status(400).json({ err: 'different host' });
+      }
+      if (!id) {
+        return res.status(400).json({ err: 'invalid', reason: 'commentId' });
+      }
+      if (!content) {
+        return res.status(400).json({ err: 'invalid', reason: 'content' });
+      }
+      const comment = await service.updateComment(id, content);
+      if (!comment.id) {
+        return res.status(400).json({ err: 'query Error' });
+      }
+      const result = await service.getComment(comment.id);
       res.status(200).json(result);
     } catch (e) {
       res.json(e);

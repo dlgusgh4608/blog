@@ -19,7 +19,7 @@ const Tab = styled(Link)`
   color: black;
 `;
 
-const Underbar = styled.div`
+const UnderBar = styled.div`
   left: ${({ type }) => (type === 'old' ? css`50%` : 0)};
   position: absolute;
   transition: left 0.1s ease-in-out;
@@ -35,7 +35,7 @@ const MenuList = ({ type }) => {
       <Sort>
         <Tab to={'/'}>최신</Tab>
         <Tab to={'/old'}>역순</Tab>
-        <Underbar type={type} />
+        <UnderBar type={type} />
       </Sort>
     </>
   );

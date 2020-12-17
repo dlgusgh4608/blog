@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -120,7 +120,7 @@ const Tag = styled(Link)`
   border-radius: 1rem;
 `;
 
-const Header = ({ post, tags, liker, userId, me, postId }) => {
+const Header = ({ post, tags, liker, userId, me, postId, toggleDialog }) => {
   const dispatch = useDispatch();
 
   const postDate = post.create_at;
@@ -136,6 +136,10 @@ const Header = ({ post, tags, liker, userId, me, postId }) => {
     setIsShown(!isShown);
   }, [isShown]);
 
+  useEffect(() => {
+    isShown ? (document.body.style.overflowY = 'hidden') : (document.body.style.overflowY = 'initial');
+  }, [isShown]);
+
   const onRemove = useCallback(() => {
     dispatch({
       type: REMOVE_POST_REQUEST,
@@ -147,13 +151,16 @@ const Header = ({ post, tags, liker, userId, me, postId }) => {
   }, [postId, me]);
 
   const onLike = useCallback(() => {
+    if (!me) {
+      return toggleDialog(1);
+    }
     dispatch({
       type: LIKE_POST_REQUEST,
       data: {
         postId,
       },
     });
-  }, [postId]);
+  }, [postId, me]);
 
   const onUnlike = useCallback(() => {
     dispatch({

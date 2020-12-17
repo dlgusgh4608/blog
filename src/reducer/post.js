@@ -24,6 +24,9 @@ export const initialState = {
   addCommentSuccess: false,
   addCommentLoading: false,
   addCommentError: null,
+  updateCommentSuccess: false,
+  updateCommentLoading: false,
+  updateCommentError: null,
   removePostSuccess: false,
   removePostLoading: false,
   removePostError: null,
@@ -62,6 +65,10 @@ export const LOAD_USER_POSTS_FAILURE = 'LOAD_USER_POSTS_FAILURE';
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
+
+export const UPDATE_COMMENT_REQUEST = 'UPDATE_COMMENT_REQUEST';
+export const UPDATE_COMMENT_SUCCESS = 'UPDATE_COMMENT_SUCCESS';
+export const UPDATE_COMMENT_FAILURE = 'UPDATE_COMMENT_FAILURE';
 
 export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
 export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
@@ -176,6 +183,30 @@ const reducer = (state = initialState, action) => {
         ...state,
         addCommentLoading: false,
         addCommentError: action.error,
+      };
+    case UPDATE_COMMENT_REQUEST:
+      return {
+        ...state,
+        updateCommentLoading: true,
+        updateCommentSuccess: false,
+        updateCommentError: null,
+      };
+    case UPDATE_COMMENT_SUCCESS: {
+      const post = state.post;
+      const commentIndex = post.comments.findIndex((v) => v.id === action.data.id);
+      post.comments[commentIndex] = action.data;
+      return {
+        ...state,
+        updateCommentLoading: false,
+        updateCommentSuccess: true,
+        post,
+      };
+    }
+    case UPDATE_COMMENT_FAILURE:
+      return {
+        ...state,
+        updateCommentLoading: false,
+        updateCommentError: action.error,
       };
     case LOAD_USER_POSTS_REQUEST:
       return {
