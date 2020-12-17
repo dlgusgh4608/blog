@@ -140,11 +140,11 @@ const Header = ({ post, tags, liker, userId, me, postId }) => {
     dispatch({
       type: REMOVE_POST_REQUEST,
       data: {
-        userId: me.id,
         postId,
+        userId: me.id,
       },
     });
-  }, [postId]);
+  }, [postId, me]);
 
   const onLike = useCallback(() => {
     dispatch({

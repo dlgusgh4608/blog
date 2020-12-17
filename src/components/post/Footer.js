@@ -53,7 +53,7 @@ const Hr = styled.div`
   margin-bottom: 5rem;
 `;
 
-const Footer = ({ post }) => {
+const Footer = ({ post, postId, comments, me }) => {
   return (
     <Container>
       <HostWrapper>
@@ -66,7 +66,7 @@ const Footer = ({ post }) => {
         </NameWrapper>
       </HostWrapper>
       <Hr />
-      <CommentWrapper postId={post.post_id} />
+      <CommentWrapper postId={postId} comments={comments} me={me} />
     </Container>
   );
 };

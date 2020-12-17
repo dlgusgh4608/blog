@@ -28,6 +28,17 @@ class PostService {
     );
     return result.rows[0];
   }
+  //포스트 댓글 목록
+  async postComment(postId) {
+    const result = await this._pool.query(
+      `SELECT users.id AS user_id, nickname, users.img_path AS user_img, comments.id AS id, content, comments.create_at AS create_at
+    FROM users RIGHT JOIN comments
+    ON users.id = comments.user_id
+    WHERE comments.post_id = $1`,
+      [postId],
+    );
+    return result.rows;
+  }
   //포스트 태그 목록
   async postTag(postId) {
     const result = await this._pool.query(`SELECT id, content FROM tags WHERE post_id = $1`, [postId]);
@@ -38,7 +49,7 @@ class PostService {
     const result = await this._pool.query(`SELECT user_id FROM liked WHERE post_id = $1`, [postId]);
     return result.rows;
   }
-  //포스트 만들기
+  //포스트 생성
   async createPost(userId, title, titleContent, content) {
     const result = await this._pool.query(`INSERT INTO posts(user_id, title, title_content, content) VALUES ($1, $2, $3, $4) RETURNING id`, [userId, title, titleContent, content]);
     return result.rows[0];
@@ -55,7 +66,11 @@ class PostService {
   }
   //포스트 삭제
   async deletePost(postId) {
-    const result = await this._pool.query(`DELETE FROM posts WHERE id = $1`, [postId]);
+    const result = await Promise.all(
+      this._pool.query(`DELETE FROM posts WHERE id = $1`, [postId]),
+      this._pool.query(`DELETE FROM tags WHERE post_id = $1`, [postId]),
+      this._pool.query(`DELETE FROM comments WHERE post_id = $1`, [postId]),
+    );
     return result.rowCount;
   }
   //포스트 수정
@@ -76,6 +91,11 @@ class PostService {
   //좋아용 취소
   async unlikePost(userId, postId) {
     const result = await this._pool.query(`DELETE FROM liked WHERE post_id = $1 AND user_id = $2 RETURNING user_id`, [postId, userId]);
+    return result.rows[0];
+  }
+  //댓글 작성
+  async addComment(userId, postId, content) {
+    const result = await this._pool.query(`INSERT INTO comments (user_id, post_id, content) VALUES ($1, $2, $3) RETURNING id, content, create_at`, [userId, postId, content]);
     return result.rows[0];
   }
 }

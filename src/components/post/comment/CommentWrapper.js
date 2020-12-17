@@ -11,7 +11,7 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const CommentWrapper = ({ postId }) => {
+const CommentWrapper = ({ postId, comments, me }) => {
   const dispatch = useDispatch();
   const [comment, onChangeComment, setComment] = useInput('');
   const onClickAdd = useCallback(() => {
@@ -30,14 +30,9 @@ const CommentWrapper = ({ postId }) => {
   return (
     <Container>
       <CommentForm onClickAdd={onClickAdd} comment={comment} onChangeComment={onChangeComment} />
-      <Comment />
-      <Comment />
-      <Comment />
-      <Comment />
-      <Comment />
-      <Comment />
-      <Comment />
-      <Comment />
+      {comments.map((v) => (
+        <Comment key={v.id} data={v} userId={me.id} />
+      ))}
     </Container>
   );
 };

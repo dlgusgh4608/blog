@@ -29,7 +29,7 @@ const Post = ({ match }) => {
         <>
           <Header post={post.post} tags={post.tags} liker={post.liker} userId={userId} me={me} postId={postId} />
           <Main post={post.post} />
-          <Footer post={post.post} />
+          <Footer post={post.post} comments={post.comments} postId={postId} me={me} />
         </>
       )}
     </MainLayout>

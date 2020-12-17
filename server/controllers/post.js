@@ -6,7 +6,7 @@ module.exports = (router, service) => {
   router.get('/api/v1/posts', async (req, res) => {
     try {
       const result = await service.posts();
-      res.status(200).json({ data: result });
+      res.status(200).json(result);
     } catch (e) {
       res.json(e);
     }
@@ -24,7 +24,7 @@ module.exports = (router, service) => {
       for (let i = 0; i < result.length; i++) {
         result[i]['tags'] = tags[i];
       }
-      res.status(200).json({ data: result });
+      res.status(200).json(result);
     } catch (e) {
       res.json(e);
     }
@@ -40,9 +40,10 @@ module.exports = (router, service) => {
       const result = {};
 
       result.post = await service.post(postId);
-      result['tags'] = await service.postTag(postId); //태그 가져오기
-      result['liker'] = await service.postLiker(postId); //좋아요 가져오기
-      res.status(200).json({ data: result });
+      result['tags'] = await service.postTag(postId); //태그 목록 가져오기
+      result['liker'] = await service.postLiker(postId); //좋아요 목록 가져오기
+      result['comments'] = await service.postComment(postId); //댓글 목록 가져오기
+      res.status(200).json(result);
     } catch (e) {
       res.json(e);
     }
@@ -75,18 +76,17 @@ module.exports = (router, service) => {
           await Promise.all(tags.map((tag) => service.createPostTags(result.id, tag))); //태그 만들기
         }
       }
-      result.res.status(200).json({ data: result });
+      result.res.status(200).json(result);
     } catch (e) {
       res.json(e);
     }
   });
 
   //포스트 삭제
-  router.delete('/api/v1/post/:postId/', isLoggedIn, async (req, res) => {
+  router.delete('/api/v1/post/:postId/:userId', isLoggedIn, async (req, res) => {
     try {
       const tokenId = req.user;
-      const postId = req.params.postId;
-      const userId = req.params.userId;
+      const { postId, userId } = req.params;
       if (tokenId !== userId) {
         return res.status(400).json({ error: 'host different' });
       }
@@ -137,7 +137,7 @@ module.exports = (router, service) => {
           await Promise.all(tags.map((tag) => service.createPostTags(postId, tag))); //태그 만들기
         }
       }
-      res.status(200).json({ data: result });
+      res.status(200).json(result);
     } catch (e) {
       res.json(e);
     }
@@ -147,7 +147,7 @@ module.exports = (router, service) => {
   router.post('/api/v1/imageUpload', upload.single('image'), (req, res) => {
     try {
       const filename = req.file.location;
-      res.json({ data: filename });
+      res.json(filename);
     } catch (e) {
       res.json(e);
     }
@@ -177,6 +177,24 @@ module.exports = (router, service) => {
         return res.status(400).json({ error: 'invalid', reason: 'postId' });
       }
       const result = await service.unlikePost(userId, postId);
+      res.status(200).json(result);
+    } catch (e) {
+      res.json(e);
+    }
+  });
+  //댓글 작성
+  router.post('/api/v1/addComment', isLoggedIn, async (req, res) => {
+    try {
+      const userId = req.user;
+      const { postId, content } = req.body;
+
+      if (!postId) {
+        return res.status(400).json({ err: 'invalid', reason: 'postId' });
+      }
+      if (!content) {
+        return res.status(400).json({ err: 'invalid', reason: 'content' });
+      }
+      const result = await service.addComment(userId, postId, content);
       res.status(200).json(result);
     } catch (e) {
       res.json(e);

@@ -148,7 +148,7 @@ function* loadUserPosts(action) {
 }
 
 function addCommentAPI(data) {
-  return axios.post(`/v1/comment`, data);
+  return axios.post(`/v1/addComment`, data);
 }
 
 function* addComment(action) {

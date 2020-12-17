@@ -17,19 +17,18 @@ const PostWrite = (props) => {
 
   const { state } = props.location;
   useEffect(() => {
-    if (imagePath) {
+    if (imagePath[0]) {
       setImgPath(imagePath);
     }
-  }, [imagePath]);
+  }, [imagePath[0]]);
 
-  let tags = [];
+  const tags = [];
   if (state) {
     for (let i = 0; i < state.tags.length; i++) {
       tags.push(state.tags[i].content);
     }
   }
-
-  const [imgPath, setImgPath] = useState(state ? state.imagePath : null);
+  const [imgPath, setImgPath] = useState(state ? [].concat(state.imagePath) : []);
 
   const [content, setContent] = useState(state ? state.content : '');
   const onChangeContent = useCallback((e) => {
@@ -81,6 +80,9 @@ const PostWrite = (props) => {
   );
 
   const onChangeImg = (e) => {
+    if (e.target.files.length === 0) {
+      return e.preventDefault();
+    }
     const imageFormData = new FormData();
     imageFormData.append('image', e.target.files[0]);
     dispatch({

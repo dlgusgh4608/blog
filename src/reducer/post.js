@@ -2,7 +2,7 @@ export const initialState = {
   posts: [],
   userPosts: [],
   post: null,
-  imagePath: null,
+  imagePath: [],
   imageUploadSuccess: false,
   imageUploadLoading: false,
   imageUploadError: null,
@@ -75,8 +75,16 @@ export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
 export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
 export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
 
+export const REMOVE_WRITE_IMAGE = 'REMOVE_WRITE_IMAGE';
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case REMOVE_WRITE_IMAGE:
+      return {
+        ...state,
+        imageUploadSuccess: false,
+        imagePath: [],
+      };
     case LIKE_POST_REQUEST:
       return {
         ...state,
@@ -108,7 +116,7 @@ const reducer = (state = initialState, action) => {
         unlikePostSuccess: false,
         unlikePostError: null,
       };
-    case UNLIKE_POST_SUCCESS:
+    case UNLIKE_POST_SUCCESS: {
       const post = state.post;
       const liker = post.liker.filter((v) => v.user_id !== action.data.user_id);
       post.liker = liker;
@@ -118,6 +126,7 @@ const reducer = (state = initialState, action) => {
         unlikePostSuccess: true,
         post,
       };
+    }
     case UNLIKE_POST_FAILURE:
       return {
         ...state,
@@ -151,12 +160,17 @@ const reducer = (state = initialState, action) => {
         addCommentSuccess: false,
         addCommentError: null,
       };
-    case ADD_COMMENT_SUCCESS:
+    case ADD_COMMENT_SUCCESS: {
+      const post = state.post;
+      const comment = post.comments.concat(action.data);
+      post.comments = comment;
       return {
         ...state,
         addCommentLoading: false,
         addCommentSuccess: true,
+        post,
       };
+    }
     case ADD_COMMENT_FAILURE:
       return {
         ...state,
@@ -176,7 +190,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         loadUserPostsLoading: false,
         loadUserPostsSuccess: true,
-        userPosts: action.data.data,
+        userPosts: action.data,
       };
     case LOAD_USER_POSTS_FAILURE:
       return {
@@ -198,7 +212,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         loadMainPostsLoading: false,
         loadMainPostsSuccess: true,
-        posts: action.data.data,
+        posts: action.data,
       };
     case LOAD_MAIN_POSTS_FAILURE:
       return {
@@ -220,7 +234,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         loadPostLoading: false,
         loadPostSuccess: true,
-        post: action.data.data,
+        post: action.data,
       };
     case LOAD_POST_FAILURE:
       return {
@@ -235,13 +249,16 @@ const reducer = (state = initialState, action) => {
         imageUploadSuccess: false,
         imageUploadError: null,
       };
-    case UPLOAD_IMAGE_SUCCESS:
+    case UPLOAD_IMAGE_SUCCESS: {
+      const imagePath = state.imagePath;
+      imagePath[0] = action.data;
       return {
         ...state,
         imageUploadLoading: false,
         imageUploadSuccess: true,
-        imagePath: action.data.data,
+        imagePath,
       };
+    }
     case UPLOAD_IMAGE_FAILURE:
       return {
         ...state,
@@ -281,7 +298,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         updatePostLoading: false,
         updatePostSuccess: true,
-        imagePath: null,
+        imagePath: [],
       };
     case UPDATE_POST_FAILURE:
       return {

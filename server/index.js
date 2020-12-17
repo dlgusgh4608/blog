@@ -8,12 +8,10 @@ const PORT = process.env.PORT || 5000;
 
 const UserService = require('./services/user');
 const PostService = require('./services/post');
-const CommentService = require('./services/comment');
 
 const pool = require('./db');
 const userService = new UserService(pool);
 const postService = new PostService(pool);
-const commentService = new CommentService(pool);
 
 app.use(
   cors({
@@ -27,7 +25,6 @@ app.use(cookieParser());
 
 require('./controllers/user')(router, userService);
 require('./controllers/post')(router, postService);
-require('./controllers/comment')(router, commentService);
 
 app.use(router);
 

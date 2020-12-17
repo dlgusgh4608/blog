@@ -2,6 +2,8 @@ import React, { useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import ImageIcon from '../svg/ImageIcon';
+import { useDispatch } from 'react-redux';
+import { REMOVE_WRITE_IMAGE } from '../../reducer/post';
 
 const Container = styled.div`
   position: fixed;
@@ -134,7 +136,39 @@ const WriteBtn = styled(Link)`
   }
 `;
 
+const ImgModifyWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.5rem;
+`;
+
+const ImgModify = styled.button`
+  color: gray;
+  background-color: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  :hover {
+    color: black;
+  }
+`;
+
+const ImgDelete = styled.button`
+  color: gray;
+  margin-left: 0.5rem;
+  background-color: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  :hover {
+    color: black;
+  }
+`;
+
 const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleContent, onWrite, onChangeImg, imagePath, state, onModify }) => {
+  const dispatch = useDispatch();
   const inputImg = useRef();
 
   const onClickImg = useCallback(
@@ -145,30 +179,32 @@ const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleCont
     [inputImg],
   );
 
-  // const WriteCheck = useCallback(
-  //   (e) => {
-  //     if (titleContent === '') {
-  //       e.preventDefault();
-  //       return alert('포스트 소개를 입력해주세요.');
-  //     }
-  //     onWrite();
-  //   },
-  //   [titleContent, onWrite],
-  // );
+  const onImgDelete = () => {
+    dispatch({
+      type: REMOVE_WRITE_IMAGE,
+    });
+  };
 
   return (
     <Container>
       <Wrapper>
         <h3>포스트 미리보기</h3>
+        {imagePath[0] && (
+          <ImgModifyWrapper>
+            <ImgModify onClick={onClickImg}>수정</ImgModify>
+            <ImgDelete onClick={onImgDelete}>삭제</ImgDelete>
+          </ImgModifyWrapper>
+        )}
+
         <ImgContainer>
           <ImgWrapper>
-            {imagePath ? (
-              <MainImg src={imagePath} />
+            <input type="file" ref={inputImg} hidden onChange={onChangeImg} />
+            {imagePath[0] ? (
+              <MainImg src={imagePath[0]} />
             ) : (
               <DefaultImg>
                 <ImageIcon />
                 <ImgBtn onClick={onClickImg}>대표 사진 선택</ImgBtn>
-                <input type="file" ref={inputImg} hidden onChange={onChangeImg} />
               </DefaultImg>
             )}
           </ImgWrapper>
