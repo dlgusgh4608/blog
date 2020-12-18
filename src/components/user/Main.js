@@ -15,13 +15,13 @@ const PostWrapper = styled.div`
   flex-direction: column;
 `;
 
-const Main = ({ posts, query }) => {
+const Main = ({ posts, query, userId }) => {
   return (
     <Container>
       <Search posts={posts} query={query} />
       <PostWrapper>
         {posts.map((v) => (
-          <PostContainer key={v.id} post={v} query={query} />
+          <PostContainer key={v.id} post={v} query={query} userId={userId} />
         ))}
       </PostWrapper>
     </Container>

@@ -1,6 +1,7 @@
 export const initialState = {
   posts: [],
   userPosts: [],
+  searchPosts: [],
   post: null,
   imagePath: [],
   imageUploadSuccess: false,
@@ -39,6 +40,9 @@ export const initialState = {
   unlikePostSuccess: false,
   unlikePostLoading: false,
   unlikePostError: null,
+  searchPostsSuccess: false,
+  searchPostsLoading: false,
+  searchPostsError: null,
 };
 
 export const UPLOAD_IMAGE_REQUEST = 'UPLOAD_IMAGE_REQUEST';
@@ -89,15 +93,36 @@ export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
 export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
 export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
 
+export const SEARCH_POST_REQUEST = 'SEARCH_POST_REQUEST';
+export const SEARCH_POST_SUCCESS = 'SEARCH_POST_SUCCESS';
+export const SEARCH_POST_FAILURE = 'SEARCH_POST_FAILURE';
+
 export const REMOVE_WRITE_IMAGE = 'REMOVE_WRITE_IMAGE';
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case REMOVE_WRITE_IMAGE:
+    case SEARCH_POST_REQUEST:
       return {
         ...state,
-        imageUploadSuccess: false,
-        imagePath: [],
+        searchPostsLoading: true,
+        searchPostsSuccess: false,
+        searchPostsError: null,
+        posts: [],
+        userPosts: [],
+        searchPosts: [],
+      };
+    case SEARCH_POST_SUCCESS:
+      return {
+        ...state,
+        searchPostsLoading: false,
+        searchPostsSuccess: true,
+        searchPosts: action.data,
+      };
+    case SEARCH_POST_FAILURE:
+      return {
+        ...state,
+        searchPostsLoading: false,
+        searchPostsError: action.error,
       };
     case LIKE_POST_REQUEST:
       return {
@@ -246,6 +271,8 @@ const reducer = (state = initialState, action) => {
         loadUserPostsSuccess: false,
         loadUserPostsError: null,
         posts: [],
+        userPosts: [],
+        searchPosts: [],
       };
     case LOAD_USER_POSTS_SUCCESS:
       return {
@@ -266,8 +293,9 @@ const reducer = (state = initialState, action) => {
         loadMainPostsLoading: true,
         loadMainPostsSuccess: false,
         loadMainPostsError: null,
-        post: null,
+        posts: [],
         userPosts: [],
+        searchPosts: [],
       };
     case LOAD_MAIN_POSTS_SUCCESS:
       return {
@@ -288,9 +316,7 @@ const reducer = (state = initialState, action) => {
         loadPostLoading: true,
         loadPostSuccess: false,
         loadPostError: null,
-        removeCommentSuccess: false,
-        posts: [],
-        userPosts: [],
+        post: null,
       };
     case LOAD_POST_SUCCESS:
       return {
@@ -340,7 +366,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         addPostLoading: false,
         addPostSuccess: true,
-        imagePath: null,
+        imagePath: [],
       };
     case ADD_POST_FAILURE:
       return {
@@ -368,6 +394,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         updatePostLoading: false,
         updatePostError: action.error,
+      };
+    case REMOVE_WRITE_IMAGE:
+      return {
+        ...state,
+        imageUploadSuccess: false,
+        imagePath: [],
       };
     default:
       return state;

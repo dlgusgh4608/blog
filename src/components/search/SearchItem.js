@@ -3,8 +3,39 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const Container = styled.div`
+  width: 700px;
+  margin-left: auto;
+  margin-right: auto;
   display: flex;
   flex-direction: column;
+`;
+
+const UserWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+`;
+
+const UserImgWrapper = styled(Link)`
+  position: relative;
+  width: 50px;
+  height: 50px;
+`;
+
+const UserImg = styled.img`
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+
+const Nickname = styled(Link)`
+  color: black;
+  font-size: 1rem;
+  margin-left: 1rem;
 `;
 
 const ImgWrapper = styled(Link)`
@@ -73,37 +104,41 @@ const Hr = styled.div`
   background-color: black;
 `;
 
-const Post = ({ post, userId }) => {
-  const postDate = post.create_at;
-
-  const yyyy = postDate.substr(0, 4);
-  const mm = postDate.substr(5, 2);
-  const dd = postDate.substr(8, 2);
+const SearchItem = ({ data }) => {
+  const commentDate = data.create_at;
+  const yyyy = commentDate.substr(0, 4);
+  const mm = commentDate.substr(5, 2);
+  const dd = commentDate.substr(8, 2);
 
   const date = yyyy + '년' + mm + '월' + dd + '일';
-
   return (
     <Container>
-      {post.img_path && (
-        <ImgWrapper to={`/${post.id}/${userId}/${post.title}`}>
-          <PostImg src={post.img_path} />
+      <UserWrapper>
+        <UserImgWrapper to={`/${data.user_id}/${data.nickname}`}>
+          <UserImg src={data.user_img} />
+        </UserImgWrapper>
+        <Nickname to={`/${data.user_id}/${data.nickname}`}>{data.nickname}</Nickname>
+      </UserWrapper>
+      {data.post_img && (
+        <ImgWrapper to={`/${data.post_id}/${data.user_id}/${data.title}`}>
+          <PostImg src={data.post_img} />
         </ImgWrapper>
       )}
-      <Title to={`/${post.id}/${userId}/${post.title}`}>{post.title}</Title>
-      <TitleContent to={`/${post.id}/${userId}/${post.title}`}>{post.title_content}</TitleContent>
+      <Title to={`/${data.post_id}/${data.user_id}/${data.title}`}>{data.title}</Title>
+      <TitleContent to={`/${data.post_id}/${data.user_id}/${data.title}`}>{data.title_content}</TitleContent>
       <TagWrapper>
-        {post.tags.map((v) => (
+        {data.tags.map((v) => (
           <Tag key={v.id}>{v.content}</Tag>
         ))}
       </TagWrapper>
       <Footer>
         <span>{date}</span>
         <At>·</At>
-        <span>{post.comment}개의 댓글</span>
+        <span>{data.comment}개의 댓글</span>
       </Footer>
       <Hr />
     </Container>
   );
 };
 
-export default Post;
+export default SearchItem;

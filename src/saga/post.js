@@ -37,6 +37,9 @@ import {
   REMOVE_COMMENT_FAILURE,
   REMOVE_COMMENT_REQUEST,
   REMOVE_COMMENT_SUCCESS,
+  SEARCH_POST_FAILURE,
+  SEARCH_POST_REQUEST,
+  SEARCH_POST_SUCCESS,
 } from '../reducer/post';
 
 function imageUploadAPI(data) {
@@ -267,6 +270,25 @@ function* unlikePost(action) {
   }
 }
 
+function searchPostAPI(data) {
+  return axios.post(`/v1/search`, data);
+}
+
+function* searchPost(action) {
+  const result = yield call(searchPostAPI, action.data);
+  try {
+    yield put({
+      type: SEARCH_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: SEARCH_POST_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
 function* watchImageUpload() {
   yield takeLatest(UPLOAD_IMAGE_REQUEST, imageUpload);
 }
@@ -303,6 +325,9 @@ function* watchLikePost() {
 function* watchUnlikePost() {
   yield takeLatest(UNLIKE_POST_REQUEST, unlikePost);
 }
+function* watchSearchPost() {
+  yield takeLatest(SEARCH_POST_REQUEST, searchPost);
+}
 
 export default function* postSaga() {
   yield all([
@@ -318,5 +343,6 @@ export default function* postSaga() {
     fork(watchRemovePost),
     fork(watchLikePost),
     fork(watchUnlikePost),
+    fork(watchSearchPost),
   ]);
 }

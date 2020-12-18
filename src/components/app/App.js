@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import Main from '../../routes/main/Main';
 import Post from '../../routes/post/Post';
-import PostWrite from '../../routes/write/PostWrite';
+import Search from '../../routes/search/Search';
 import Info from '../../routes/user/Info';
+import PostWrite from '../../routes/write/PostWrite';
 
 const GlobalStyle = createGlobalStyle`
   html{
@@ -62,6 +63,7 @@ const App = () => {
                 <Route path={'/old'} exact={true} component={Main} />
                 <Route path={'/'} exact={true} component={Main} />
                 <Route path={'/:userId/:nickname'} exact={true} component={Info} />
+                <Route path={'/search'} exact={true} component={Search} />
               </Switch>
             );
         }

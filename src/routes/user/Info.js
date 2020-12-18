@@ -33,7 +33,7 @@ const Info = (props) => {
     <MainLayout userId={id}>
       <Container>
         {user && <Header user={user} />}
-        {userPosts && <Main posts={userPosts} query={query} />}
+        {userPosts && <Main posts={userPosts} query={query} userId={id} />}
       </Container>
     </MainLayout>
   );

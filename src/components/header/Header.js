@@ -42,7 +42,7 @@ const Logo = styled(Link)`
   cursor: pointer;
 `;
 
-const Search = styled.a`
+const Search = styled(Link)`
   margin-right: 0.75rem;
   cursor: pointer;
 `;
@@ -68,7 +68,7 @@ const Header = ({ toggleDialog }) => {
         <HeaderWrapper>
           <Head>{user ? <UserLogo user={user} /> : <Logo to={'/'}>blog</Logo>}</Head>
           <Head>
-            <Search href="/">
+            <Search to={'/search'}>
               <SearchIcon />
             </Search>
             {me ? <InfoButton me={me} /> : <LoginBtn onClick={toggleDialog}>로그인</LoginBtn>}
