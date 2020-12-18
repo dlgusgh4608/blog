@@ -1,11 +1,19 @@
 const upload = require('../middleware/upload');
-const { isLoggedIn, isNotLoggedIn } = require('../middleware/auth');
+const { isLoggedIn } = require('../middleware/auth');
 
 module.exports = (router, service) => {
   //메인 화면
   router.get('/api/v1/posts', async (req, res) => {
     try {
       const result = await service.posts();
+      const comment = await Promise.all(result.map((v) => service.postCommentCount(v.post_id)));
+      for (let i = 0; i < result.length; i++) {
+        result[i]['comment'] = comment[i].comment;
+      }
+      const liker = await Promise.all(result.map((v) => service.postLikerCount(v.post_id)));
+      for (let i = 0; i < result.length; i++) {
+        result[i]['liker'] = liker[i].liker;
+      }
       res.status(200).json(result);
     } catch (e) {
       res.json(e);
@@ -23,6 +31,10 @@ module.exports = (router, service) => {
       const tags = await Promise.all(result.map((v) => service.postTag(v.id))); //태그 가져오기
       for (let i = 0; i < result.length; i++) {
         result[i]['tags'] = tags[i];
+      }
+      const comment = await Promise.all(result.map((v) => service.postCommentCount(v.id))); // 댓글 개수 가져오기
+      for (let i = 0; i < result.length; i++) {
+        result[i]['comment'] = comment[i].comment;
       }
       res.status(200).json(result);
     } catch (e) {
@@ -226,6 +238,25 @@ module.exports = (router, service) => {
         return res.status(400).json({ err: 'query Error' });
       }
       const result = await service.getComment(comment.id);
+      res.status(200).json(result);
+    } catch (e) {
+      res.json(e);
+    }
+  });
+  //댓글 삭제
+  router.delete('/api/v1/comment/:id/:userId', isLoggedIn, async (req, res) => {
+    try {
+      const tokenId = req.user;
+      const { id, userId } = req.params;
+
+      if (tokenId !== userId) {
+        return res.status(400).json({ err: 'different host' });
+      }
+      if (!id) {
+        return res.status(400).json({ err: 'invalid', reason: 'commentId' });
+      }
+      const result = await service.deleteComment(id);
+      console.log(result);
       res.status(200).json(result);
     } catch (e) {
       res.json(e);

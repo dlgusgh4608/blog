@@ -5,12 +5,22 @@ class PostService {
   //메인화면
   async posts() {
     const result = await this._pool.query(
-      `SELECT posts.id AS post_id, title, title_content, posts.img_path AS post_img, user_id, nickname, users.img_path AS user_img, posts.create_at AS create_at 
+      `SELECT posts.id AS post_id, title, title_content, posts.img_path AS post_img, user_id, nickname, users.img_path AS user_img, posts.create_at AS create_at
       FROM posts LEFT JOIN users 
       ON posts.user_id = users.id 
       ORDER BY posts.create_at DESC`,
     );
     return result.rows;
+  }
+  //댓글 개수
+  async postCommentCount(postId) {
+    const result = await this._pool.query(`SELECT COUNT(*) AS comment FROM comments WHERE post_id = $1`, [postId]);
+    return result.rows[0];
+  }
+  //좋아요 개수
+  async postLikerCount(postId) {
+    const result = await this._pool.query(`SELECT COUNT(*) AS liker FROM liked WHERE post_id = $1`, [postId]);
+    return result.rows[0];
   }
   //유저 포스트
   async userPosts(userId) {
@@ -114,6 +124,11 @@ class PostService {
   //댓글 수정
   async updateComment(id, content) {
     const result = await this._pool.query(`UPDATE comments SET content = $2, update_at = NOW() WHERE id = $1 RETURNING id`, [id, content]);
+    return result.rows[0];
+  }
+  //댓글 삭제
+  async deleteComment(id) {
+    const result = await this._pool.query(`DELETE FROM comments WHERE id = $1 RETURNING id`, [id]);
     return result.rows[0];
   }
 }

@@ -94,7 +94,7 @@ const Post = ({ post }) => {
       <Footer>
         <span>{date}</span>
         <At>·</At>
-        <span>7777개의 댓글</span>
+        <span>{post.comment}개의 댓글</span>
       </Footer>
       <Hr />
     </Container>

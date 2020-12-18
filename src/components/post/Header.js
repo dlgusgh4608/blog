@@ -170,12 +170,11 @@ const Header = ({ post, tags, liker, userId, me, postId, toggleDialog }) => {
       },
     });
   }, [postId]);
-
-  const liked = liker.find((v) => v.user_id === me.id);
+  const liked = me && liker.find((v) => v.user_id === me.id);
 
   return (
     <Container>
-      {isShown && <RemoveDialog onRemove={onRemove} onToggleRemoveDialog={onToggleRemoveDialog} />}
+      {isShown && <RemoveDialog onRemove={onRemove} onToggleRemoveDialog={onToggleRemoveDialog} data="포스트 삭제" />}
       <Title>{post.title}</Title>
       <UserWrapper>
         <InfoWrapper>

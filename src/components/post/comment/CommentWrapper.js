@@ -13,7 +13,7 @@ const CommentWrapper = ({ postId, comments, me, toggleDialog }) => {
     <Container>
       <CommentForm postId={postId} me={me} comments={comments} toggleDialog={toggleDialog} />
       {comments.map((v) => (
-        <Comment key={v.id} data={v} me={me} postId={postId} />
+        <Comment key={v.id} data={v} me={me} />
       ))}
     </Container>
   );

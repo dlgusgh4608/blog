@@ -1,7 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import DialogLayout from '../layout/DialogLayout';
+import Spinner from '../spinner/Spinner';
 
 const Wrapper = styled.div`
   display: flex;
@@ -55,17 +56,35 @@ const Btn = styled(Link)`
   cursor: pointer;
 `;
 
-const RemoveDialog = ({ onRemove, onToggleRemoveDialog }) => {
+const CommentBtn = styled.button`
+  display: flex;
+  align-items: center;
+  color: black;
+  margin-left: 0.7rem;
+  border: none;
+  border-radius: 0.8rem;
+  height: 2rem;
+  padding: 0 1rem;
+  background-color: greenyellow;
+  font-size: 1rem;
+  cursor: pointer;
+`;
+
+const RemoveDialog = ({ data, onRemove, onToggleRemoveDialog }) => {
   return (
     <DialogLayout>
       <Wrapper>
-        <Title>포스트 삭제</Title>
+        <Title>{data}</Title>
         <Ask>정말 삭제하시겠습니까?</Ask>
         <BtnWrapper>
           <CancelBtn onClick={onToggleRemoveDialog}>취소</CancelBtn>
-          <Btn onClick={onRemove} to={'/'}>
-            확인
-          </Btn>
+          {data === '댓글 삭제' ? (
+            <CommentBtn onClick={onRemove}>확인</CommentBtn>
+          ) : (
+            <Btn onClick={onRemove} to={'/'}>
+              확인
+            </Btn>
+          )}
         </BtnWrapper>
       </Wrapper>
     </DialogLayout>

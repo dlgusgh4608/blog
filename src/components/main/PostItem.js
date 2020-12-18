@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import ColorHeart from '../svg/ColorHeart';
 
 const PostContainer = styled.div`
   display: flex;
@@ -138,7 +139,7 @@ const PostItem = ({ data }) => {
         <PostCommentWrapper>
           <span>{date}</span>
           <AtComment>·</AtComment>
-          <span>999개의 댓글</span>
+          <span>{data.comment}개의 댓글</span>
         </PostCommentWrapper>
       </PostMainContainer>
       <PostFooterContainer>
@@ -149,8 +150,10 @@ const PostItem = ({ data }) => {
           </PostHostNameWrapper>
         </PostHostWrapper>
         <Likes>
-          <Heart>❤️</Heart>
-          999
+          <Heart>
+            <ColorHeart />
+          </Heart>
+          {data.liker}
         </Likes>
       </PostFooterContainer>
     </PostContainer>

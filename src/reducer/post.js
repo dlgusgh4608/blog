@@ -27,6 +27,9 @@ export const initialState = {
   updateCommentSuccess: false,
   updateCommentLoading: false,
   updateCommentError: null,
+  removeCommentSuccess: false,
+  removeCommentLoading: false,
+  removeCommentError: null,
   removePostSuccess: false,
   removePostLoading: false,
   removePostError: null,
@@ -69,6 +72,10 @@ export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
 export const UPDATE_COMMENT_REQUEST = 'UPDATE_COMMENT_REQUEST';
 export const UPDATE_COMMENT_SUCCESS = 'UPDATE_COMMENT_SUCCESS';
 export const UPDATE_COMMENT_FAILURE = 'UPDATE_COMMENT_FAILURE';
+
+export const REMOVE_COMMENT_REQUEST = 'REMOVE_COMMENT_REQUEST';
+export const REMOVE_COMMENT_SUCCESS = 'REMOVE_COMMENT_SUCCESS';
+export const REMOVE_COMMENT_FAILURE = 'REMOVE_COMMENT_FAILURE';
 
 export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
 export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
@@ -208,6 +215,30 @@ const reducer = (state = initialState, action) => {
         updateCommentLoading: false,
         updateCommentError: action.error,
       };
+    case REMOVE_COMMENT_REQUEST:
+      return {
+        ...state,
+        removeCommentLoading: true,
+        removeCommentSuccess: false,
+        removeCommentError: null,
+      };
+    case REMOVE_COMMENT_SUCCESS: {
+      const post = state.post;
+      const comments = post.comments.filter((v) => v.id !== action.data.id);
+      post.comments = comments;
+      return {
+        ...state,
+        removeCommentLoading: false,
+        removeCommentSuccess: true,
+        post,
+      };
+    }
+    case REMOVE_COMMENT_FAILURE:
+      return {
+        ...state,
+        removeCommentLoading: false,
+        removeCommentError: action.error,
+      };
     case LOAD_USER_POSTS_REQUEST:
       return {
         ...state,
@@ -257,6 +288,7 @@ const reducer = (state = initialState, action) => {
         loadPostLoading: true,
         loadPostSuccess: false,
         loadPostError: null,
+        removeCommentSuccess: false,
         posts: [],
         userPosts: [],
       };

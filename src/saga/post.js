@@ -34,6 +34,9 @@ import {
   UPDATE_COMMENT_REQUEST,
   UPDATE_COMMENT_SUCCESS,
   UPDATE_COMMENT_FAILURE,
+  REMOVE_COMMENT_FAILURE,
+  REMOVE_COMMENT_REQUEST,
+  REMOVE_COMMENT_SUCCESS,
 } from '../reducer/post';
 
 function imageUploadAPI(data) {
@@ -188,6 +191,25 @@ function* updateComment(action) {
   }
 }
 
+function removeCommentAPI(data) {
+  return axios.delete(`/v1/comment/${data.id}/${data.userId}`);
+}
+
+function* removeComment(action) {
+  const result = yield call(removeCommentAPI, action.data);
+  try {
+    yield put({
+      type: REMOVE_COMMENT_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: REMOVE_COMMENT_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
 function removePostAPI(data) {
   return axios.delete(`/v1/post/${data.postId}/${data.userId}`);
 }
@@ -269,6 +291,9 @@ function* watchAddComment() {
 function* watchUpdateComment() {
   yield takeLatest(UPDATE_COMMENT_REQUEST, updateComment);
 }
+function* watchRemoveComment() {
+  yield takeLatest(REMOVE_COMMENT_REQUEST, removeComment);
+}
 function* watchRemovePost() {
   yield takeLatest(REMOVE_POST_REQUEST, removePost);
 }
@@ -289,6 +314,7 @@ export default function* postSaga() {
     fork(watchLoadUserPosts),
     fork(watchAddComment),
     fork(watchUpdateComment),
+    fork(watchRemoveComment),
     fork(watchRemovePost),
     fork(watchLikePost),
     fork(watchUnlikePost),

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/atom-one-dark.css';
@@ -6,7 +6,8 @@ import marked from 'marked';
 import useInput from '../../../hooks/useInput';
 import TextArea from 'react-textarea-autosize';
 import { useDispatch } from 'react-redux';
-import { UPDATE_COMMENT_REQUEST } from '../../../reducer/post';
+import { UPDATE_COMMENT_REQUEST, REMOVE_COMMENT_REQUEST } from '../../../reducer/post';
+import RemoveDialog from '../RemoveDialog';
 
 const Container = styled.div`
   display: flex;
@@ -153,7 +154,7 @@ const Hr = styled.div`
   margin-bottom: 2rem;
 `;
 
-const Comment = ({ data, me, postId }) => {
+const Comment = ({ data, me }) => {
   const dispatch = useDispatch();
   const commentDate = data.create_at;
   const yyyy = commentDate.substr(0, 4);
@@ -161,6 +162,28 @@ const Comment = ({ data, me, postId }) => {
   const dd = commentDate.substr(8, 2);
 
   const date = yyyy + '년' + mm + '월' + dd + '일';
+
+  const [showRemove, setShowRemove] = useState(false);
+
+  const onToggleRemoveDialog = useCallback(() => {
+    setShowRemove(!showRemove);
+  }, [showRemove]);
+
+  const onRemove = useCallback(() => {
+    dispatch({
+      type: REMOVE_COMMENT_REQUEST,
+      data: {
+        id: data.id,
+        userId: me.id,
+      },
+    });
+    onToggleRemoveDialog();
+  }, [data, me, onToggleRemoveDialog]);
+
+  useEffect(() => {
+    showRemove ? (document.body.style.overflowY = 'hidden') : (document.body.style.overflow = 'initial');
+  }, [showRemove]);
+
   const content = data.content;
   const [modifyContent, onChangeModifyContent, setModifyContent] = useInput(content);
   const [showModify, setShowModify] = useState(false);
@@ -199,6 +222,7 @@ const Comment = ({ data, me, postId }) => {
 
   return (
     <Container>
+      {showRemove && <RemoveDialog onToggleRemoveDialog={onToggleRemoveDialog} onRemove={onRemove} data="댓글 삭제" />}
       <Wrapper>
         <UserWrapper>
           <ImgWrapper>
@@ -211,7 +235,7 @@ const Comment = ({ data, me, postId }) => {
         </UserWrapper>
         <HostWrapper>
           <ModifyBtn onClick={toggleModify}>수정</ModifyBtn>
-          <DeleteBtn>삭제</DeleteBtn>
+          <DeleteBtn onClick={onToggleRemoveDialog}>삭제</DeleteBtn>
         </HostWrapper>
       </Wrapper>
       <CommentWrapper>
