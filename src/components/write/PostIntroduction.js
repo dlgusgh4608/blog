@@ -99,11 +99,12 @@ const BtnWrapper = styled.div`
 
 const BackBtn = styled.div`
   display: flex;
+  align-items: center;
   justify-content: center;
   height: 2rem;
   width: 25%;
   padding: 0 1rem;
-  font-size: 1.4rem;
+  font-size: 1rem;
   border: none;
   border-radius: 0.7rem;
   background-color: green;
@@ -123,7 +124,7 @@ const WriteBtn = styled(Link)`
   height: 2rem;
   width: 25%;
   padding: 0 1rem;
-  font-size: 1.4rem;
+  font-size: 1rem;
   border: none;
   border-radius: 0.7rem;
   background-color: green;

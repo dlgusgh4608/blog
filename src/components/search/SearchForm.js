@@ -3,12 +3,9 @@ import styled from 'styled-components';
 import useInput from '../../hooks/useInput';
 import SearchIcon from '../svg/SearchIcon';
 import { useDispatch } from 'react-redux';
-import { SEARCH_POST_REQUEST } from '../../reducer/post';
+import { LOAD_SEARCH_POSTS_REQUEST } from '../../reducer/post';
 
 const Container = styled.div`
-  width: 700px;
-  margin-left: auto;
-  margin-right: auto;
   margin-top: 6rem;
 `;
 
@@ -47,7 +44,7 @@ const Length = styled.span`
   margin-left: 0.2rem;
 `;
 
-const SearchForm = ({ searchPosts, searchPostsSuccess }) => {
+const SearchForm = ({ searchPosts, loadSearchPostsSuccess }) => {
   const dispatch = useDispatch();
   const inputRef = useRef();
 
@@ -58,7 +55,7 @@ const SearchForm = ({ searchPosts, searchPostsSuccess }) => {
       const content = text.trim().replace(/\s{2,}/g, ' ');
       if (content) {
         dispatch({
-          type: SEARCH_POST_REQUEST,
+          type: LOAD_SEARCH_POSTS_REQUEST,
           data: {
             content,
           },
@@ -82,7 +79,7 @@ const SearchForm = ({ searchPosts, searchPostsSuccess }) => {
       </Wrapper>
       {searchPosts.length === 0 ? (
         text &&
-        searchPostsSuccess && (
+        loadSearchPostsSuccess && (
           <LengthWrapper>
             <span>검색결과가 없습니다.</span>
           </LengthWrapper>

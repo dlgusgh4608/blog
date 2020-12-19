@@ -2,6 +2,7 @@ export const initialState = {
   posts: [],
   userPosts: [],
   searchPosts: [],
+  tagPosts: [],
   post: null,
   imagePath: [],
   imageUploadSuccess: false,
@@ -40,9 +41,12 @@ export const initialState = {
   unlikePostSuccess: false,
   unlikePostLoading: false,
   unlikePostError: null,
-  searchPostsSuccess: false,
-  searchPostsLoading: false,
-  searchPostsError: null,
+  loadSearchPostsSuccess: false,
+  loadSearchPostsLoading: false,
+  loadSearchPostsError: null,
+  loadTagPostsSuccess: false,
+  loadTagPostsLoading: false,
+  loadTagPostsError: null,
 };
 
 export const UPLOAD_IMAGE_REQUEST = 'UPLOAD_IMAGE_REQUEST';
@@ -93,36 +97,65 @@ export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
 export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
 export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
 
-export const SEARCH_POST_REQUEST = 'SEARCH_POST_REQUEST';
-export const SEARCH_POST_SUCCESS = 'SEARCH_POST_SUCCESS';
-export const SEARCH_POST_FAILURE = 'SEARCH_POST_FAILURE';
+export const LOAD_SEARCH_POSTS_REQUEST = 'LOAD_SEARCH_POSTS_REQUEST';
+export const LOAD_SEARCH_POSTS_SUCCESS = 'LOAD_SEARCH_POSTS_SUCCESS';
+export const LOAD_SEARCH_POSTS_FAILURE = 'LOAD_SEARCH_POSTS_FAILURE';
+
+export const LOAD_TAG_POSTS_REQUEST = 'LOAD_TAG_POSTS_REQUEST';
+export const LOAD_TAG_POSTS_SUCCESS = 'LOAD_TAG_POSTS_SUCCESS';
+export const LOAD_TAG_POSTS_FAILURE = 'LOAD_TAG_POSTS_FAILURE';
 
 export const REMOVE_WRITE_IMAGE = 'REMOVE_WRITE_IMAGE';
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case SEARCH_POST_REQUEST:
+    case LOAD_TAG_POSTS_REQUEST:
       return {
         ...state,
-        searchPostsLoading: true,
-        searchPostsSuccess: false,
-        searchPostsError: null,
+        loadTagPostsLoading: true,
+        loadTagPostsSuccess: false,
+        loadTagPostsError: null,
         posts: [],
         userPosts: [],
         searchPosts: [],
+        tagPosts: [],
       };
-    case SEARCH_POST_SUCCESS:
+    case LOAD_TAG_POSTS_SUCCESS:
       return {
         ...state,
-        searchPostsLoading: false,
-        searchPostsSuccess: true,
+        loadTagPostsLoading: false,
+        loadTagPostsSuccess: true,
+        tagPosts: action.data,
+      };
+    case LOAD_TAG_POSTS_FAILURE:
+      return {
+        ...state,
+        loadTagPostsLoading: false,
+        loadTagPostsError: action.error,
+      };
+    case LOAD_SEARCH_POSTS_REQUEST:
+      return {
+        ...state,
+        loadSearchPostsLoading: true,
+        loadSearchPostsSuccess: false,
+        loadSearchPostsError: null,
+        posts: [],
+        userPosts: [],
+        searchPosts: [],
+        tagPosts: [],
+      };
+    case LOAD_SEARCH_POSTS_SUCCESS:
+      return {
+        ...state,
+        loadSearchPostsLoading: false,
+        loadSearchPostsSuccess: true,
         searchPosts: action.data,
       };
-    case SEARCH_POST_FAILURE:
+    case LOAD_SEARCH_POSTS_FAILURE:
       return {
         ...state,
-        searchPostsLoading: false,
-        searchPostsError: action.error,
+        loadSearchPostsLoading: false,
+        loadSearchPostsError: action.error,
       };
     case LIKE_POST_REQUEST:
       return {
@@ -273,6 +306,7 @@ const reducer = (state = initialState, action) => {
         posts: [],
         userPosts: [],
         searchPosts: [],
+        tagPosts: [],
       };
     case LOAD_USER_POSTS_SUCCESS:
       return {
@@ -296,6 +330,7 @@ const reducer = (state = initialState, action) => {
         posts: [],
         userPosts: [],
         searchPosts: [],
+        tagPosts: [],
       };
     case LOAD_MAIN_POSTS_SUCCESS:
       return {

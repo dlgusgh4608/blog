@@ -51,21 +51,43 @@ module.exports = (router, service) => {
       }
       const searchContent = '%' + content + '%';
       const result = await service.searchPosts(searchContent);
-      const tags = await Promise.all(result.map((v) => service.postTag(v.post_id))); //태그 가져오기
+      const tags = await Promise.all(result.map((v) => service.postTag(v.id))); //태그 가져오기
       for (let i = 0; i < result.length; i++) {
         result[i]['tags'] = tags[i];
       }
-      const comment = await Promise.all(result.map((v) => service.postCommentCount(v.post_id))); // 댓글 개수 가져오기
+      const comment = await Promise.all(result.map((v) => service.postCommentCount(v.id))); // 댓글 개수 가져오기
       for (let i = 0; i < result.length; i++) {
         result[i].comment = comment[i].comment;
       }
-      const liker = await Promise.all(result.map((v) => service.postLikerCount(v.post_id))); //좋아요 개수 가져오기
+      const liker = await Promise.all(result.map((v) => service.postLikerCount(v.id))); //좋아요 개수 가져오기
       for (let i = 0; i < result.length; i++) {
         result[i].liker = liker[i].liker;
       }
       result.sort((a, b) => {
         return b.liker - a.liker;
       });
+      res.status(200).json(result);
+    } catch (e) {
+      res.json(e);
+    }
+  });
+
+  //태그검색결과
+  router.post('/api/v1/tag', async (req, res) => {
+    try {
+      const { content } = req.body;
+      if (!content) {
+        return res.status(400).json({ err: 'invalid', reason: 'content' });
+      }
+      const result = await service.tagPosts(content);
+      const tags = await Promise.all(result.map((v) => service.postTag(v.id))); //태그 가져오기
+      for (let i = 0; i < result.length; i++) {
+        result[i]['tags'] = tags[i];
+      }
+      const comment = await Promise.all(result.map((v) => service.postCommentCount(v.id))); // 댓글 개수 가져오기
+      for (let i = 0; i < result.length; i++) {
+        result[i].comment = comment[i].comment;
+      }
       res.status(200).json(result);
     } catch (e) {
       res.json(e);

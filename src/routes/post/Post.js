@@ -5,7 +5,6 @@ import LoginMainPage from '../../components/login/LoginMainPage';
 import Footer from '../../components/post/Footer';
 import Header from '../../components/post/Header';
 import Main from '../../components/post/Main';
-import RemoveDialog from '../../components/post/RemoveDialog';
 import { LOAD_POST_REQUEST } from '../../reducer/post';
 
 const Post = ({ match }) => {
@@ -22,7 +21,7 @@ const Post = ({ match }) => {
 
   useEffect(() => {
     isShown ? (document.body.style.overflowY = 'hidden') : (document.body.style.overflowY = 'initial');
-    if (!updatePostLoading) {
+    if (!updatePostLoading && !isShown) {
       dispatch({
         type: LOAD_POST_REQUEST,
         data: {

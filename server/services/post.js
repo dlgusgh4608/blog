@@ -24,16 +24,33 @@ class PostService {
   }
   //유저 포스트
   async userPosts(userId) {
-    const result = await this._pool.query(`SELECT id, title, title_content, img_path, create_at FROM posts WHERE user_id = $1 ORDER BY create_at DESC`, [userId]);
+    const result = await this._pool.query(`SELECT id, title, title_content, img_path AS post_img, create_at FROM posts WHERE user_id = $1 ORDER BY create_at DESC`, [userId]);
     return result.rows;
   }
   //검색 결과
   async searchPosts(content) {
     const result = await this._pool.query(
-      `SELECT posts.id AS post_id, title, title_content, posts.img_path AS post_img, user_id, nickname, users.img_path AS user_img, posts.create_at AS create_at
+      `SELECT posts.id AS id, title, title_content, posts.img_path AS post_img, user_id, nickname, users.img_path AS user_img, posts.create_at AS create_at
       FROM posts LEFT JOIN users 
       ON posts.user_id = users.id 
       WHERE posts.content LIKE $1`,
+      [content],
+    );
+    return result.rows;
+  }
+
+  //태그 검색 결과
+  async tagPosts(content) {
+    const result = await this._pool.query(
+      `SELECT posts.id AS id, title, title_content, post_img, user_id, nickname, user_img, create_at
+      FROM 
+      (SELECT posts.id AS id, title, title_content, posts.img_path AS post_img, user_id, nickname, users.img_path AS user_img, posts.create_at AS create_at
+      FROM posts LEFT JOIN users 
+      ON posts.user_id = users.id) AS posts LEFT JOIN tags
+      ON posts.id = tags.post_id
+      WHERE tags.content = $1
+      ORDER BY posts.create_at DESC
+      `,
       [content],
     );
     return result.rows;

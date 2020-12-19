@@ -5,27 +5,7 @@ import useInput from '../../hooks/useInput';
 import { LOGIN_REQUEST } from '../../reducer/user';
 import Spinner from '../spinner/Spinner';
 
-const LoginWrapper = styled.div`
-  display: flex;
-  background-color: white;
-  width: 670px;
-  height: 480px;
-`;
-
-const LoginWelcome = styled.div`
-  width: 250px;
-  background-color: gray;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const LoginWelcomeImg = styled.img`
-  width: 100%;
-`;
-
-const LoginInformationWrapper = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 2rem;
@@ -36,7 +16,7 @@ const LoginInformationWrapper = styled.div`
   }
 `;
 
-const LoginExitWrapper = styled.div`
+const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -45,14 +25,14 @@ const LoginExitWrapper = styled.div`
   }
 `;
 
-const LoginInformation = styled.div`
+const Main = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   flex: 1 1 0%;
 `;
 
-const LoginForm = styled.form`
+const Wrapper = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -82,7 +62,7 @@ const XBtn = styled.div`
   cursor: pointer;
 `;
 
-const LoginFooter = styled.div`
+const Footer = styled.div`
   text-align: right;
 `;
 
@@ -140,29 +120,23 @@ const Login = ({ toggleDialog, switchHandler, errorAlert }) => {
 
   return (
     <>
-      <LoginWrapper>
-        <LoginWelcome>
-          <LoginWelcomeImg src="https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile27.uf.tistory.com%2Fimage%2F9905EB345DF8CE050BE220" />
-          <h2>환영합니다.</h2>
-        </LoginWelcome>
-        <LoginInformationWrapper>
-          <LoginExitWrapper>
-            <h2>로그인</h2>
-            <XBtn onClick={toggleDialog}>✖️</XBtn>
-          </LoginExitWrapper>
-          <LoginInformation>
-            <LoginForm onSubmit={onSubmit}>
-              <h4>이메일</h4> <LoginInput type="email" value={email} onChange={onChangeEmail} placeholder="이메일을 입력해주세요." />
-              <h4>비밀번호</h4> <LoginInput type="password" value={password} onChange={onChangePassword} placeholder="비밀번호를 입력해주세요." />
-              <LoginButton type="submit">{loginLoading ? <Spinner /> : '로그인'}</LoginButton>
-            </LoginForm>
-            <LoginFooter>
-              <FooterSpan>아직 아이디가 없으신가요?</FooterSpan>
-              <SignUp onClick={switchHandler}>회원가입</SignUp>
-            </LoginFooter>
-          </LoginInformation>
-        </LoginInformationWrapper>
-      </LoginWrapper>
+      <Container>
+        <Header>
+          <h2>로그인</h2>
+          <XBtn onClick={toggleDialog}>✖️</XBtn>
+        </Header>
+        <Main>
+          <Wrapper onSubmit={onSubmit}>
+            <h4>이메일</h4> <LoginInput type="email" value={email} onChange={onChangeEmail} placeholder="이메일을 입력해주세요." />
+            <h4>비밀번호</h4> <LoginInput type="password" value={password} onChange={onChangePassword} placeholder="비밀번호를 입력해주세요." />
+            <LoginButton type="submit">{loginLoading ? <Spinner /> : '로그인'}</LoginButton>
+          </Wrapper>
+        </Main>
+        <Footer>
+          <FooterSpan>아직 아이디가 없으신가요?</FooterSpan>
+          <SignUp onClick={switchHandler}>회원가입</SignUp>
+        </Footer>
+      </Container>
     </>
   );
 };

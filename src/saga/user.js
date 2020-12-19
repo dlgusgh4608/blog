@@ -19,6 +19,15 @@ import {
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
   LOGOUT_FAILURE,
+  CHANGE_NICKNAME_FAILURE,
+  CHANGE_NICKNAME_REQUEST,
+  CHANGE_NICKNAME_SUCCESS,
+  CHANGE_PASSWORD_FAILURE,
+  CHANGE_PASSWORD_REQUEST,
+  CHANGE_PASSWORD_SUCCESS,
+  CHANGE_IMAGE_FAILURE,
+  CHANGE_IMAGE_REQUEST,
+  CHANGE_IMAGE_SUCCESS,
 } from '../reducer/user';
 
 function emailCheckAPI(data) {
@@ -129,6 +138,60 @@ function* loadUserInfo(action) {
   }
 }
 
+function changeNicknameAPI(data) {
+  return axios.post('/v1/nickname', data);
+}
+function* changeNickname(action) {
+  try {
+    const result = yield call(changeNicknameAPI, action.data);
+    yield put({
+      type: CHANGE_NICKNAME_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: CHANGE_NICKNAME_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
+function changePasswordAPI(data) {
+  return axios.post('/v1/password', data);
+}
+function* changePassword(action) {
+  try {
+    const result = yield call(changePasswordAPI, action.data);
+    yield put({
+      type: CHANGE_PASSWORD_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: CHANGE_PASSWORD_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
+function changeImageAPI(data) {
+  return axios.post('/v1/image', data);
+}
+function* changeImage(action) {
+  try {
+    const result = yield call(changeImageAPI, action.data);
+    yield put({
+      type: CHANGE_IMAGE_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: CHANGE_IMAGE_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
 function* watchEmailCheck() {
   yield takeLatest(EMAIL_CHECK_REQUEST, emailCheck);
 }
@@ -147,7 +210,26 @@ function* watchLoadMyInfo() {
 function* watchLoadUserInfo() {
   yield takeLatest(LOAD_USER_INFO_REQUEST, loadUserInfo);
 }
+function* watchChangeNickname() {
+  yield takeLatest(CHANGE_NICKNAME_REQUEST, changeNickname);
+}
+function* watchChangePassword() {
+  yield takeLatest(CHANGE_PASSWORD_REQUEST, changePassword);
+}
+function* watchChangeImage() {
+  yield takeLatest(CHANGE_IMAGE_REQUEST, changeImage);
+}
 
 export default function* userSaga() {
-  yield all([fork(watchEmailCheck), fork(watchSignUp), fork(watchLogin), fork(watchLogout), fork(watchLoadMyInfo), fork(watchLoadUserInfo)]);
+  yield all([
+    fork(watchEmailCheck),
+    fork(watchSignUp),
+    fork(watchLogin),
+    fork(watchLogout),
+    fork(watchLoadMyInfo),
+    fork(watchLoadUserInfo),
+    fork(watchChangeNickname),
+    fork(watchChangePassword),
+    fork(watchChangeImage),
+  ]);
 }

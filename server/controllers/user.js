@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { isLoggedIn, isNotLoggedIn } = require('../middleware/auth');
+const upload = require('../middleware/upload');
+
 module.exports = (router, service) => {
   //내 정보 가져오기
   router.get('/api/v1/user', isLoggedIn, async (req, res) => {
@@ -13,7 +15,7 @@ module.exports = (router, service) => {
     }
   });
 
-  //지금 접속해있는 유저 정보 가져오기
+  //내가 있는 페이지 유저 정보 가져오기
   router.post('/api/v1/user', async (req, res) => {
     try {
       const { userId } = req.body;
@@ -79,8 +81,7 @@ module.exports = (router, service) => {
   //회원가입
   router.post(`/api/v1/signUp`, isNotLoggedIn, async (req, res) => {
     try {
-      const email = req.body.email;
-      const password = req.body.password;
+      const { email, password, passwordCheck } = req.body;
       const nickname = email.match(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@/i)[0] + 'blog.io';
 
       const check = email.match(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i);
@@ -90,6 +91,9 @@ module.exports = (router, service) => {
       }
       if (!password) {
         return res.status(400).json({ error: 'invalid', reason: 'password' });
+      }
+      if (password !== passwordCheck) {
+        return res.status(400).json({ error: 'invalid', reason: 'passwordCheck different' });
       }
       const checkResult = await service.emailCheck(email);
       if (checkResult.length) {
@@ -123,6 +127,61 @@ module.exports = (router, service) => {
     }
   });
 
+  //닉네임 변경
+  router.post('/api/v1/nickname', isLoggedIn, async (req, res) => {
+    try {
+      const id = req.user;
+      const { nickname } = req.body;
+      if (!nickname) {
+        return res.status(400).json({ error: 'invalid', reason: 'nickname' });
+      }
+      const result = await service.updateNickname(id, nickname);
+      res.status(200).json(result);
+    } catch (e) {
+      res.json(e);
+    }
+  });
+
+  //비밀번호 변경
+  router.post('/api/v1/password', isLoggedIn, async (req, res) => {
+    try {
+      const id = req.user;
+      const { pw, password, passwordCheck } = req.body;
+      if (!pw) {
+        return res.status(400).json({ error: 'invalid', reason: 'pw' });
+      }
+      const dbPw = await service.getPassword(id);
+      const check = await bcrypt.compare(pw, dbPw.password);
+      if (!check) {
+        return res.status(400).json({ error: 'pw different' });
+      }
+      if (password !== passwordCheck) {
+        return res.status(400).json({ error: 'invalid', reason: 'passwordCheck different' });
+      }
+      const hashPassword = await bcrypt.hash(password, 10);
+      const result = await service.updatePassword(id, hashPassword);
+      if (!result) {
+        return res.status(500).json({ error: 'why error?' });
+      }
+      res.status(200).json(result);
+    } catch (e) {
+      res.json(e);
+    }
+  });
+
+  //이미지 변경
+  router.post('/api/v1/image', isLoggedIn, upload.single('image'), async (req, res) => {
+    try {
+      const id = req.user;
+      const imgPath = req.file.location;
+      const result = await service.updateImage(id, imgPath);
+      res.status(200).json(result);
+    } catch (e) {
+      res.json(e);
+    }
+  });
+
+  //회원탈퇴
   router.delete('/api/v1/deleteUser/:userId', async (req, res) => {
     try {
     } catch (e) {

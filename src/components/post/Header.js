@@ -212,7 +212,7 @@ const Header = ({ post, tags, liker, userId, me, postId, toggleDialog }) => {
       </UserWrapper>
       <TagWrapper>
         {tags.map((v) => (
-          <Tag to={'/'} key={v.id}>
+          <Tag to={`/tag/${v.content}`} key={v.id}>
             {v.content}
           </Tag>
         ))}

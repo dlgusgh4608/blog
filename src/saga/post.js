@@ -37,9 +37,12 @@ import {
   REMOVE_COMMENT_FAILURE,
   REMOVE_COMMENT_REQUEST,
   REMOVE_COMMENT_SUCCESS,
-  SEARCH_POST_FAILURE,
-  SEARCH_POST_REQUEST,
-  SEARCH_POST_SUCCESS,
+  LOAD_SEARCH_POSTS_FAILURE,
+  LOAD_SEARCH_POSTS_REQUEST,
+  LOAD_SEARCH_POSTS_SUCCESS,
+  LOAD_TAG_POSTS_FAILURE,
+  LOAD_TAG_POSTS_REQUEST,
+  LOAD_TAG_POSTS_SUCCESS,
 } from '../reducer/post';
 
 function imageUploadAPI(data) {
@@ -270,20 +273,39 @@ function* unlikePost(action) {
   }
 }
 
-function searchPostAPI(data) {
+function loadSearchPostsAPI(data) {
   return axios.post(`/v1/search`, data);
 }
 
-function* searchPost(action) {
-  const result = yield call(searchPostAPI, action.data);
+function* loadSearchPosts(action) {
+  const result = yield call(loadSearchPostsAPI, action.data);
   try {
     yield put({
-      type: SEARCH_POST_SUCCESS,
+      type: LOAD_SEARCH_POSTS_SUCCESS,
       data: result.data,
     });
   } catch (e) {
     yield put({
-      type: SEARCH_POST_FAILURE,
+      type: LOAD_SEARCH_POSTS_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
+function loadTagPostsAPI(data) {
+  return axios.post(`/v1/tag`, data);
+}
+
+function* loadTagPosts(action) {
+  const result = yield call(loadTagPostsAPI, action.data);
+  try {
+    yield put({
+      type: LOAD_TAG_POSTS_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: LOAD_TAG_POSTS_FAILURE,
       error: e.response.data,
     });
   }
@@ -325,8 +347,11 @@ function* watchLikePost() {
 function* watchUnlikePost() {
   yield takeLatest(UNLIKE_POST_REQUEST, unlikePost);
 }
-function* watchSearchPost() {
-  yield takeLatest(SEARCH_POST_REQUEST, searchPost);
+function* watchLoadSearchPosts() {
+  yield takeLatest(LOAD_SEARCH_POSTS_REQUEST, loadSearchPosts);
+}
+function* watchLoadTagPosts() {
+  yield takeLatest(LOAD_TAG_POSTS_REQUEST, loadTagPosts);
 }
 
 export default function* postSaga() {
@@ -343,6 +368,7 @@ export default function* postSaga() {
     fork(watchRemovePost),
     fork(watchLikePost),
     fork(watchUnlikePost),
-    fork(watchSearchPost),
+    fork(watchLoadSearchPosts),
+    fork(watchLoadTagPosts),
   ]);
 }

@@ -233,10 +233,12 @@ const Comment = ({ data, me }) => {
             <Date>{date}</Date>
           </CommentInfo>
         </UserWrapper>
-        <HostWrapper>
-          <ModifyBtn onClick={toggleModify}>수정</ModifyBtn>
-          <DeleteBtn onClick={onToggleRemoveDialog}>삭제</DeleteBtn>
-        </HostWrapper>
+        {me && me.id === data.user_id && (
+          <HostWrapper>
+            <ModifyBtn onClick={toggleModify}>수정</ModifyBtn>
+            <DeleteBtn onClick={onToggleRemoveDialog}>삭제</DeleteBtn>
+          </HostWrapper>
+        )}
       </Wrapper>
       <CommentWrapper>
         {showModify ? (

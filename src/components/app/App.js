@@ -6,6 +6,8 @@ import Post from '../../routes/post/Post';
 import Search from '../../routes/search/Search';
 import Info from '../../routes/user/Info';
 import PostWrite from '../../routes/write/PostWrite';
+import Tag from '../../routes/tag/Tag';
+import Setting from '../../routes/setting/Setting';
 
 const GlobalStyle = createGlobalStyle`
   html{
@@ -58,12 +60,14 @@ const App = () => {
           default:
             return (
               <Switch>
+                <Route path={'/tag/:tag'} exact={true} component={Tag} />
                 <Route path={'/write'} exact={true} component={PostWrite} />
                 <Route path={'/:postId/:userId/:title'} exact={true} component={Post} />
                 <Route path={'/old'} exact={true} component={Main} />
                 <Route path={'/'} exact={true} component={Main} />
                 <Route path={'/:userId/:nickname'} exact={true} component={Info} />
                 <Route path={'/search'} exact={true} component={Search} />
+                <Route path={'/setting'} exact={true} component={Setting} />
               </Switch>
             );
         }

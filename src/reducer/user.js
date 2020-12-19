@@ -1,4 +1,6 @@
 export const initialState = {
+  me: null,
+  user: null,
   loadMyInfoSuccess: false,
   loadMyInfoLoading: false,
   loadMyInfoError: null,
@@ -17,8 +19,15 @@ export const initialState = {
   signUpSuccess: false,
   signUpLoading: false,
   signUpError: null,
-  me: null,
-  user: null,
+  changeNicknameSuccess: false,
+  changeNicknameLoading: false,
+  changeNicknameError: null,
+  changePasswordSuccess: false,
+  changePasswordLoading: false,
+  changePasswordError: null,
+  changeImageSuccess: false,
+  changeImageLoading: false,
+  changeImageError: null,
 };
 
 export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
@@ -45,10 +54,82 @@ export const EMAIL_CHECK_REQUEST = 'EMAIL_CHECK_REQUEST';
 export const EMAIL_CHECK_SUCCESS = 'EMAIL_CHECK_SUCCESS';
 export const EMAIL_CHECK_FAILURE = 'EMAIL_CHECK_FAILURE';
 
+export const CHANGE_NICKNAME_REQUEST = 'CHANGE_NICKNAME_REQUEST';
+export const CHANGE_NICKNAME_SUCCESS = 'CHANGE_NICKNAME_SUCCESS';
+export const CHANGE_NICKNAME_FAILURE = 'CHANGE_NICKNAME_FAILURE';
+
+export const CHANGE_PASSWORD_REQUEST = 'CHANGE_PASSWORD_REQUEST';
+export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_SUCCESS';
+export const CHANGE_PASSWORD_FAILURE = 'CHANGE_PASSWORD_FAILURE';
+
+export const CHANGE_IMAGE_REQUEST = 'CHANGE_IMAGE_REQUEST';
+export const CHANGE_IMAGE_SUCCESS = 'CHANGE_IMAGE_SUCCESS';
+export const CHANGE_IMAGE_FAILURE = 'CHANGE_IMAGE_FAILURE';
+
 export const REMOVE_USER_INFO = 'REMOVE_USER_INFO';
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case CHANGE_IMAGE_REQUEST:
+      return {
+        ...state,
+        changeImageLoading: true,
+        changeImageSuccess: false,
+        changeImageError: null,
+      };
+    case CHANGE_IMAGE_SUCCESS:
+      return {
+        ...state,
+        changeImageLoading: false,
+        changeImageSuccess: true,
+        me: action.data,
+      };
+    case CHANGE_IMAGE_FAILURE:
+      return {
+        ...state,
+        changeImageLoading: false,
+        changeImageError: action.error,
+      };
+    case CHANGE_PASSWORD_REQUEST:
+      return {
+        ...state,
+        changePasswordLoading: true,
+        changePasswordSuccess: false,
+        changePasswordError: null,
+      };
+    case CHANGE_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        changePasswordLoading: false,
+        changePasswordSuccess: true,
+        me: action.data,
+      };
+    case CHANGE_PASSWORD_FAILURE:
+      return {
+        ...state,
+        changePasswordLoading: false,
+        changePasswordError: action.error,
+      };
+    case CHANGE_NICKNAME_REQUEST:
+      return {
+        ...state,
+        changeNicknameLoading: true,
+        changeNicknameSuccess: false,
+        changeNicknameError: null,
+      };
+    case CHANGE_NICKNAME_SUCCESS:
+      return {
+        ...state,
+        changeNicknameLoading: false,
+        changeNicknameSuccess: true,
+        me: action.data,
+      };
+    case CHANGE_NICKNAME_FAILURE:
+      return {
+        ...state,
+        changeNicknameLoading: false,
+        changeNicknameError: action.error,
+      };
     case LOAD_USER_INFO_REQUEST:
       return {
         ...state,

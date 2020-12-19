@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 2rem;
 `;
 
 const TagWrapper = styled.div`
@@ -18,6 +19,7 @@ const Tag = styled(Link)`
   background-color: ${({ query, value }) => (query === value ? css`rgb(18, 184, 134)` : css`rgb(241, 243, 245)`)};
   display: flex;
   color: black;
+  align-items: center;
   flex-shrink: 0;
   font-size: 0.8rem;
   border-radius: 1rem;

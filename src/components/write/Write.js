@@ -2,7 +2,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/elegant.css';
 import 'codemirror/theme/monokai.css';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import TextArea from 'react-textarea-autosize';
 import styled from 'styled-components';
@@ -11,6 +11,10 @@ import LeftArrowIcon from '../svg/LeftArrowIcon';
 const Container = styled.div`
   display: flex;
   width: 50%;
+
+  @media (max-width: 880px) {
+    width: 100%;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -75,7 +79,7 @@ const ContentWrapper = styled.div`
   overflow-y: hidden;
 `;
 
-const Contour = styled.div`
+const Hr = styled.div`
   width: 100%;
   height: 0.2rem;
   background-color: black;
@@ -109,6 +113,9 @@ const WriteBtn = styled.button`
   outline: none;
   cursor: pointer;
 `;
+
+const TagLabel = styled.div``;
+
 const Write = ({ content, onChangeContent, title, onChangeTitle, tag, onChangeTag, onKeyDownTag, data, toggleDialog }) => {
   const onClickWrite = useCallback(() => {
     if (title === '') {
@@ -130,7 +137,7 @@ const Write = ({ content, onChangeContent, title, onChangeTitle, tag, onChangeTa
               <Tag key={i}>{v}</Tag>
             ))}
             <TagInput placeholder="태그를 입력해주세요." value={tag} onChange={onChangeTag} onKeyDown={onKeyDownTag} />
-            <Contour />
+            <Hr />
           </TagWrapper>
         </Header>
         <ContentWrapper>

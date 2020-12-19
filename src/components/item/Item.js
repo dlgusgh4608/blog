@@ -7,6 +7,34 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
+const UserWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+`;
+
+const UserImgWrapper = styled(Link)`
+  position: relative;
+  width: 50px;
+  height: 50px;
+`;
+
+const UserImg = styled.img`
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+
+const Nickname = styled(Link)`
+  color: black;
+  font-size: 1rem;
+  margin-left: 1rem;
+`;
+
 const ImgWrapper = styled(Link)`
   position: relative;
   width: 100%;
@@ -43,7 +71,7 @@ const TagWrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-const Tag = styled.div`
+const Tag = styled(Link)`
   display: flex;
   align-items: center;
   border-radius: 1rem;
@@ -51,6 +79,7 @@ const Tag = styled.div`
   margin-top: 1rem;
   margin-right: 1rem;
   padding: 0 0.7rem;
+  color: black;
   cursor: pointer;
 `;
 
@@ -73,37 +102,45 @@ const Hr = styled.div`
   background-color: black;
 `;
 
-const Post = ({ post, userId }) => {
-  const postDate = post.create_at;
-
-  const yyyy = postDate.substr(0, 4);
-  const mm = postDate.substr(5, 2);
-  const dd = postDate.substr(8, 2);
+const Item = ({ data }) => {
+  const commentDate = data.create_at;
+  const yyyy = commentDate.substr(0, 4);
+  const mm = commentDate.substr(5, 2);
+  const dd = commentDate.substr(8, 2);
 
   const date = yyyy + '년' + mm + '월' + dd + '일';
-
   return (
     <Container>
-      {post.img_path && (
-        <ImgWrapper to={`/${post.id}/${userId}/${post.title}`}>
-          <PostImg src={post.img_path} />
+      {data.user_id && (
+        <UserWrapper>
+          <UserImgWrapper to={`/${data.user_id}/${data.nickname}`}>
+            <UserImg src={data.user_img} />
+          </UserImgWrapper>
+          <Nickname to={`/${data.user_id}/${data.nickname}`}>{data.nickname}</Nickname>
+        </UserWrapper>
+      )}
+      {data.post_img && (
+        <ImgWrapper to={`/${data.id}/${data.user_id}/${data.title}`}>
+          <PostImg src={data.post_img} />
         </ImgWrapper>
       )}
-      <Title to={`/${post.id}/${userId}/${post.title}`}>{post.title}</Title>
-      <TitleContent to={`/${post.id}/${userId}/${post.title}`}>{post.title_content}</TitleContent>
+      <Title to={`/${data.id}/${data.user_id}/${data.title}`}>{data.title}</Title>
+      <TitleContent to={`/${data.id}/${data.user_id}/${data.title}`}>{data.title_content}</TitleContent>
       <TagWrapper>
-        {post.tags.map((v) => (
-          <Tag key={v.id}>{v.content}</Tag>
+        {data.tags.map((v) => (
+          <Tag key={v.id} to={`/tag/${v.content}`}>
+            {v.content}
+          </Tag>
         ))}
       </TagWrapper>
       <Footer>
         <span>{date}</span>
         <At>·</At>
-        <span>{post.comment}개의 댓글</span>
+        <span>{data.comment}개의 댓글</span>
       </Footer>
       <Hr />
     </Container>
   );
 };
 
-export default Post;
+export default Item;
