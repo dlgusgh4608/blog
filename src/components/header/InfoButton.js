@@ -20,6 +20,10 @@ const CreatePostBtn = styled(Link)`
   margin-right: 1rem;
   color: black;
   cursor: pointer;
+
+  @media (max-width: 750px) {
+    display: none;
+  }
 `;
 
 const MyInfoWrapper = styled.div`
@@ -74,6 +78,20 @@ const DownMenu = styled(Link)`
   }
 `;
 
+const MobileMenu = styled(Link)`
+  display: none;
+  color: black;
+  padding: 0.7rem 0 0.7rem 1rem;
+
+  :hover {
+    background-color: gray;
+  }
+
+  @media (max-width: 750px) {
+    display: block;
+  }
+`;
+
 const LogoutBtn = styled.div`
   color: black;
   padding: 0.7rem 0 0.7rem 1rem;
@@ -107,6 +125,7 @@ const InfoButton = ({ me }) => {
           {isShow && (
             <DownMenuWrapper>
               <DownMenu to={`/${me.nickname}/${me.id}`}>내 블로그</DownMenu>
+              <MobileMenu to={'/write'}>새 글 작성</MobileMenu>
               <DownMenu to={'/setting'}>설정</DownMenu>
               <LogoutBtn onClick={onLogout}>로그아웃</LogoutBtn>
             </DownMenuWrapper>

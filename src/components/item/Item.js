@@ -55,14 +55,18 @@ const Title = styled(Link)`
   margin-top: 2rem;
   font-size: 1.5rem;
   font-weight: bold;
-  word-break: break-word;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   color: black;
 `;
 
 const TitleContent = styled(Link)`
   margin-top: 1rem;
   font-size: 1.2rem;
-  word-break: break-word;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   color: black;
 `;
 

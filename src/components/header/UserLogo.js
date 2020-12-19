@@ -11,6 +11,9 @@ const Home = styled(Link)`
 
 const User = styled(Link)`
   color: black;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   cursor: pointer;
 `;
 

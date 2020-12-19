@@ -101,6 +101,9 @@ const PostHostNameWrapper = styled.span`
 `;
 
 const PostHostName = styled.strong`
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   color: black;
 `;
 
