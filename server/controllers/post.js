@@ -308,7 +308,6 @@ module.exports = (router, service) => {
         return res.status(400).json({ err: 'invalid', reason: 'commentId' });
       }
       const result = await service.deleteComment(id);
-      console.log(result);
       res.status(200).json(result);
     } catch (e) {
       res.json(e);

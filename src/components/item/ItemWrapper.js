@@ -3,7 +3,6 @@ import Item from './Item';
 
 const ItemWrapper = ({ data, query }) => {
   let tag = false;
-  console.log(query);
   data.tags.forEach((v) => {
     if (v.content === query) {
       tag = true;

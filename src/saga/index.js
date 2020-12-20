@@ -4,7 +4,7 @@ import userSaga from './user';
 import postSaga from './post';
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://localhost:5000/api';
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8080/api';
 
 export default function* rootSaga() {
   yield all([fork(postSaga), fork(userSaga)]);

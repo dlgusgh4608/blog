@@ -19,6 +19,8 @@ const PostWrite = (props) => {
   useEffect(() => {
     if (imagePath[0]) {
       setImgPath(imagePath);
+    } else {
+      setImgPath([]);
     }
   }, [imagePath[0]]);
 
