@@ -119,6 +119,7 @@ const reducer = (state = initialState, action) => {
         userPosts: [],
         searchPosts: [],
         tagPosts: [],
+        post: null,
       };
     case LOAD_TAG_POSTS_SUCCESS:
       return {
@@ -143,6 +144,7 @@ const reducer = (state = initialState, action) => {
         userPosts: [],
         searchPosts: [],
         tagPosts: [],
+        post: null,
       };
     case LOAD_SEARCH_POSTS_SUCCESS:
       return {
@@ -307,6 +309,7 @@ const reducer = (state = initialState, action) => {
         userPosts: [],
         searchPosts: [],
         tagPosts: [],
+        post: null,
       };
     case LOAD_USER_POSTS_SUCCESS:
       return {
@@ -331,6 +334,7 @@ const reducer = (state = initialState, action) => {
         userPosts: [],
         searchPosts: [],
         tagPosts: [],
+        post: null,
       };
     case LOAD_MAIN_POSTS_SUCCESS:
       return {

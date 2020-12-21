@@ -124,7 +124,7 @@ const InfoButton = ({ me }) => {
           <DownIcon />
           {isShow && (
             <DownMenuWrapper>
-              <DownMenu to={`/${me.nickname}/${me.id}`}>내 블로그</DownMenu>
+              <DownMenu to={`/${me.id}/${me.nickname}`}>내 블로그</DownMenu>
               <MobileMenu to={'/write'}>새 글 작성</MobileMenu>
               <DownMenu to={'/setting'}>설정</DownMenu>
               <LogoutBtn onClick={onLogout}>로그아웃</LogoutBtn>

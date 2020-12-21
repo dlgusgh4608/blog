@@ -9,30 +9,33 @@ import PostIntroduction from '../../components/write/PostIntroduction';
 import Preview from '../../components/write/Preview';
 import Write from '../../components/write/Write';
 import useInput from '../../hooks/useInput';
-import { ADD_POST_REQUEST, UPDATE_POST_REQUEST, UPLOAD_IMAGE_REQUEST } from '../../reducer/post';
+import { ADD_POST_REQUEST, UPDATE_POST_REQUEST, UPLOAD_IMAGE_REQUEST, UPLOAD_IMAGE_SUCCESS } from '../../reducer/post';
 
 const PostWrite = (props) => {
   const dispatch = useDispatch();
-  const { imagePath } = useSelector((state) => state.post);
+  const { imagePath, post } = useSelector((state) => state.post);
 
   const { state } = props.location;
+
+  let loaded = false;
   useEffect(() => {
-    if (imagePath[0]) {
-      setImgPath(imagePath);
-    } else {
-      setImgPath([]);
+    if (post && !loaded) {
+      dispatch({
+        type: UPLOAD_IMAGE_SUCCESS,
+        data: post.post.post_img,
+      });
     }
-  }, [imagePath[0]]);
+    loaded = true;
+  }, [post, loaded]);
 
   const tags = [];
-  if (state) {
-    for (let i = 0; i < state.tags.length; i++) {
-      tags.push(state.tags[i].content);
+  if (post) {
+    for (let i = 0; i < post.tags.length; i++) {
+      tags.push(post.tags[i].content);
     }
   }
-  const [imgPath, setImgPath] = useState(state ? [].concat(state.imagePath) : []);
 
-  const [content, setContent] = useState(state ? state.content : '');
+  const [content, setContent] = useState(post ? post.post.content : '');
   const onChangeContent = useCallback((e) => {
     setContent(e.getValue());
   }, []);
@@ -48,7 +51,7 @@ const PostWrite = (props) => {
     return { __html: mark };
   };
 
-  const [data, setData] = useState(tags[0] && state ? { tagList: tags } : { tagList: [] });
+  const [data, setData] = useState(tags[0] && post ? { tagList: tags } : { tagList: [] });
   const [tag, onChangeTag, setTag] = useInput('');
   const onKeyDownTag = useCallback(
     (e) => {
@@ -93,8 +96,8 @@ const PostWrite = (props) => {
     });
   };
 
-  const [title, onChangeTitle] = useInput(state ? state.title : '');
-  const [titleContent, onChangeTitleContent] = useInput(state ? state.titleContent : '');
+  const [title, onChangeTitle] = useInput(post ? post.post.title : '');
+  const [titleContent, onChangeTitleContent] = useInput(post ? post.post.title_content : '');
 
   const [isShown, setIsShown] = useState(false);
 
@@ -111,12 +114,12 @@ const PostWrite = (props) => {
         e.preventDefault();
         return alert('글을 입력해주세요');
       }
-      if (imgPath) {
+      if (imagePath[0]) {
         const formData = new FormData();
         formData.append('title', trimTitle);
         formData.append('titleContent', titleContent);
         formData.append('content', content);
-        formData.append('imagePath', imgPath);
+        formData.append('imagePath', imagePath[0]);
         formData.append('tags', tags);
         dispatch({
           type: ADD_POST_REQUEST,
@@ -134,7 +137,7 @@ const PostWrite = (props) => {
         });
       }
     },
-    [title, titleContent, imgPath, content, data],
+    [title, titleContent, imagePath, content, data],
   );
 
   const onModify = useCallback(
@@ -146,14 +149,14 @@ const PostWrite = (props) => {
         e.preventDefault();
         return alert('글을 입력해주세요');
       }
-      if (imgPath) {
+      if (imagePath[0]) {
         const formData = new FormData();
         formData.append('postId', state.postId);
         formData.append('userId', state.userId);
         formData.append('title', trimTitle);
         formData.append('titleContent', titleContent);
         formData.append('content', content);
-        formData.append('imagePath', imgPath);
+        formData.append('imagePath', imagePath[0]);
         formData.append('tags', tags);
         dispatch({
           type: UPDATE_POST_REQUEST,
@@ -173,7 +176,7 @@ const PostWrite = (props) => {
         });
       }
     },
-    [title, titleContent, imgPath, content, data, state],
+    [title, titleContent, imagePath, content, data, state],
   );
 
   return (
@@ -186,7 +189,7 @@ const PostWrite = (props) => {
           onChangeTitleContent={onChangeTitleContent}
           onWrite={onWrite}
           onChangeImg={onChangeImg}
-          imagePath={imgPath}
+          imagePath={imagePath}
           state={state}
           onModify={onModify}
         />
