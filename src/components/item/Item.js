@@ -76,15 +76,18 @@ const TagWrapper = styled.div`
 `;
 
 const Tag = styled(Link)`
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
+  background-color: #f1f3f5;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-right: 0.5rem;
+  margin-bottom: 1rem;
+  height: 2rem;
+  color: #099268;
   border-radius: 1rem;
-  background-color: pink;
   margin-top: 1rem;
-  margin-right: 1rem;
-  padding: 0 0.7rem;
-  color: black;
-  cursor: pointer;
 `;
 
 const Footer = styled.div`

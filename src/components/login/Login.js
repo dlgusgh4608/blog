@@ -20,7 +20,8 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0.75rem 0 1.5rem 0 h2 {
+  margin: 0.75rem 0 1.5rem 0;
+  h2 {
     margin: 0;
   }
 `;
@@ -49,7 +50,7 @@ const LoginButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: greenyellow;
+  background-color: #8ce99a;
   margin-top: 2.2rem;
   border: none;
   border-radius: 2px;
@@ -73,7 +74,7 @@ const FooterSpan = styled.span`
 const SignUp = styled.div`
   display: inline-block;
   font-weight: bold;
-  color: green;
+  color: #2b8a3e;
   cursor: pointer;
 
   :hover {

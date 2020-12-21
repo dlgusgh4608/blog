@@ -74,7 +74,7 @@ const EmailCheckBtn = styled.button`
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
   padding: 0.8rem;
-  background-color: greenyellow;
+  background-color: #8ce99a;
   cursor: pointer;
 `;
 
@@ -86,7 +86,7 @@ const PasswordInput = styled.input`
 `;
 
 const SignUpButton = styled.button`
-  background-color: greenyellow;
+  background-color: #8ce99a;
   border: none;
   margin-top: 1.8rem;
   border-radius: 2px;
@@ -110,7 +110,7 @@ const FooterSpan = styled.span`
 const Login = styled.div`
   display: inline-block;
   font-weight: bold;
-  color: green;
+  color: #2b8a3e;
   cursor: pointer;
 
   :hover {

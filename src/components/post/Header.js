@@ -110,13 +110,13 @@ const Tag = styled(Link)`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: #dcecec;
+  background-color: #f1f3f5;
   padding-left: 1rem;
   padding-right: 1rem;
   margin-right: 1rem;
   margin-bottom: 1rem;
   height: 2rem;
-  color: #11d311;
+  color: #099268;
   border-radius: 1rem;
 `;
 

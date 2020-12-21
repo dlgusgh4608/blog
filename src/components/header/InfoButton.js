@@ -21,6 +21,10 @@ const CreatePostBtn = styled(Link)`
   color: black;
   cursor: pointer;
 
+  :hover {
+    background-color: gray;
+  }
+
   @media (max-width: 750px) {
     display: none;
   }
