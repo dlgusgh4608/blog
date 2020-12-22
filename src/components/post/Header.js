@@ -148,11 +148,11 @@ const Header = ({ post, tags, liker, userId, me, postId, toggleDialog }) => {
         userId: me.id,
       },
     });
-  }, [postId, me]);
+  }, [postId, me, dispatch]);
 
   const onLike = useCallback(() => {
     if (!me) {
-      return toggleDialog(1);
+      return toggleDialog();
     }
     dispatch({
       type: LIKE_POST_REQUEST,
@@ -160,7 +160,7 @@ const Header = ({ post, tags, liker, userId, me, postId, toggleDialog }) => {
         postId,
       },
     });
-  }, [postId, me]);
+  }, [postId, me, dispatch, toggleDialog]);
 
   const onUnlike = useCallback(() => {
     dispatch({
@@ -169,7 +169,7 @@ const Header = ({ post, tags, liker, userId, me, postId, toggleDialog }) => {
         postId,
       },
     });
-  }, [postId]);
+  }, [postId, dispatch]);
   const liked = me && liker.find((v) => v.user_id === me.id);
 
   return (

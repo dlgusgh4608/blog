@@ -194,7 +194,7 @@ const SignUp = ({ toggleDialog, switchHandler, successAlert, errorAlert }) => {
         },
       });
     },
-    [email, password, check, passwordCheck, emailCheckError, errorAlert],
+    [email, password, check, passwordCheck, emailCheckError, errorAlert, dispatch],
   );
 
   return (

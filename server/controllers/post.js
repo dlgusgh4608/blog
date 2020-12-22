@@ -189,7 +189,9 @@ module.exports = (router, service) => {
         return res.status(400).json({ error: 'post not defined', reason: 'postId' });
       }
       const result = await service.updatePost(postId, title, titleContent, content);
-      if (imagePath) {
+      if (imagePath === 'undefined') {
+        await service.deletePostImage(postId);
+      } else {
         await service.updatePostImage(postId, imagePath);
       }
       await service.deleteTag(postId);

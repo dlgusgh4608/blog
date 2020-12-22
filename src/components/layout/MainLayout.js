@@ -28,7 +28,7 @@ const MainLayout = ({ children, userId }) => {
         type: REMOVE_USER_INFO,
       });
     }
-  }, [userId, isShown]);
+  }, [userId, isShown, dispatch]);
 
   const toggleDialog = useCallback(() => {
     setIsShown(!isShown);

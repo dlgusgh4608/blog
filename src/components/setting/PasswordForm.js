@@ -67,7 +67,7 @@ const PasswordForm = () => {
         passwordCheck,
       },
     });
-  }, [password, passwordCheck, pw]);
+  }, [password, passwordCheck, pw, dispatch]);
 
   return (
     <Container>

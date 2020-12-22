@@ -51,7 +51,7 @@ const NicknameForm = ({ me }) => {
         nickname,
       },
     });
-  }, [text]);
+  }, [text, dispatch]);
 
   return (
     <Container>

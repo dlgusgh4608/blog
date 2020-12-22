@@ -60,7 +60,7 @@ const CommentForm = ({ postId, me, comments, toggleDialog }) => {
         content: comment,
       },
     });
-  }, [postId, comment, me]);
+  }, [postId, comment, me, dispatch]);
   return (
     <Container>
       <h3>{comments.length} 개의 댓글</h3>

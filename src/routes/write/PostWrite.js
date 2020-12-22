@@ -11,11 +11,9 @@ import Write from '../../components/write/Write';
 import useInput from '../../hooks/useInput';
 import { ADD_POST_REQUEST, UPDATE_POST_REQUEST, UPLOAD_IMAGE_REQUEST, UPLOAD_IMAGE_SUCCESS } from '../../reducer/post';
 
-const PostWrite = (props) => {
+const PostWrite = () => {
   const dispatch = useDispatch();
   const { imagePath, post } = useSelector((state) => state.post);
-
-  const { state } = props.location;
 
   let loaded = false;
   useEffect(() => {
@@ -137,7 +135,7 @@ const PostWrite = (props) => {
         });
       }
     },
-    [title, titleContent, imagePath, content, data],
+    [title, titleContent, imagePath, content, data, dispatch],
   );
 
   const onModify = useCallback(
@@ -149,34 +147,20 @@ const PostWrite = (props) => {
         e.preventDefault();
         return alert('글을 입력해주세요');
       }
-      if (imagePath[0]) {
-        const formData = new FormData();
-        formData.append('postId', state.postId);
-        formData.append('userId', state.userId);
-        formData.append('title', trimTitle);
-        formData.append('titleContent', titleContent);
-        formData.append('content', content);
-        formData.append('imagePath', imagePath[0]);
-        formData.append('tags', tags);
-        dispatch({
-          type: UPDATE_POST_REQUEST,
-          data: formData,
-        });
-      } else {
-        dispatch({
-          type: UPDATE_POST_REQUEST,
-          data: {
-            postId: state.postId,
-            userId: state.userId,
-            title: trimTitle,
-            titleContent,
-            content,
-            tags,
-          },
-        });
-      }
+      const formData = new FormData();
+      formData.append('postId', post.post.id);
+      formData.append('userId', post.post.user_id);
+      formData.append('title', trimTitle);
+      formData.append('titleContent', titleContent);
+      formData.append('content', content);
+      formData.append('imagePath', imagePath[0]);
+      formData.append('tags', tags);
+      dispatch({
+        type: UPDATE_POST_REQUEST,
+        data: formData,
+      });
     },
-    [title, titleContent, imagePath, content, data, state],
+    [title, titleContent, imagePath, content, data, post, dispatch],
   );
 
   return (
@@ -190,7 +174,7 @@ const PostWrite = (props) => {
           onWrite={onWrite}
           onChangeImg={onChangeImg}
           imagePath={imagePath}
-          state={state}
+          post={post}
           onModify={onModify}
         />
       )}

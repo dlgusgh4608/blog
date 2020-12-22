@@ -168,7 +168,7 @@ const ImgDelete = styled.button`
   }
 `;
 
-const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleContent, onWrite, onChangeImg, imagePath, state, onModify }) => {
+const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleContent, onWrite, onChangeImg, imagePath, post, onModify }) => {
   const dispatch = useDispatch();
   const inputImg = useRef();
 
@@ -216,8 +216,8 @@ const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleCont
         </TextWrapper>
         <BtnWrapper>
           <BackBtn onClick={toggleDialog}>뒤로가기</BackBtn>
-          {state ? (
-            <WriteBtn onClick={onModify} to={`/${state.postId}/${state.userId}/${title}`}>
+          {post ? (
+            <WriteBtn onClick={onModify} to={`/${post.post.id}/${post.post.user_id}/${title}`}>
               수정하기
             </WriteBtn>
           ) : (

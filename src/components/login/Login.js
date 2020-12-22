@@ -97,7 +97,7 @@ const Login = ({ toggleDialog, switchHandler, errorAlert }) => {
       setEmail('');
       setPassword('');
     }
-  }, [loginSuccess, loginError, toggleDialog, errorAlert]);
+  }, [loginSuccess, setPassword, loginError, toggleDialog, errorAlert, setEmail]);
 
   const onSubmit = useCallback(
     (e) => {
@@ -116,7 +116,7 @@ const Login = ({ toggleDialog, switchHandler, errorAlert }) => {
         },
       });
     },
-    [email, password],
+    [email, password, dispatch],
   );
 
   return (

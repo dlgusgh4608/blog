@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import DialogLayout from '../layout/DialogLayout';
-import Spinner from '../spinner/Spinner';
 
 const Wrapper = styled.div`
   display: flex;

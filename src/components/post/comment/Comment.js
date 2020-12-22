@@ -178,7 +178,7 @@ const Comment = ({ data, me }) => {
       },
     });
     onToggleRemoveDialog();
-  }, [data, me, onToggleRemoveDialog]);
+  }, [data, me, onToggleRemoveDialog, dispatch]);
 
   useEffect(() => {
     showRemove ? (document.body.style.overflowY = 'hidden') : (document.body.style.overflow = 'initial');
@@ -195,7 +195,7 @@ const Comment = ({ data, me }) => {
   const onCancel = useCallback(() => {
     setModifyContent(content);
     setShowModify(!showModify);
-  }, [showModify, content]);
+  }, [showModify, content, setModifyContent]);
 
   const onModify = useCallback(() => {
     dispatch({
@@ -207,7 +207,7 @@ const Comment = ({ data, me }) => {
       },
     });
     setShowModify(!showModify);
-  }, [modifyContent, showModify, me]);
+  }, [modifyContent, showModify, setShowModify, data, me, dispatch]);
 
   const markdown = () => {
     const mark = marked(content, {
