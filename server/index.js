@@ -15,7 +15,7 @@ const postService = new PostService(pool);
 
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'https://hyunholee.com'],
     credentials: true,
   }),
 );
