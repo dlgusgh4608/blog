@@ -20,6 +20,9 @@ const MainContainer = styled.div`
   @media (max-width: 1056px) {
     width: calc(100% - 2rem);
   }
+  @media (max-width: 767px) {
+    width: 100%;
+  }
 `;
 
 const MenuWrapper = styled.div`
@@ -38,6 +41,10 @@ const PostWrapper = styled.main`
   flex-wrap: wrap;
   margin: -1rem;
   box-sizing: inherit;
+
+  @media (max-width: 767px) {
+    margin: 0px;
+  }
 `;
 
 const Main = ({ location }) => {

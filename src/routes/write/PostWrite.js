@@ -10,10 +10,16 @@ import Preview from '../../components/write/Preview';
 import Write from '../../components/write/Write';
 import useInput from '../../hooks/useInput';
 import { ADD_POST_REQUEST, UPDATE_POST_REQUEST, UPLOAD_IMAGE_REQUEST, UPLOAD_IMAGE_SUCCESS } from '../../reducer/post';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const PostWrite = () => {
   const dispatch = useDispatch();
-  const { imagePath, post } = useSelector((state) => state.post);
+  const { imagePath, post, imageUploadLoading } = useSelector((state) => state.post);
+
+  const errorAlert = (value) => {
+    toast.error(value);
+  };
 
   let loaded = false;
   useEffect(() => {
@@ -110,7 +116,10 @@ const PostWrite = () => {
       const tags = Array.from(trimTag).filter((v) => v !== '');
       if (titleContent === '') {
         e.preventDefault();
-        return alert('글을 입력해주세요');
+        return errorAlert('글을 입력해주세요');
+      }
+      if (imageUploadLoading) {
+        return errorAlert('이미지 업로드 중입니다. 잠시 후 시도해주세요.');
       }
       if (imagePath[0]) {
         const formData = new FormData();
@@ -145,7 +154,10 @@ const PostWrite = () => {
       const tags = Array.from(trimTag).filter((v) => v !== '');
       if (titleContent === '') {
         e.preventDefault();
-        return alert('글을 입력해주세요');
+        return errorAlert('글을 입력해주세요');
+      }
+      if (imageUploadLoading) {
+        return errorAlert('이미지 업로드 중입니다. 잠시 후 시도해주세요.');
       }
       const formData = new FormData();
       formData.append('postId', post.post.id);
@@ -165,6 +177,7 @@ const PostWrite = () => {
 
   return (
     <WriteLayout>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
       {isShown && (
         <PostIntroduction
           toggleDialog={toggleDialog}
@@ -188,6 +201,7 @@ const PostWrite = () => {
         onKeyDownTag={onKeyDownTag}
         data={data}
         toggleDialog={toggleDialog}
+        errorAlert={errorAlert}
       />
       <Preview markdown={markdown} title={title} />
     </WriteLayout>

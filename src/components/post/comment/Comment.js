@@ -161,7 +161,7 @@ const Comment = ({ data, me }) => {
   const mm = commentDate.substr(5, 2);
   const dd = commentDate.substr(8, 2);
 
-  const date = yyyy + '년' + mm + '월' + dd + '일';
+  const date = yyyy + '년 ' + mm + '월 ' + dd + '일';
 
   const [showRemove, setShowRemove] = useState(false);
 

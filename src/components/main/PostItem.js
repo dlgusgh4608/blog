@@ -9,12 +9,15 @@ const PostContainer = styled.div`
   margin: 1rem;
   width: 20rem;
   box-sizing: inherit;
+  background-color: white;
+  border-radius: 0.3rem;
+  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.04);
 
   @media (max-width: 1056px) {
     width: calc(50% - 2rem);
   }
   @media (max-width: 767px) {
-    margin: 0px;
+    margin: 1rem 0px;
     width: 100%;
   }
 `;
@@ -79,7 +82,7 @@ const AtComment = styled.span`
 const PostFooterContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 0 1rem 0 1rem;
+  padding: 0.5rem 1rem;
   font-size: 0.85rem;
 `;
 
@@ -124,7 +127,7 @@ const PostItem = ({ data }) => {
   const mm = postDate.substr(5, 2);
   const dd = postDate.substr(8, 2);
 
-  const date = yyyy + '년' + mm + '월' + dd + '일';
+  const date = yyyy + '년 ' + mm + '월 ' + dd + '일';
   return (
     <PostContainer>
       {data.post_img && (

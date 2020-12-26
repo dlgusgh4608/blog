@@ -5,9 +5,13 @@ import { LOAD_MY_INFO_REQUEST, LOAD_USER_INFO_REQUEST, REMOVE_USER_INFO } from '
 import Header from '../header/Header';
 import LoginMainPage from '../login/LoginMainPage';
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  @media (max-width: 767px) {
+    padding: 0 1rem;
+  }
+`;
 
-const MainLayout = ({ children, userId }) => {
+const MainLayout = ({ children, userId, color }) => {
   const dispatch = useDispatch();
   const [isShown, setIsShown] = useState(false);
 

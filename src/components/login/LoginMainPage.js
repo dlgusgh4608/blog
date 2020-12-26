@@ -12,7 +12,7 @@ const Container = styled.div`
   width: 670px;
   height: 480px;
 
-  @media (max-width: 750px) {
+  @media (max-width: 767px) {
     flex: 1 1 0%;
     width: auto;
     height: 100%;
@@ -27,7 +27,7 @@ const Welcome = styled.div`
   align-items: center;
   justify-content: center;
 
-  @media (max-width: 750px) {
+  @media (max-width: 767px) {
     display: none;
   }
 `;

@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import ItemWrapper from '../item/ItemWrapper';
 
 const Container = styled.div`
-  width: 700px;
+  width: 767px;
   margin-left: auto;
   margin-right: auto;
 
-  @media (max-width: 750px) {
+  @media (max-width: 767px) {
     width: 100%;
   }
 `;

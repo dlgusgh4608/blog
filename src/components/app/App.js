@@ -18,6 +18,7 @@ const GlobalStyle = createGlobalStyle`
     height:100%;
     padding:0;
     margin:0;
+    background-color: #f8f9fa;
     font-family: 'Roboto', sans-serif;
   }
   #root {
@@ -26,6 +27,11 @@ const GlobalStyle = createGlobalStyle`
   a {
     text-decoration: none;
   }
+
+  * {
+    box-sizing:border-box;
+  }
+
   .CodeMirror-wrap pre.CodeMirror-line {
     word-break: break-word;
   }

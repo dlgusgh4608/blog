@@ -5,7 +5,7 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/atom-one-dark.css';
 
 const Container = styled.div`
-  width: 700px;
+  width: 767px;
   margin: 5rem auto 0px auto;
 
   pre {
@@ -24,7 +24,7 @@ const Container = styled.div`
     overflow-x: auto;
   }
 
-  @media (max-width: 750px) {
+  @media (max-width: 767px) {
     width: 100%;
   }
 `;

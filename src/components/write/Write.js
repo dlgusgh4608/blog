@@ -2,7 +2,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/elegant.css';
 import 'codemirror/theme/monokai.css';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import TextArea from 'react-textarea-autosize';
 import styled from 'styled-components';
@@ -11,6 +11,7 @@ import LeftArrowIcon from '../svg/LeftArrowIcon';
 const Container = styled.div`
   display: flex;
   width: 50%;
+  flex-direction: column;
 
   @media (max-width: 880px) {
     width: 100%;
@@ -27,6 +28,10 @@ const Header = styled.div`
   display: flex;
   flex-direction: column;
   padding: 3rem 2rem 0 2rem;
+  box-sizing: border-box;
+  @media (max-width: 880px) {
+    width: 100%;
+  }
 `;
 
 const Title = styled(TextArea)`
@@ -77,6 +82,10 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   flex: 1 1 0%;
   overflow-y: hidden;
+  box-sizing: border-box;
+  @media (max-width: 880px) {
+    width: 100%;
+  }
 `;
 
 const Hr = styled.div`
@@ -114,18 +123,16 @@ const WriteBtn = styled.button`
   cursor: pointer;
 `;
 
-const TagLabel = styled.div``;
-
-const Write = ({ content, onChangeContent, title, onChangeTitle, tag, onChangeTag, onKeyDownTag, data, toggleDialog }) => {
+const Write = ({ content, onChangeContent, title, onChangeTitle, tag, onChangeTag, onKeyDownTag, data, toggleDialog, errorAlert }) => {
   const onClickWrite = useCallback(() => {
     if (title === '') {
-      return alert('제목을 입력해주세요.');
+      return errorAlert('제목을 입력해주세요.');
     }
     if (content === '') {
-      return alert('내용을 입력해주세요.');
+      return errorAlert('내용을 입력해주세요.');
     }
     toggleDialog();
-  }, [title, content, toggleDialog]);
+  }, [title, content, toggleDialog, errorAlert]);
 
   return (
     <Container>
@@ -154,14 +161,14 @@ const Write = ({ content, onChangeContent, title, onChangeTitle, tag, onChangeTa
             }}
           />
         </ContentWrapper>
-        <BtnWrapper>
-          <ExitBtnWrapper to={'/'}>
-            <LeftArrowIcon />
-            나가기
-          </ExitBtnWrapper>
-          <WriteBtn onClick={onClickWrite}>작성하기</WriteBtn>
-        </BtnWrapper>
       </Wrapper>
+      <BtnWrapper>
+        <ExitBtnWrapper to={'/'}>
+          <LeftArrowIcon />
+          나가기
+        </ExitBtnWrapper>
+        <WriteBtn onClick={onClickWrite}>작성하기</WriteBtn>
+      </BtnWrapper>
     </Container>
   );
 };

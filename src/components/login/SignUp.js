@@ -32,6 +32,11 @@ const Main = styled.div`
   flex-direction: column;
   justify-content: space-between;
   flex: 1 1 0%;
+
+  @media (max-width: 767px) {
+    flex: 0;
+    margin-bottom: 1rem;
+  }
 `;
 
 const Wrapper = styled.form`

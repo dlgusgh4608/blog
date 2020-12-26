@@ -8,7 +8,6 @@ import SearchIcon from '../svg/SearchIcon';
 
 const HeaderContainer = styled.header`
   height: 4rem;
-  box-shadow: 0px 0px 4px gray;
 `;
 
 const HeaderWrapper = styled.div`

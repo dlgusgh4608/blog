@@ -8,12 +8,12 @@ import ColorHeart from '../svg/ColorHeart';
 import Heart from '../svg/Heart';
 
 const Container = styled.div`
-  width: 700px;
+  width: 767px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 6rem;
 
-  @media (max-width: 750px) {
+  @media (max-width: 767px) {
     width: 100%;
   }
 `;
@@ -129,7 +129,7 @@ const Header = ({ post, tags, liker, userId, me, postId, toggleDialog }) => {
   const mm = postDate.substr(5, 2);
   const dd = postDate.substr(8, 2);
 
-  const date = yyyy + '년' + mm + '월' + dd + '일';
+  const date = yyyy + '년 ' + mm + '월 ' + dd + '일';
 
   const [isShown, setIsShown] = useState(false);
   const onToggleRemoveDialog = useCallback(() => {

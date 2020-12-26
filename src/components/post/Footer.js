@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import CommentWrapper from './comment/CommentWrapper';
 
 const Container = styled.div`
-  width: 700px;
+  width: 767px;
   margin: 15rem auto 10rem auto;
 
-  @media (max-width: 750px) {
+  @media (max-width: 767px) {
     width: 100%;
   }
 `;
