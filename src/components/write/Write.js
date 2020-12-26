@@ -42,6 +42,7 @@ const Title = styled(TextArea)`
   overflow-y: hidden;
   font-weight: bold;
   margin-bottom: 3rem;
+  background-color: inherit;
 
   :focus {
     outline: none;
@@ -74,6 +75,7 @@ const TagInput = styled.input`
   border: none;
   outline: none;
   font-size: 1.25rem;
+  background-color: inherit;
 `;
 
 const ContentWrapper = styled.div`
