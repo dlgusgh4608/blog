@@ -6,12 +6,10 @@ import Header from '../header/Header';
 import LoginMainPage from '../login/LoginMainPage';
 
 const Wrapper = styled.div`
-  @media (max-width: 767px) {
-    padding: 0 1rem;
-  }
+  padding: 0 1rem;
 `;
 
-const MainLayout = ({ children, userId, color }) => {
+const MainLayout = ({ children, userId }) => {
   const dispatch = useDispatch();
   const [isShown, setIsShown] = useState(false);
 
