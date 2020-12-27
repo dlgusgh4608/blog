@@ -6,7 +6,7 @@ exports.isLoggedIn = (req, res, next) => {
     return res.json({ error: '로그인이 필요합니다.' });
   }
 
-  const decode = jwt.verify(token, req.app.get('jwt-secret'));
+  const decode = jwt.verify(token, process.env.JWT_SECRET);
   const result = decode.user_id;
   req.token = token;
   req.user = result;

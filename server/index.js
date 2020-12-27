@@ -20,7 +20,6 @@ app.use(
   }),
 );
 app.use(express.json());
-app.set('jwt-secret', 'test');
 app.use(cookieParser());
 
 require('./controllers/user')(router, userService);

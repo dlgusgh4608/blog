@@ -29,7 +29,7 @@ module.exports = (router, service) => {
   router.post('/api/v1/login', isNotLoggedIn, async (req, res) => {
     try {
       const { email, password } = req.body;
-      const secret = req.app.get('jwt-secret');
+      const secret = process.env.JWT_SECRET;
       if (!email) {
         return res.status(400).json({ error: 'invalid', reason: 'email' });
       }
