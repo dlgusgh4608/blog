@@ -33,7 +33,7 @@ const Main = styled.div`
   justify-content: space-between;
   flex: 1 1 0%;
 
-  @media (max-width: 767px) {
+  @media (max-width: 800px) {
     flex: 0;
     margin-bottom: 1rem;
   }

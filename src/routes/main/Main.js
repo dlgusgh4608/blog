@@ -20,7 +20,7 @@ const MainContainer = styled.div`
   @media (max-width: 1056px) {
     width: calc(100% - 2rem);
   }
-  @media (max-width: 767px) {
+  @media (max-width: 800px) {
     width: 100%;
   }
 `;
@@ -42,7 +42,7 @@ const PostWrapper = styled.main`
   margin: -1rem;
   box-sizing: inherit;
 
-  @media (max-width: 767px) {
+  @media (max-width: 800px) {
     margin: 0px;
   }
 `;

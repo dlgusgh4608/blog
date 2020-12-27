@@ -8,7 +8,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 
-  @media (max-width: 767px) {
+  @media (max-width: 800px) {
     margin-top: 2rem;
   }
 `;

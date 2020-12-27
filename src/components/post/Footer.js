@@ -7,7 +7,7 @@ const Container = styled.div`
   width: 767px;
   margin: 15rem auto 10rem auto;
 
-  @media (max-width: 767px) {
+  @media (max-width: 800px) {
     width: 100%;
   }
 `;

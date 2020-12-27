@@ -6,7 +6,9 @@ import Header from '../header/Header';
 import LoginMainPage from '../login/LoginMainPage';
 
 const Wrapper = styled.div`
-  padding: 0 1rem;
+  @media (max-width: 800px) {
+    padding: 0 1rem;
+  }
 `;
 
 const MainLayout = ({ children, userId }) => {

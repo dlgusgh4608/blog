@@ -25,7 +25,7 @@ const CreatePostBtn = styled(Link)`
     background-color: gray;
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 800px) {
     display: none;
   }
 `;
@@ -91,7 +91,7 @@ const MobileMenu = styled(Link)`
     background-color: gray;
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 800px) {
     display: block;
   }
 `;
