@@ -196,7 +196,7 @@ const Header = ({ post, tags, liker, userId, me, postId, toggleDialog }) => {
           )}
           {me && userId === me.id && (
             <HostWrapper>
-              <Modified to={'/write'}>수정</Modified>
+              <Modified to={{ pathname: '/write', state: { id: post.id } }}>수정</Modified>
               <At>·</At>
               <Delete onClick={onToggleRemoveDialog}>삭제</Delete>
             </HostWrapper>

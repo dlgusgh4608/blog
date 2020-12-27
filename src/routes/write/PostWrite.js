@@ -13,17 +13,17 @@ import { ADD_POST_REQUEST, UPDATE_POST_REQUEST, UPLOAD_IMAGE_REQUEST, UPLOAD_IMA
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const PostWrite = () => {
+const PostWrite = ({ location }) => {
   const dispatch = useDispatch();
   const { imagePath, post, imageUploadLoading } = useSelector((state) => state.post);
-
+  const state = location.state;
   const errorAlert = (value) => {
     toast.error(value);
   };
 
   let loaded = false;
   useEffect(() => {
-    if (post && !loaded) {
+    if (post && !loaded && state) {
       dispatch({
         type: UPLOAD_IMAGE_SUCCESS,
         data: post.post.post_img,
@@ -39,7 +39,7 @@ const PostWrite = () => {
     }
   }
 
-  const [content, setContent] = useState(post ? post.post.content : '');
+  const [content, setContent] = useState(post && state ? post.post.content : '');
   const onChangeContent = useCallback((e) => {
     setContent(e.getValue());
   }, []);
@@ -55,7 +55,7 @@ const PostWrite = () => {
     return { __html: mark };
   };
 
-  const [data, setData] = useState(tags[0] && post ? { tagList: tags } : { tagList: [] });
+  const [data, setData] = useState(tags[0] && post && state ? { tagList: tags } : { tagList: [] });
   const [tag, onChangeTag, setTag] = useInput('');
   const onKeyDownTag = useCallback(
     (e) => {
@@ -100,8 +100,8 @@ const PostWrite = () => {
     });
   };
 
-  const [title, onChangeTitle] = useInput(post ? post.post.title : '');
-  const [titleContent, onChangeTitleContent] = useInput(post ? post.post.title_content : '');
+  const [title, onChangeTitle] = useInput(post && state ? post.post.title : '');
+  const [titleContent, onChangeTitleContent] = useInput(post && state ? post.post.title_content : '');
 
   const [isShown, setIsShown] = useState(false);
 
@@ -189,6 +189,7 @@ const PostWrite = () => {
           imagePath={imagePath}
           post={post}
           onModify={onModify}
+          state={state}
         />
       )}
       <Write
