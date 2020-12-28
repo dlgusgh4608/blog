@@ -83,8 +83,8 @@ module.exports = (router, service) => {
     try {
       const { email, password, passwordCheck } = req.body;
       const nickname = email.match(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@/i)[0] + 'blog.io';
-
       const check = email.match(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i);
+      const image = process.env.DEFAULT_IMAGE_PATH;
 
       if (!email || !check) {
         return res.status(400).json({ error: 'invalid', reason: 'email' });
@@ -100,7 +100,7 @@ module.exports = (router, service) => {
         return res.status(403).json({ error: 'overlapEmail', msg: '이미 가입되어있는 이메일 입니다.' });
       }
       const hashPassword = await bcrypt.hash(password, 10);
-      const result = await service.signUp(email, hashPassword, nickname);
+      const result = await service.signUp(email, hashPassword, nickname, image);
       if (!result) {
         return res.status(500).send('알 수 없는 오류가 발생했습니다. 다시 시도해주시기 바랍니다.');
       }
@@ -181,9 +181,13 @@ module.exports = (router, service) => {
     }
   });
 
-  //회원탈퇴
-  router.delete('/api/v1/user/:userId', async (req, res) => {
+  //default 이미지로 변경
+  router.patch('/api/v1/user-image', isLoggedIn, async (req, res) => {
     try {
+      const id = req.user;
+      const imgPath = process.env.DEFAULT_IMAGE_PATH;
+      const result = await service.updateImage(id, imgPath);
+      res.status(200).json(result);
     } catch (e) {
       res.json(e);
     }

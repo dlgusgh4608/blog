@@ -92,7 +92,7 @@ const PostWrite = ({ location }) => {
     if (e.target.files.length === 0) {
       return e.preventDefault();
     }
-    if (!e.target.files[0].type === 'image/gif' || 'image/jpeg' || 'image/png') {
+    if (!e.target.files[0].type === ('image/gif' || 'image/jpeg' || 'image/png')) {
       return errorAlert('이미지 파일만 업로드 가능합니다.');
     }
     const imageFormData = new FormData();

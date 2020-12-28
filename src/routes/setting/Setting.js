@@ -33,10 +33,10 @@ const Wrapper = styled.div`
 `;
 
 const Setting = () => {
-  const { me, changeImageSuccess, changeNicknameSuccess, changePasswordSuccess } = useSelector((state) => state.user);
+  const { me, changeImageSuccess, changeNicknameSuccess, changePasswordSuccess, changeDefaultImageSuccess } = useSelector((state) => state.user);
 
   useEffect(() => {
-    if (changeImageSuccess) {
+    if (changeImageSuccess || changeDefaultImageSuccess) {
       successAlert('이미지가 성공적으로 변경되었습니다.');
     }
     if (changeNicknameSuccess) {
@@ -45,7 +45,7 @@ const Setting = () => {
     if (changePasswordSuccess) {
       successAlert('비밀번호가 성공적으로 변경되었습니다.');
     }
-  }, [changeImageSuccess, changeNicknameSuccess, changePasswordSuccess]);
+  }, [changeImageSuccess, changeNicknameSuccess, changePasswordSuccess, changeDefaultImageSuccess]);
 
   const successAlert = (value) => {
     toast.success(value);

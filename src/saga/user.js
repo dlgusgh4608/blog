@@ -28,6 +28,9 @@ import {
   CHANGE_IMAGE_FAILURE,
   CHANGE_IMAGE_REQUEST,
   CHANGE_IMAGE_SUCCESS,
+  CHANGE_DEFAULT_IMAGE_FAILURE,
+  CHANGE_DEFAULT_IMAGE_REQUEST,
+  CHANGE_DEFAULT_IMAGE_SUCCESS,
 } from '../reducer/user';
 
 function emailCheckAPI(data) {
@@ -192,6 +195,24 @@ function* changeImage(action) {
   }
 }
 
+function changeDefaultImageAPI() {
+  return axios.patch('/v1/user-image');
+}
+function* changeDefaultImage() {
+  try {
+    const result = yield call(changeDefaultImageAPI);
+    yield put({
+      type: CHANGE_DEFAULT_IMAGE_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: CHANGE_DEFAULT_IMAGE_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
 function* watchEmailCheck() {
   yield takeLatest(EMAIL_CHECK_REQUEST, emailCheck);
 }
@@ -219,6 +240,9 @@ function* watchChangePassword() {
 function* watchChangeImage() {
   yield takeLatest(CHANGE_IMAGE_REQUEST, changeImage);
 }
+function* watchChangeDefaultImage() {
+  yield takeLatest(CHANGE_DEFAULT_IMAGE_REQUEST, changeDefaultImage);
+}
 
 export default function* userSaga() {
   yield all([
@@ -231,5 +255,6 @@ export default function* userSaga() {
     fork(watchChangeNickname),
     fork(watchChangePassword),
     fork(watchChangeImage),
+    fork(watchChangeDefaultImage),
   ]);
 }

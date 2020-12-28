@@ -28,6 +28,9 @@ export const initialState = {
   changeImageSuccess: false,
   changeImageLoading: false,
   changeImageError: null,
+  changeDefaultImageSuccess: false,
+  changeDefaultImageLoading: false,
+  changeDefaultImageError: null,
 };
 
 export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
@@ -66,14 +69,42 @@ export const CHANGE_IMAGE_REQUEST = 'CHANGE_IMAGE_REQUEST';
 export const CHANGE_IMAGE_SUCCESS = 'CHANGE_IMAGE_SUCCESS';
 export const CHANGE_IMAGE_FAILURE = 'CHANGE_IMAGE_FAILURE';
 
+export const CHANGE_DEFAULT_IMAGE_REQUEST = 'CHANGE_DEFAULT_IMAGE_REQUEST';
+export const CHANGE_DEFAULT_IMAGE_SUCCESS = 'CHANGE_DEFAULT_IMAGE_SUCCESS';
+export const CHANGE_DEFAULT_IMAGE_FAILURE = 'CHANGE_DEFAULT_IMAGE_FAILURE';
+
 export const REMOVE_USER_INFO = 'REMOVE_USER_INFO';
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case CHANGE_DEFAULT_IMAGE_REQUEST:
+      return {
+        ...state,
+        changeDefaultImageLoading: true,
+        changeDefaultImageSuccess: false,
+        changeNicknameSuccess: false,
+        changePasswordSuccess: false,
+        changeImageSuccess: false,
+        changeDefaultImageError: null,
+      };
+    case CHANGE_DEFAULT_IMAGE_SUCCESS:
+      return {
+        ...state,
+        changeDefaultImageLoading: false,
+        changeDefaultImageSuccess: true,
+        me: action.data,
+      };
+    case CHANGE_DEFAULT_IMAGE_FAILURE:
+      return {
+        ...state,
+        changeDefaultImageLoading: false,
+        changeDefaultImageError: action.error,
+      };
     case CHANGE_IMAGE_REQUEST:
       return {
         ...state,
         changeImageLoading: true,
+        changeDefaultImageSuccess: false,
         changeNicknameSuccess: false,
         changePasswordSuccess: false,
         changeImageSuccess: false,
@@ -96,6 +127,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         changePasswordLoading: true,
+        changeDefaultImageSuccess: false,
         changeNicknameSuccess: false,
         changePasswordSuccess: false,
         changeImageSuccess: false,
@@ -117,6 +149,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         changeNicknameLoading: true,
+        changeDefaultImageSuccess: false,
         changeNicknameSuccess: false,
         changePasswordSuccess: false,
         changeImageSuccess: false,

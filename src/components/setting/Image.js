@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import styled from 'styled-components';
-import { CHANGE_IMAGE_REQUEST } from '../../reducer/user';
+import { CHANGE_IMAGE_REQUEST, CHANGE_DEFAULT_IMAGE_REQUEST } from '../../reducer/user';
 import { useDispatch } from 'react-redux';
 
 const Container = styled.div`
@@ -66,7 +66,7 @@ const Image = ({ me, errorAlert }) => {
     if (e.target.files.length === 0) {
       return e.preventDefault();
     }
-    if (!e.target.files[0].type === 'image/gif' || 'image/jpeg' || 'image/png') {
+    if (!e.target.files[0].type === ('image/gif' || 'image/jpeg' || 'image/png')) {
       return errorAlert('이미지 파일만 업로드 가능합니다.');
     }
     const imageFormData = new FormData();
@@ -77,13 +77,19 @@ const Image = ({ me, errorAlert }) => {
     });
   };
 
+  const onImgRemove = () => {
+    dispatch({
+      type: CHANGE_DEFAULT_IMAGE_REQUEST,
+    });
+  };
+
   return (
     <Container>
       <Wrapper>
         <Img src={me.img_path} />
       </Wrapper>
       <UploadBtn onClick={onImgUpload}>이미지 업로드</UploadBtn>
-      <DeleteBtn>이미지 삭제</DeleteBtn>
+      <DeleteBtn onClick={onImgRemove}>기본 이미지로 변경</DeleteBtn>
       <input type="file" hidden ref={inputRef} accept="image/gif, image/jpeg, image/png" onChange={onChangeImg} />
     </Container>
   );

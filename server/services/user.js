@@ -18,8 +18,8 @@ class UserService {
     return result.rows;
   }
   //회원가입
-  async signUp(email, password, nickname) {
-    const result = await this._pool.query(`INSERT INTO users(email, password, nickname) VALUES($1, $2, $3)`, [email, password, nickname]);
+  async signUp(email, password, nickname, image) {
+    const result = await this._pool.query(`INSERT INTO users(email, password, nickname, img_path) VALUES($1, $2, $3, $4)`, [email, password, nickname, image]);
     return result.rowCount;
   }
   //닉네임 변경
@@ -37,15 +37,10 @@ class UserService {
     const result = await this._pool.query(`UPDATE users SET password = $2 WHERE id = $1`, [id, password]);
     return result.rowCount;
   }
-  //비밀번호 변경
+  //이미지 변경
   async updateImage(id, imgPath) {
     const result = await this._pool.query(`UPDATE users SET img_path = $2 WHERE id = $1 RETURNING id, nickname, img_path`, [id, imgPath]);
     return result.rows[0];
-  }
-  //회원탈퇴
-  async userDelete(userId) {
-    const result = await this._pool.query('DELETE FROM users FROM id = $1', [userId]);
-    return result.rowCount;
   }
 }
 
