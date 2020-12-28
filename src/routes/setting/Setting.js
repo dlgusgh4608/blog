@@ -51,12 +51,16 @@ const Setting = () => {
     toast.success(value);
   };
 
+  const errorAlert = (value) => {
+    toast.error(value);
+  };
+
   return (
     <MainLayout>
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
       {me && (
         <Container>
-          <Image me={me} />
+          <Image me={me} errorAlert={errorAlert} />
           <Wrapper>
             <NicknameForm me={me} />
             <PasswordForm />

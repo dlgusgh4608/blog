@@ -50,7 +50,7 @@ const DeleteBtn = styled.button`
   cursor: pointer;
 `;
 
-const Image = ({ me }) => {
+const Image = ({ me, errorAlert }) => {
   const dispatch = useDispatch();
   const inputRef = useRef();
 
@@ -65,6 +65,9 @@ const Image = ({ me }) => {
   const onChangeImg = (e) => {
     if (e.target.files.length === 0) {
       return e.preventDefault();
+    }
+    if (!e.target.files[0].type === 'image/gif' || 'image/jpeg' || 'image/png') {
+      return errorAlert('이미지 파일만 업로드 가능합니다.');
     }
     const imageFormData = new FormData();
     imageFormData.append('image', e.target.files[0]);
@@ -81,7 +84,7 @@ const Image = ({ me }) => {
       </Wrapper>
       <UploadBtn onClick={onImgUpload}>이미지 업로드</UploadBtn>
       <DeleteBtn>이미지 삭제</DeleteBtn>
-      <input type="file" hidden ref={inputRef} onChange={onChangeImg} />
+      <input type="file" hidden ref={inputRef} accept="image/gif, image/jpeg, image/png" onChange={onChangeImg} />
     </Container>
   );
 };

@@ -199,7 +199,7 @@ const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleCont
 
         <ImgContainer>
           <ImgWrapper>
-            <input type="file" ref={inputImg} hidden onChange={onChangeImg} />
+            <input type="file" ref={inputImg} hidden accept="image/gif, image/jpeg, image/png" onChange={onChangeImg} />
             {imagePath[0] ? (
               <MainImg src={imagePath[0]} />
             ) : (
