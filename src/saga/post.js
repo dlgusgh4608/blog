@@ -121,12 +121,16 @@ function* loadPost(action) {
   }
 }
 
-function loadMainPostsAPI() {
-  return axios.get('/v1/posts');
+function loadMainPostsAPI(data) {
+  if (data.type) {
+    return axios.get('/v1/like-order-posts');
+  } else {
+    return axios.get('/v1/posts');
+  }
 }
 
-function* loadMainPosts() {
-  const result = yield call(loadMainPostsAPI);
+function* loadMainPosts(action) {
+  const result = yield call(loadMainPostsAPI, action.data);
   try {
     yield put({
       type: LOAD_MAIN_POSTS_SUCCESS,

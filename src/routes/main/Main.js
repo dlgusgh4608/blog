@@ -54,11 +54,19 @@ const Main = ({ location }) => {
 
   useEffect(() => {
     if (!addPostLoading && !removePostLoading) {
-      if (type === 'old') {
-        return;
+      if (type === 'like') {
+        return dispatch({
+          type: LOAD_MAIN_POSTS_REQUEST,
+          data: {
+            type,
+          },
+        });
       }
       dispatch({
         type: LOAD_MAIN_POSTS_REQUEST,
+        data: {
+          type,
+        },
       });
     }
   }, [type, addPostLoading, removePostLoading]);

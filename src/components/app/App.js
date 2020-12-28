@@ -71,7 +71,7 @@ const App = () => {
                 <Route path={'/tag/:tag'} exact={true} component={Tag} />
                 <Route path={'/write'} exact={true} component={PostWrite} />
                 <Route path={'/:postId/:userId/:title'} exact={true} component={Post} />
-                <Route path={'/old'} exact={true} component={Main} />
+                <Route path={'/like'} exact={true} component={Main} />
                 <Route path={'/'} exact={true} component={Main} />
                 <Route path={'/:userId/:nickname'} exact={true} component={Info} />
                 <Route path={'/search'} exact={true} component={Search} />

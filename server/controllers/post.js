@@ -3,7 +3,7 @@ const { isLoggedIn } = require('../middleware/auth');
 
 module.exports = (router, service) => {
   //메인 화면
-  router.get('/api/v1/posts', async (req, res) => {
+  router.get('/api/v1/posts/', async (req, res) => {
     try {
       const result = await service.posts();
       const comment = await Promise.all(result.map((v) => service.postCommentCount(v.post_id))); //댓글 개수 가져오기
@@ -14,6 +14,27 @@ module.exports = (router, service) => {
       for (let i = 0; i < result.length; i++) {
         result[i].liker = liker[i].liker;
       }
+      res.status(200).json(result);
+    } catch (e) {
+      res.json(e);
+    }
+  });
+
+  //좋아요 순서 메인화면
+  router.get('/api/v1/like-order-posts', async (req, res) => {
+    try {
+      const result = await service.posts();
+      const comment = await Promise.all(result.map((v) => service.postCommentCount(v.post_id))); //댓글 개수 가져오기
+      for (let i = 0; i < result.length; i++) {
+        result[i].comment = comment[i].comment;
+      }
+      const liker = await Promise.all(result.map((v) => service.postLikerCount(v.post_id))); //좋아요 개수 가져오기
+      for (let i = 0; i < result.length; i++) {
+        result[i].liker = liker[i].liker;
+      }
+      result.sort((a, b) => {
+        return b.liker - a.liker;
+      });
       res.status(200).json(result);
     } catch (e) {
       res.json(e);
