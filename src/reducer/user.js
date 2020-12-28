@@ -74,6 +74,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         changeImageLoading: true,
+        changeNicknameSuccess: false,
+        changePasswordSuccess: false,
         changeImageSuccess: false,
         changeImageError: null,
       };
@@ -94,7 +96,9 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         changePasswordLoading: true,
+        changeNicknameSuccess: false,
         changePasswordSuccess: false,
+        changeImageSuccess: false,
         changePasswordError: null,
       };
     case CHANGE_PASSWORD_SUCCESS:
@@ -102,7 +106,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         changePasswordLoading: false,
         changePasswordSuccess: true,
-        me: action.data,
       };
     case CHANGE_PASSWORD_FAILURE:
       return {
@@ -115,6 +118,8 @@ const reducer = (state = initialState, action) => {
         ...state,
         changeNicknameLoading: true,
         changeNicknameSuccess: false,
+        changePasswordSuccess: false,
+        changeImageSuccess: false,
         changeNicknameError: null,
       };
     case CHANGE_NICKNAME_SUCCESS:
