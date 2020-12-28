@@ -58,7 +58,7 @@ const Footer = ({ post, postId, comments, me, toggleDialog }) => {
     <Container>
       <HostWrapper>
         <ImgWrapper to={`/${post.user_id}/${post.nickname}`}>
-          <Img src="https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile27.uf.tistory.com%2Fimage%2F9905EB345DF8CE050BE220" />
+          <Img src={post.user_img} />
         </ImgWrapper>
         <NameWrapper>
           <HostName to={`/${post.user_id}/${post.nickname}`}>{post.nickname}</HostName>
