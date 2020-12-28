@@ -46,7 +46,7 @@ import {
 } from '../reducer/post';
 
 function imageUploadAPI(data) {
-  return axios.post('/v1/imageUpload', data);
+  return axios.post('/v1/post-image', data);
 }
 
 function* imageUpload(action) {
@@ -65,7 +65,7 @@ function* imageUpload(action) {
 }
 
 function addPostAPI(data) {
-  return axios.post('/v1/addPost', data);
+  return axios.post('/v1/post/add', data);
 }
 
 function* addPost(action) {
@@ -84,7 +84,7 @@ function* addPost(action) {
 }
 
 function updatePostAPI(data) {
-  return axios.post('/v1/updatePost', data);
+  return axios.post('/v1/post/modify', data);
 }
 
 function* updatePost(action) {
@@ -103,7 +103,7 @@ function* updatePost(action) {
 }
 
 function loadPostAPI(data) {
-  return axios.post('/v1/loadPost', data);
+  return axios.post('/v1/post', data);
 }
 
 function* loadPost(action) {
@@ -141,7 +141,7 @@ function* loadMainPosts() {
 }
 
 function loadUserPostsAPI(data) {
-  return axios.post('/v1/userPosts', data);
+  return axios.post('/v1/user-posts', data);
 }
 
 function* loadUserPosts(action) {
@@ -160,7 +160,7 @@ function* loadUserPosts(action) {
 }
 
 function addCommentAPI(data) {
-  return axios.post(`/v1/addComment`, data);
+  return axios.post(`/v1/comment/add`, data);
 }
 
 function* addComment(action) {
@@ -179,7 +179,7 @@ function* addComment(action) {
 }
 
 function updateCommentAPI(data) {
-  return axios.post(`/v1/updateComment`, data);
+  return axios.post(`/v1/comment/modify`, data);
 }
 
 function* updateComment(action) {

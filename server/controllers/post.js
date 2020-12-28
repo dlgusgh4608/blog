@@ -21,7 +21,7 @@ module.exports = (router, service) => {
   });
 
   //유저 포스트
-  router.post('/api/v1/userPosts', async (req, res) => {
+  router.post('/api/v1/user-posts', async (req, res) => {
     try {
       const userId = req.body.id;
       if (!userId) {
@@ -95,7 +95,7 @@ module.exports = (router, service) => {
   });
 
   //포스트 상세보기
-  router.post('/api/v1/loadPost', async (req, res) => {
+  router.post('/api/v1/post', async (req, res) => {
     try {
       const postId = req.body.postId;
       if (!postId) {
@@ -114,7 +114,7 @@ module.exports = (router, service) => {
   });
 
   //포스트 작성
-  router.post('/api/v1/addPost', isLoggedIn, upload.none(), async (req, res) => {
+  router.post('/api/v1/post/add', isLoggedIn, upload.none(), async (req, res) => {
     try {
       const userId = req.user;
       const { title, titleContent, content, imagePath, tags } = req.body;
@@ -168,7 +168,7 @@ module.exports = (router, service) => {
   });
 
   //포스트 수정
-  router.post('/api/v1/updatePost', isLoggedIn, upload.none(), async (req, res) => {
+  router.post('/api/v1/post/modify', isLoggedIn, upload.none(), async (req, res) => {
     try {
       const tokenId = req.user;
       const { postId, userId, title, titleContent, content, imagePath, tags } = req.body;
@@ -210,7 +210,7 @@ module.exports = (router, service) => {
   });
 
   //이미지 업로드 및 미리보기
-  router.post('/api/v1/imageUpload', upload.single('image'), (req, res) => {
+  router.post('/api/v1/post-image', upload.single('image'), (req, res) => {
     try {
       const filename = req.file.location;
       res.json(filename);
@@ -249,7 +249,7 @@ module.exports = (router, service) => {
     }
   });
   //댓글 작성
-  router.post('/api/v1/addComment', isLoggedIn, async (req, res) => {
+  router.post('/api/v1/comment/add', isLoggedIn, async (req, res) => {
     try {
       const userId = req.user;
       const { postId, content } = req.body;
@@ -273,7 +273,7 @@ module.exports = (router, service) => {
     }
   });
   //댓글 수정
-  router.post('/api/v1/updateComment', isLoggedIn, async (req, res) => {
+  router.post('/api/v1/comment/modify', isLoggedIn, async (req, res) => {
     try {
       const tokenId = req.user;
       const { id, userId, content } = req.body;

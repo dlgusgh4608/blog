@@ -79,7 +79,7 @@ module.exports = (router, service) => {
     }
   });
   //회원가입
-  router.post(`/api/v1/signUp`, isNotLoggedIn, async (req, res) => {
+  router.post(`/api/v1/sign-up`, isNotLoggedIn, async (req, res) => {
     try {
       const { email, password, passwordCheck } = req.body;
       const nickname = email.match(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@/i)[0] + 'blog.io';
@@ -110,7 +110,7 @@ module.exports = (router, service) => {
     }
   });
   //이메일 체크
-  router.post('/api/v1/emailCheck', isNotLoggedIn, async (req, res) => {
+  router.post('/api/v1/email-check', isNotLoggedIn, async (req, res) => {
     try {
       const email = req.body.email;
       const check = email.match(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i);
@@ -170,7 +170,7 @@ module.exports = (router, service) => {
   });
 
   //이미지 변경
-  router.post('/api/v1/image', isLoggedIn, upload.single('image'), async (req, res) => {
+  router.post('/api/v1/user-image', isLoggedIn, upload.single('image'), async (req, res) => {
     try {
       const id = req.user;
       const imgPath = req.file.location;
@@ -182,7 +182,7 @@ module.exports = (router, service) => {
   });
 
   //회원탈퇴
-  router.delete('/api/v1/deleteUser/:userId', async (req, res) => {
+  router.delete('/api/v1/user/:userId', async (req, res) => {
     try {
     } catch (e) {
       res.json(e);

@@ -31,7 +31,7 @@ import {
 } from '../reducer/user';
 
 function emailCheckAPI(data) {
-  return axios.post('/v1/emailCheck', data);
+  return axios.post('/v1/email-check', data);
 }
 function* emailCheck(action) {
   try {
@@ -49,7 +49,7 @@ function* emailCheck(action) {
 }
 
 function signUpAPI(data) {
-  return axios.post('/v1/signUp', data);
+  return axios.post('/v1/sign-up', data);
 }
 function* signUp(action) {
   try {
@@ -175,7 +175,7 @@ function* changePassword(action) {
 }
 
 function changeImageAPI(data) {
-  return axios.post('/v1/image', data);
+  return axios.post('/v1/user-image', data);
 }
 function* changeImage(action) {
   try {
