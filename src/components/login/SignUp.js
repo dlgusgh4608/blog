@@ -14,10 +14,6 @@ const Container = styled.div`
   h4 {
     margin: 0.3rem 0 0.3rem 0;
   }
-
-  @media (max-width: 800px) {
-    height: 0;
-  }
 `;
 
 const Header = styled.div`

@@ -28,6 +28,11 @@ const GlobalStyle = createGlobalStyle`
     text-decoration: none;
   }
 
+  input {
+    -webkit-border-radius:0;
+    -webkit-appearance:none;
+  }
+
   * {
     box-sizing:border-box;
   }
