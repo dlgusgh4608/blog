@@ -42,7 +42,7 @@ const Hr = styled.div`
   background-color: black;
 `;
 
-const CommentForm = ({ postId, me, comments, toggleDialog }) => {
+const CommentForm = ({ postId, me, comments, toggleDialog, errorAlert }) => {
   const dispatch = useDispatch();
   const [comment, onChangeComment, setComment] = useInput('');
   const onClickAdd = useCallback(() => {
@@ -50,7 +50,7 @@ const CommentForm = ({ postId, me, comments, toggleDialog }) => {
       return toggleDialog();
     }
     if (!comment) {
-      return alert('댓글을 입력해주세요.');
+      return errorAlert('댓글을 입력해주세요.');
     }
     setComment('');
     dispatch({
@@ -60,7 +60,7 @@ const CommentForm = ({ postId, me, comments, toggleDialog }) => {
         content: comment,
       },
     });
-  }, [postId, comment, me, dispatch]);
+  }, [postId, comment, me, dispatch, errorAlert]);
   return (
     <Container>
       <h3>{comments.length} 개의 댓글</h3>

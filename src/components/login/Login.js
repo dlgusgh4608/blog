@@ -108,10 +108,10 @@ const Login = ({ toggleDialog, switchHandler, errorAlert }) => {
     (e) => {
       e.preventDefault();
       if (!email) {
-        return alert('이메일을 입력해주세요.');
+        return errorAlert('이메일을 입력해주세요.');
       }
       if (!password) {
-        return alert('비밀번호를 입력해주세요.');
+        return errorAlert('비밀번호를 입력해주세요.');
       }
       dispatch({
         type: LOGIN_REQUEST,
@@ -121,7 +121,7 @@ const Login = ({ toggleDialog, switchHandler, errorAlert }) => {
         },
       });
     },
-    [email, password, dispatch],
+    [email, password, dispatch, errorAlert],
   );
 
   return (

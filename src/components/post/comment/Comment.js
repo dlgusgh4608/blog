@@ -154,7 +154,7 @@ const Hr = styled.div`
   margin-bottom: 2rem;
 `;
 
-const Comment = ({ data, me }) => {
+const Comment = ({ data, me, errorAlert }) => {
   const dispatch = useDispatch();
   const commentDate = data.create_at;
   const yyyy = commentDate.substr(0, 4);
@@ -198,6 +198,10 @@ const Comment = ({ data, me }) => {
   }, [showModify, content, setModifyContent]);
 
   const onModify = useCallback(() => {
+    if (!modifyContent) {
+      return errorAlert('수정 할 댓글을 입력해주세요.');
+    }
+
     dispatch({
       type: UPDATE_COMMENT_REQUEST,
       data: {
