@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { LOGOUT_REQUEST } from '../../reducer/user';
 import DownIcon from '../svg/DownIcon';
 
@@ -31,16 +31,10 @@ const CreatePostBtn = styled(Link)`
 `;
 
 const MyInfoWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-`;
-
-const DownMenuContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
 `;
 
@@ -109,9 +103,14 @@ const InfoButton = ({ me }) => {
   const dispatch = useDispatch();
   const [isShow, setIsShow] = useState(false);
 
-  const toggleMenu = useCallback(() => {
+  const showToggleMenu = useCallback(() => {
     setIsShow(!isShow);
   }, [isShow]);
+
+  const ToggleMenuBlur = () => {
+    setIsShow(false);
+  };
+
   const onLogout = () => {
     dispatch({
       type: LOGOUT_REQUEST,
@@ -120,21 +119,19 @@ const InfoButton = ({ me }) => {
   return (
     <>
       <CreatePostBtn to={'/write'}>새 글 작성</CreatePostBtn>
-      <MyInfoWrapper>
-        <DownMenuContainer onClick={toggleMenu}>
-          <ImgWrapper>
-            <UserImg src={me.img_path} />
-          </ImgWrapper>
-          <DownIcon />
-          {isShow && (
-            <DownMenuWrapper>
-              <DownMenu to={`/${me.id}/${me.nickname}`}>내 블로그</DownMenu>
-              <MobileMenu to={'/write'}>새 글 작성</MobileMenu>
-              <DownMenu to={'/setting'}>설정</DownMenu>
-              <LogoutBtn onClick={onLogout}>로그아웃</LogoutBtn>
-            </DownMenuWrapper>
-          )}
-        </DownMenuContainer>
+      <MyInfoWrapper onClick={showToggleMenu} onBlur={ToggleMenuBlur} tabIndex={0}>
+        <ImgWrapper>
+          <UserImg src={me.img_path} />
+        </ImgWrapper>
+        <DownIcon />
+        {isShow && (
+          <DownMenuWrapper>
+            <DownMenu to={`/${me.id}/${me.nickname}`}>내 블로그</DownMenu>
+            <MobileMenu to={'/write'}>새 글 작성</MobileMenu>
+            <DownMenu to={'/setting'}>설정</DownMenu>
+            <LogoutBtn onClick={onLogout}>로그아웃</LogoutBtn>
+          </DownMenuWrapper>
+        )}
       </MyInfoWrapper>
     </>
   );

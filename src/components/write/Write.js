@@ -2,7 +2,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/elegant.css';
 import 'codemirror/theme/monokai.css';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import TextArea from 'react-textarea-autosize';
 import styled from 'styled-components';
@@ -57,6 +57,7 @@ const TagWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 1.5rem;
+  position: relative;
 `;
 
 const Tag = styled.div`
@@ -76,6 +77,18 @@ const TagInput = styled.input`
   outline: none;
   font-size: 1.25rem;
   background-color: inherit;
+`;
+
+const TagLabel = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 100%;
+  width: 350px;
+  height: 3rem;
+  padding: 0.5rem;
+  border-radius: 0.7rem;
+  background-color: #dee2e6;
 `;
 
 const ContentWrapper = styled.div`
@@ -126,6 +139,16 @@ const WriteBtn = styled.button`
 `;
 
 const Write = ({ content, onChangeContent, title, onChangeTitle, tag, onChangeTag, onKeyDownTag, data, toggleDialog, errorAlert }) => {
+  const [showTagLabel, setShowTagLabel] = useState(false);
+
+  const onTagInputFocus = () => {
+    setShowTagLabel(true);
+  };
+
+  const onTagInputBlur = () => {
+    setShowTagLabel(false);
+  };
+
   const onClickWrite = useCallback(() => {
     if (title === '') {
       return errorAlert('제목을 입력해주세요.');
@@ -145,8 +168,9 @@ const Write = ({ content, onChangeContent, title, onChangeTitle, tag, onChangeTa
             {data.tagList.map((v, i) => (
               <Tag key={i}>{v}</Tag>
             ))}
-            <TagInput placeholder="태그를 입력해주세요." value={tag} onChange={onChangeTag} onKeyDown={onKeyDownTag} />
+            <TagInput placeholder="태그를 입력해주세요." value={tag} onChange={onChangeTag} onKeyDown={onKeyDownTag} onFocus={onTagInputFocus} onBlur={onTagInputBlur} />
             <Hr />
+            {showTagLabel && <TagLabel>Enter 혹은 , 키로 태그를 입력할수 있습니다.</TagLabel>}
           </TagWrapper>
         </Header>
         <ContentWrapper>
