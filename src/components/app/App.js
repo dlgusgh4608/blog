@@ -10,7 +10,6 @@ import Tag from '../../routes/tag/Tag';
 import Setting from '../../routes/setting/Setting';
 
 const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,100;1,300&display=swap');
   html{
     height:100%;
   }
