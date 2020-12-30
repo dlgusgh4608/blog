@@ -1,16 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import InfoButton from './InfoButton';
 import { useSelector } from 'react-redux';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import UserLogo from './UserLogo';
 import SearchIcon from '../svg/SearchIcon';
 
-const HeaderContainer = styled.header`
-  height: 4rem;
-`;
-
-const HeaderWrapper = styled.div`
+const Wrapper = styled.div`
   display: flex;
   height: 100%;
   width: 1728px;
@@ -64,17 +60,15 @@ const Header = ({ toggleDialog }) => {
 
   return (
     <>
-      <HeaderContainer>
-        <HeaderWrapper>
-          <Head>{user ? <UserLogo user={user} /> : <Logo to={'/'}>blog</Logo>}</Head>
-          <Head>
-            <Search to={'/search'}>
-              <SearchIcon />
-            </Search>
-            {me ? <InfoButton me={me} /> : <LoginBtn onClick={toggleDialog}>로그인</LoginBtn>}
-          </Head>
-        </HeaderWrapper>
-      </HeaderContainer>
+      <Wrapper>
+        <Head>{user ? <UserLogo user={user} /> : <Logo to={'/'}>blog</Logo>}</Head>
+        <Head>
+          <Search to={'/search'}>
+            <SearchIcon />
+          </Search>
+          {me ? <InfoButton me={me} /> : <LoginBtn onClick={toggleDialog}>로그인</LoginBtn>}
+        </Head>
+      </Wrapper>
     </>
   );
 };
