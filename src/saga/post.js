@@ -65,7 +65,8 @@ function* imageUpload(action) {
 }
 
 function addPostAPI(data) {
-  return axios.post('/v1/post/add', data);
+  console.log(data);
+  return axios.post('/v1/post', data);
 }
 
 function* addPost(action) {

@@ -124,28 +124,16 @@ const PostWrite = ({ location }) => {
       if (imageUploadLoading) {
         return errorAlert('이미지 업로드 중입니다. 잠시 후 시도해주세요.');
       }
-      if (imagePath[0]) {
-        const formData = new FormData();
-        formData.append('title', trimTitle);
-        formData.append('titleContent', titleContent);
-        formData.append('content', content);
-        formData.append('imagePath', imagePath[0]);
-        formData.append('tags', tags);
-        dispatch({
-          type: ADD_POST_REQUEST,
-          data: formData,
-        });
-      } else {
-        dispatch({
-          type: ADD_POST_REQUEST,
-          data: {
-            title: trimTitle,
-            titleContent,
-            content,
-            tags,
-          },
-        });
-      }
+      dispatch({
+        type: ADD_POST_REQUEST,
+        data: {
+          title: trimTitle,
+          titleContent,
+          content,
+          tags,
+          imagePath,
+        },
+      });
     },
     [title, titleContent, imagePath, content, data, dispatch],
   );
@@ -168,7 +156,7 @@ const PostWrite = ({ location }) => {
       formData.append('title', trimTitle);
       formData.append('titleContent', titleContent);
       formData.append('content', content);
-      formData.append('imagePath', imagePath[0]);
+      formData.append('imagePath', imagePath);
       formData.append('tags', tags);
       dispatch({
         type: UPDATE_POST_REQUEST,

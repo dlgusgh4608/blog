@@ -4,7 +4,7 @@ export const initialState = {
   searchPosts: [],
   tagPosts: [],
   post: null,
-  imagePath: [],
+  imagePath: null,
   imageUploadSuccess: false,
   imageUploadLoading: false,
   imageUploadError: null,
@@ -105,7 +105,7 @@ export const LOAD_TAG_POSTS_REQUEST = 'LOAD_TAG_POSTS_REQUEST';
 export const LOAD_TAG_POSTS_SUCCESS = 'LOAD_TAG_POSTS_SUCCESS';
 export const LOAD_TAG_POSTS_FAILURE = 'LOAD_TAG_POSTS_FAILURE';
 
-export const REMOVE_WRITE_IMAGE = 'REMOVE_WRITE_IMAGE';
+export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -378,13 +378,11 @@ const reducer = (state = initialState, action) => {
         imageUploadError: null,
       };
     case UPLOAD_IMAGE_SUCCESS: {
-      const imagePath = state.imagePath;
-      imagePath[0] = action.data;
       return {
         ...state,
         imageUploadLoading: false,
         imageUploadSuccess: true,
-        imagePath,
+        imagePath: action.data,
       };
     }
     case UPLOAD_IMAGE_FAILURE:
@@ -434,11 +432,11 @@ const reducer = (state = initialState, action) => {
         updatePostLoading: false,
         updatePostError: action.error,
       };
-    case REMOVE_WRITE_IMAGE:
+    case REMOVE_IMAGE:
       return {
         ...state,
         imageUploadSuccess: false,
-        imagePath: [],
+        imagePath: null,
       };
     default:
       return state;

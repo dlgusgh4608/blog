@@ -169,9 +169,9 @@ const Write = ({ content, onChangeContent, title, onChangeTitle, tag, onChangeTa
               <Tag key={i}>{v}</Tag>
             ))}
             <TagInput placeholder="태그를 입력해주세요." value={tag} onChange={onChangeTag} onKeyDown={onKeyDownTag} onFocus={onTagInputFocus} onBlur={onTagInputBlur} />
-            <Hr />
             {showTagLabel && <TagLabel>Enter 혹은 , 키로 태그를 입력할수 있습니다.</TagLabel>}
           </TagWrapper>
+          <Hr />
         </Header>
         <ContentWrapper>
           <CodeMirror

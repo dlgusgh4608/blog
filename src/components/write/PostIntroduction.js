@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import ImageIcon from '../svg/ImageIcon';
 import { useDispatch } from 'react-redux';
-import { REMOVE_WRITE_IMAGE } from '../../reducer/post';
+import { REMOVE_IMAGE } from '../../reducer/post';
 
 const Container = styled.div`
   position: fixed;
@@ -182,7 +182,7 @@ const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleCont
 
   const onImgDelete = () => {
     dispatch({
-      type: REMOVE_WRITE_IMAGE,
+      type: REMOVE_IMAGE,
     });
   };
 
@@ -190,7 +190,7 @@ const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleCont
     <Container>
       <Wrapper>
         <h3>포스트 미리보기</h3>
-        {imagePath[0] && (
+        {imagePath && (
           <ImgModifyWrapper>
             <ImgModify onClick={onClickImg}>수정</ImgModify>
             <ImgDelete onClick={onImgDelete}>삭제</ImgDelete>
@@ -200,8 +200,8 @@ const PostIntroduction = ({ toggleDialog, title, titleContent, onChangeTitleCont
         <ImgContainer>
           <ImgWrapper>
             <input type="file" ref={inputImg} hidden accept="image/gif, image/jpeg, image/png" onChange={onChangeImg} />
-            {imagePath[0] ? (
-              <MainImg src={imagePath[0]} />
+            {imagePath ? (
+              <MainImg src={imagePath} />
             ) : (
               <DefaultImg>
                 <ImageIcon />
