@@ -189,7 +189,7 @@ module.exports = (router, service) => {
   });
 
   //포스트 수정
-  router.post('/api/v1/post/modify', isLoggedIn, upload.none(), async (req, res) => {
+  router.post('/api/v1/update-post', isLoggedIn, async (req, res) => {
     try {
       const tokenId = req.user;
       const { postId, userId, title, titleContent, content, imagePath, tags } = req.body;

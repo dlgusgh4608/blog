@@ -150,17 +150,17 @@ const PostWrite = ({ location }) => {
       if (imageUploadLoading) {
         return errorAlert('이미지 업로드 중입니다. 잠시 후 시도해주세요.');
       }
-      const formData = new FormData();
-      formData.append('postId', post.post.id);
-      formData.append('userId', post.post.user_id);
-      formData.append('title', trimTitle);
-      formData.append('titleContent', titleContent);
-      formData.append('content', content);
-      formData.append('imagePath', imagePath);
-      formData.append('tags', tags);
       dispatch({
         type: UPDATE_POST_REQUEST,
-        data: formData,
+        data: {
+          postId: post.post.id,
+          userId: post.post.user_id,
+          title: trimTitle,
+          titleContent,
+          content,
+          imagePath,
+          tags,
+        },
       });
     },
     [title, titleContent, imagePath, content, data, post, dispatch],

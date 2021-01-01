@@ -376,6 +376,7 @@ const reducer = (state = initialState, action) => {
         imageUploadLoading: true,
         imageUploadSuccess: false,
         imageUploadError: null,
+        imagePath: null,
       };
     case UPLOAD_IMAGE_SUCCESS: {
       return {
@@ -397,6 +398,7 @@ const reducer = (state = initialState, action) => {
         addPostLoading: true,
         addPostSuccess: false,
         addPostError: null,
+        posts: [],
       };
     case ADD_POST_SUCCESS:
       return {

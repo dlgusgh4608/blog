@@ -89,6 +89,7 @@ const TagLabel = styled.div`
   padding: 0.5rem;
   border-radius: 0.7rem;
   background-color: #dee2e6;
+  margin-top: 1rem;
 `;
 
 const ContentWrapper = styled.div`

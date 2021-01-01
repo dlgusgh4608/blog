@@ -65,7 +65,6 @@ function* imageUpload(action) {
 }
 
 function addPostAPI(data) {
-  console.log(data);
   return axios.post('/v1/post', data);
 }
 
@@ -85,7 +84,7 @@ function* addPost(action) {
 }
 
 function updatePostAPI(data) {
-  return axios.post('/v1/post/modify', data);
+  return axios.post('/v1/update-post', data);
 }
 
 function* updatePost(action) {
