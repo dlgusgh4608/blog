@@ -403,7 +403,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         addPostLoading: false,
         addPostSuccess: true,
-        imagePath: [],
+        imagePath: null,
       };
     case ADD_POST_FAILURE:
       return {
@@ -424,7 +424,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         updatePostLoading: false,
         updatePostSuccess: true,
-        imagePath: [],
+        imagePath: null,
       };
     case UPDATE_POST_FAILURE:
       return {

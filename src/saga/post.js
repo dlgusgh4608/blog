@@ -104,7 +104,7 @@ function* updatePost(action) {
 }
 
 function loadPostAPI(data) {
-  return axios.post('/v1/post', data);
+  return axios.get(`/v1/post/${data.postId}`);
 }
 
 function* loadPost(action) {

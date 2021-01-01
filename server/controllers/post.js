@@ -116,9 +116,9 @@ module.exports = (router, service) => {
   });
 
   //포스트 상세보기
-  router.post('/api/v1/post', async (req, res) => {
+  router.get('/api/v1/post/:postId', async (req, res) => {
     try {
-      const postId = req.body.postId;
+      const { postId } = req.params;
       if (!postId) {
         return res.status(400).json({ error: 'invalid', reason: 'postId' });
       }
@@ -135,7 +135,7 @@ module.exports = (router, service) => {
   });
 
   //포스트 작성
-  router.post('/api/v1/post/add', isLoggedIn, upload.none(), async (req, res) => {
+  router.post('/api/v1/post', isLoggedIn, async (req, res) => {
     try {
       const userId = req.user;
       const { title, titleContent, content, imagePath, tags } = req.body;
