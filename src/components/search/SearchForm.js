@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   border: 1px solid black;
   align-items: center;
   padding: 0.5rem;
-  height: 3rem;
+  height: 3.5rem;
 `;
 
 const IconWrapper = styled.div`
@@ -30,6 +30,7 @@ const SearchInput = styled.input`
   font-size: 1.4rem;
   border: none;
   outline: none;
+  background-color: inherit;
 `;
 
 const LengthWrapper = styled.div`

@@ -50,7 +50,6 @@ const MainLayout = ({ children, userId }) => {
         setScroll(windowScroll);
         return setHide(false);
       }
-      console.log(windowScroll);
     };
     window.addEventListener('scroll', onScroll);
 

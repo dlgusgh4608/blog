@@ -14,7 +14,7 @@ const CommentText = styled(TextArea)`
   border: 1px solid gray;
   resize: none;
   outline: none;
-  min-height: 4rem;
+  min-height: 5rem;
   border-radius: 0.5rem;
   padding: 1rem;
   font-size: 1.3rem;
