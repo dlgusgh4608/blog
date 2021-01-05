@@ -122,7 +122,6 @@ const ModifyTextArea = styled(TextArea)`
   width: 100%;
   min-height: 6rem;
   padding: 1rem;
-  box-sizing: border-box;
   font-size: 1.3rem;
 `;
 

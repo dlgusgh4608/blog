@@ -77,7 +77,6 @@ const Title = styled.h4`
   margin: 0;
 `;
 const Text = styled.textarea`
-  box-sizing: border-box;
   overflow-y: auto;
   border: none;
   outline: none;
@@ -109,7 +108,6 @@ const BackBtn = styled.div`
   border-radius: 0.7rem;
   background-color: green;
   color: black;
-  box-sizing: border-box;
   cursor: pointer;
 
   :hover {
@@ -129,7 +127,6 @@ const WriteBtn = styled(Link)`
   border-radius: 0.7rem;
   background-color: green;
   color: black;
-  box-sizing: border-box;
   cursor: pointer;
 
   :hover {

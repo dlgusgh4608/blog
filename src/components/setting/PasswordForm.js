@@ -26,7 +26,6 @@ const Input = styled.input`
   border-radius: 0.4rem;
   outline: none;
   border: 1px solid black;
-  box-sizing: border-box;
   padding: 0.5rem;
   margin-bottom: 0.3rem;
 `;

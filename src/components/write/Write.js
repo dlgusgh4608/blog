@@ -20,7 +20,7 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   display: flex;
-  flex: 1 1 0%;
+  height: 100%;
   flex-direction: column;
 `;
 
@@ -28,7 +28,6 @@ const Header = styled.div`
   display: flex;
   flex-direction: column;
   padding: 3rem 2rem 0 2rem;
-  box-sizing: border-box;
   @media (max-width: 880px) {
     width: 100%;
   }
@@ -98,7 +97,6 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   flex: 1 1 0%;
   overflow-y: hidden;
-  box-sizing: border-box;
   @media (max-width: 880px) {
     width: 100%;
   }
@@ -117,8 +115,7 @@ const BtnWrapper = styled.div`
   height: 4rem;
   width: 100%;
   padding: 0.5rem;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
-  box-sizing: border-box;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px; ;
 `;
 
 const ExitBtnWrapper = styled(Link)`
@@ -188,14 +185,14 @@ const Write = ({ content, onChangeContent, title, onChangeTitle, tag, onChangeTa
             }}
           />
         </ContentWrapper>
+        <BtnWrapper>
+          <ExitBtnWrapper to={'/'}>
+            <LeftArrowIcon />
+            나가기
+          </ExitBtnWrapper>
+          <WriteBtn onClick={onClickWrite}>작성하기</WriteBtn>
+        </BtnWrapper>
       </Wrapper>
-      <BtnWrapper>
-        <ExitBtnWrapper to={'/'}>
-          <LeftArrowIcon />
-          나가기
-        </ExitBtnWrapper>
-        <WriteBtn onClick={onClickWrite}>작성하기</WriteBtn>
-      </BtnWrapper>
     </Container>
   );
 };

@@ -10,7 +10,6 @@ const Wrapper = styled.div`
   z-index: 9999;
   background-color: white;
   padding: 1rem;
-  box-sizing: border-box;
   flex-direction: column;
   box-shadow: 0px 0px 5px gray;
 `;

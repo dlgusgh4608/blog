@@ -12,6 +12,7 @@ const Container = styled.div`
 const Wrapper = styled.div`
   padding: 3rem;
   flex: 1 1 0%;
+  word-break: break-word;
   background-color: pink;
   overflow-y: auto;
 

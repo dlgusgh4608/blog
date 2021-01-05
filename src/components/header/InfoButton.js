@@ -107,9 +107,9 @@ const InfoButton = ({ me }) => {
     setIsShow(!isShow);
   }, [isShow]);
 
-  const ToggleMenuBlur = () => {
-    setIsShow(false);
-  };
+  // const ToggleMenuBlur = () => {
+  //   setIsShow(false);
+  // };
 
   const onLogout = () => {
     dispatch({
@@ -119,7 +119,7 @@ const InfoButton = ({ me }) => {
   return (
     <>
       <CreatePostBtn to={'/write'}>새 글 작성</CreatePostBtn>
-      <MyInfoWrapper onClick={showToggleMenu} onBlur={ToggleMenuBlur} tabIndex={0}>
+      <MyInfoWrapper onClick={showToggleMenu} tabIndex={0}>
         <ImgWrapper>
           <UserImg src={me.img_path} />
         </ImgWrapper>

@@ -174,6 +174,15 @@ const SignUp = ({ toggleDialog, switchHandler, successAlert, errorAlert }) => {
   const onClickSignup = useCallback(
     (e) => {
       e.preventDefault();
+      if (email === '') {
+        return errorAlert('이메일을 입력해주세요.');
+      }
+      if (password === '') {
+        return errorAlert('비밀번호를 입력해주세요.');
+      }
+      if (passwordCheck === '') {
+        return errorAlert('비밀번호 확인을 입력해주세요.');
+      }
       if (password !== passwordCheck) {
         return setPasswordError(true);
       }
