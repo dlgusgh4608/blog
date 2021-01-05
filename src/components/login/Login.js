@@ -26,7 +26,7 @@ const Header = styled.div`
   }
 `;
 
-const Main = styled.div`
+const Main = styled.form`
   display: flex;
   flex-direction: column;
   flex: 1 1 0%;
@@ -97,7 +97,7 @@ const Login = ({ toggleDialog, switchHandler, errorAlert }) => {
     }
   }, [loginSuccess, setPassword, loginError, toggleDialog, errorAlert, setEmail]);
 
-  const onClickLogin = useCallback(
+  const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
       if (!email) {
@@ -124,12 +124,10 @@ const Login = ({ toggleDialog, switchHandler, errorAlert }) => {
           <h2>로그인</h2>
           <XBtn onClick={toggleDialog}>✖️</XBtn>
         </Header>
-        <Main>
+        <Main onSubmit={onSubmit}>
           <h4>이메일</h4> <LoginInput type="email" value={email} onChange={onChangeEmail} placeholder="이메일을 입력해주세요." tabIndex={1} />
           <h4>비밀번호</h4> <LoginInput type="password" value={password} onChange={onChangePassword} placeholder="비밀번호를 입력해주세요." tabIndex={2} />
-          <LoginButton onClick={onClickLogin} tabIndex={3}>
-            {loginLoading ? <Spinner /> : '로그인'}
-          </LoginButton>
+          <LoginButton tabIndex={3}>{loginLoading ? <Spinner /> : '로그인'}</LoginButton>
         </Main>
         <Footer>
           <FooterSpan>아직 아이디가 없으신가요?</FooterSpan>

@@ -27,7 +27,7 @@ const Header = styled.div`
   }
 `;
 
-const Main = styled.div`
+const Main = styled.form`
   display: flex;
   flex-direction: column;
   flex: 1 1 0%;
@@ -171,7 +171,7 @@ const SignUp = ({ toggleDialog, switchHandler, successAlert, errorAlert }) => {
     [email, dispatch],
   );
 
-  const onClickSignup = useCallback(
+  const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
       if (email === '') {
@@ -211,14 +211,14 @@ const SignUp = ({ toggleDialog, switchHandler, successAlert, errorAlert }) => {
           <h2>회원가입</h2>
           <XBtn onClick={toggleDialog}>✖️</XBtn>
         </Header>
-        <Main>
+        <Main onSubmit={onSubmit}>
           <SpanWrapper>
             <h4>이메일</h4>
             {emailError && <ErrorSpan>이메일형식으로 입력해주세요!</ErrorSpan>}
           </SpanWrapper>
           <EmailInputWrapper>
             <EmailInput type="email" required value={email} onChange={onChangeEmail} placeholder="이메일을 입력해주세요." tabIndex={1} />
-            <EmailCheckBtn onClick={onEmailCheck} tabIndex={2}>
+            <EmailCheckBtn type="button" onClick={onEmailCheck} tabIndex={2}>
               {emailCheckLoading ? <Spinner /> : '중복확인'}
             </EmailCheckBtn>
           </EmailInputWrapper>
@@ -229,13 +229,13 @@ const SignUp = ({ toggleDialog, switchHandler, successAlert, errorAlert }) => {
             {passwordError && <ErrorSpan>비밀번호가 일치하지 않습니다.</ErrorSpan>}
           </SpanWrapper>
           <PasswordInput type="password" required value={passwordCheck} onChange={onChangePasswordCheck} placeholder="비밀번호를 한번더 입력해주세요." tabIndex={4} />
-          <SignUpButton onClick={onClickSignup} tabIndex={5}>
+          <SignUpButton type="submit" tabIndex={5}>
             회원가입
           </SignUpButton>
         </Main>
         <Footer>
           <FooterSpan>이미 아이디가 있으신가요?</FooterSpan>
-          <Login onClick={switchHandler} tabIndex={5}>
+          <Login onClick={switchHandler} tabIndex={6}>
             로그인
           </Login>
         </Footer>

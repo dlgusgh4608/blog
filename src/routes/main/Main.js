@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import MainLayout from '../../components/layout/MainLayout';
 import MenuList from '../../components/main/MenuList';
 import PostItem from '../../components/main/PostItem';
@@ -69,7 +69,7 @@ const Main = ({ location }) => {
         },
       });
     }
-  }, [type, addPostLoading, removePostLoading]);
+  }, [type, addPostLoading, removePostLoading, dispatch]);
   return (
     <MainLayout>
       <MainContainer>

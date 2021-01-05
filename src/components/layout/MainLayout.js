@@ -42,11 +42,11 @@ const MainLayout = ({ children, userId }) => {
   useEffect(() => {
     const onScroll = () => {
       const windowScroll = window.scrollY;
-      if (windowScroll >= 30 && windowScroll < scroll) {
+      if (windowScroll >= 30 && windowScroll > scroll) {
         setScroll(windowScroll);
         return setHide(true);
       }
-      if (windowScroll > scroll) {
+      if (windowScroll < scroll) {
         setScroll(windowScroll);
         return setHide(false);
       }
