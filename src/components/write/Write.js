@@ -106,7 +106,7 @@ const Hr = styled.div`
   width: 100%;
   height: 0.2rem;
   background-color: black;
-  margin: 1rem;
+  margin: 1rem 0;
 `;
 
 const BtnWrapper = styled.div`

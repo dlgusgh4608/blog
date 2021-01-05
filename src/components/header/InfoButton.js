@@ -107,10 +107,6 @@ const InfoButton = ({ me }) => {
     setIsShow(!isShow);
   }, [isShow]);
 
-  // const ToggleMenuBlur = () => {
-  //   setIsShow(false);
-  // };
-
   const onLogout = () => {
     dispatch({
       type: LOGOUT_REQUEST,
