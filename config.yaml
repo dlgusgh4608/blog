@@ -1,0 +1,8 @@
+baseURL: 'https://example.org/'
+languageCode: 'ko-kr'
+title: 'HyunhoLee'
+theme: 'PaperMod'
+params:
+  homeInfoParams:
+    Title: 안녕하세요! 🙋‍♂️
+    Content: 개발하며 배운 지식을 정리하는 기술 블로그입니다.

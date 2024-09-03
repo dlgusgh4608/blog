@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Arbitrage (2) | HyunhoLee</title>
+<meta name="keywords" content="Binance, Upbit, Kimp">
+<meta name="description" content="Arbitrage란? 직역하면 중재라는 뜻이지만 양방거래라는 뜻이다.
+필자는 수많은 투자중에 주식거래를 제일 좋아한다.
+그래서 여러 정보를 찾아보다 짐 사이먼스라는 인물이 수학자 및 공학자들로 구성된 투자회사를 차렸는데 웬만한 투자회사보다 수익률이 더 좋았다고 한다.
+그렇다면 나도 프로그램을 많을면 되지 않는가?
+그렇게 해서 시작한 프로젝트가 Bitcoin Arbitrage(양방거래)이다.
+Why Bitcoin Arbitrage? 왜 비트코인을 이용한 양방거래인가?
+우선 필자는 위에 짐 사이먼스같은 천재적인 수학자가 아니다.
+그렇기에 자동투자를 하기 위해서는 리스크 최소화가 관건이었다.
+리스크 최소화 방법으로 내가 선택한건 Hedging(헷징)이다.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/posts/2/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.54405a410796490bc874ab6181fac9b675753cc2b91375d8f882566459eca428.css" integrity="sha256-VEBaQQeWSQvIdKthgfrJtnV1PMK5E3XY&#43;IJWZFnspCg=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/2/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="HyunhoLee (Alt + H)">HyunhoLee</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Arbitrage (2)
+    </h1>
+    <div class="post-meta"><span title='2024-08-28 09:33:22 +0900 KST'>August 28, 2024</span>
+
+</div>
+  </header> 
+<figure class="entry-cover"><img loading="eager" src="http://localhost:1313/assets/img/finance.jpg" alt="Arbitrage (2)">
+        
+</figure>
+  <div class="post-content"><h2 id="arbitrage란">Arbitrage란?<a hidden class="anchor" aria-hidden="true" href="#arbitrage란">#</a></h2>
+<p>직역하면 중재라는 뜻이지만 양방거래라는 뜻이다.</p>
+<p>필자는 수많은 투자중에 주식거래를 제일 좋아한다.</p>
+<p>그래서 여러 정보를 찾아보다 <a href="https://namu.wiki/w/%EC%A7%90%20%EC%82%AC%EC%9D%B4%EB%A8%BC%EC%8A%A4">짐 사이먼스</a>라는 인물이 수학자 및 공학자들로 구성된 투자회사를 차렸는데 웬만한 투자회사보다 수익률이 더 좋았다고 한다.</p>
+<p>그렇다면 나도 프로그램을 많을면 되지 않는가?</p>
+<p>그렇게 해서 시작한 프로젝트가 Bitcoin Arbitrage(양방거래)이다.</p>
+<h2 id="why-bitcoin-arbitrage">Why Bitcoin Arbitrage?<a hidden class="anchor" aria-hidden="true" href="#why-bitcoin-arbitrage">#</a></h2>
+<p>왜 비트코인을 이용한 양방거래인가?</p>
+<p>우선 필자는 위에 짐 사이먼스같은 천재적인 수학자가 아니다.</p>
+<p>그렇기에 자동투자를 하기 위해서는 리스크 최소화가 관건이었다.</p>
+<p>리스크 최소화 방법으로 내가 선택한건 Hedging(헷징)이다.</p>
+<blockquote>
+<p>헷징이란?
+가격변동으로 인한 손실을 막기 위해 실시하는 금융 거래행위이다.</p>
+</blockquote>
+<p>그렇다면 주식도 있는데 왜 비트코인인가?</p>
+<p>우선 주식은 지금 해외주식으로 돈을 돌리고있고, 내가 생각한 양방거래를 하기 위해서는 각각 다른 증권사에서 거래를 진행해야하는데 증권사 API는 거래소 API에 비해 매우 불친절하였기 때문에 비트코인으로 진행하기로 결정했다.</p>
+<p>마침 비트코인은 한국 거래소(Upbit)와 해외 거래소(Binance)에는 가격차이가 존재한다.</p>
+<p>우리는 이 가격차이를 <a href="https://kimpga.com/">김프</a>라고 부르기로했다.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/binance/">Binance</a></li>
+      <li><a href="http://localhost:1313/tags/upbit/">Upbit</a></li>
+      <li><a href="http://localhost:1313/tags/kimp/">Kimp</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="http://localhost:1313/">HyunhoLee</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

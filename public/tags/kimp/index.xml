@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Kimp on HyunhoLee</title>
+    <link>http://localhost:1313/tags/kimp/</link>
+    <description>Recent content in Kimp on HyunhoLee</description>
+    <generator>Hugo -- 0.133.1</generator>
+    <language>ko-kr</language>
+    <lastBuildDate>Tue, 03 Sep 2024 12:20:22 +0900</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/kimp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Arbitrage (2)</title>
+      <link>http://localhost:1313/posts/arbitrage-2/</link>
+      <pubDate>Tue, 03 Sep 2024 12:20:22 +0900</pubDate>
+      <guid>http://localhost:1313/posts/arbitrage-2/</guid>
+      <description>Arbitrage란? 직역하면 중재라는 뜻이지만 양방거래라는 뜻이다.
+필자는 수많은 투자중에 주식거래를 제일 좋아한다.
+그래서 여러 정보를 찾아보다 짐 사이먼스라는 인물이 수학자 및 공학자들로 구성된 투자회사를 차렸는데 웬만한 투자회사보다 수익률이 더 좋았다고 한다.
+그렇다면 나도 프로그램을 많을면 되지 않는가?
+그렇게 해서 시작한 프로젝트가 Bitcoin Arbitrage(양방거래)이다.
+Why Bitcoin Arbitrage? 왜 비트코인을 이용한 양방거래인가?
+우선 필자는 위에 짐 사이먼스같은 천재적인 수학자가 아니다.
+그렇기에 자동투자를 하기 위해서는 리스크 최소화가 관건이었다.
+리스크 최소화 방법으로 내가 선택한건 Hedging(헷징)이다.</description>
+    </item>
+    <item>
+      <title>Arbitrage (1)</title>
+      <link>http://localhost:1313/posts/arbitrage-1/</link>
+      <pubDate>Tue, 03 Sep 2024 10:20:22 +0900</pubDate>
+      <guid>http://localhost:1313/posts/arbitrage-1/</guid>
+      <description>Arbitrage란? 직역하면 중재라는 뜻이지만 양방거래라는 뜻이다.
+필자는 수많은 투자중에 주식거래를 제일 좋아한다.
+그래서 여러 정보를 찾아보다 짐 사이먼스라는 인물이 수학자 및 공학자들로 구성된 투자회사를 차렸는데 웬만한 투자회사보다 수익률이 더 좋았다고 한다.
+그렇다면 나도 프로그램을 많을면 되지 않는가?
+그렇게 해서 시작한 프로젝트가 Bitcoin Arbitrage(양방거래)이다.
+Why Bitcoin Arbitrage? 왜 비트코인을 이용한 양방거래인가?
+우선 필자는 위에 짐 사이먼스같은 천재적인 수학자가 아니다.
+그렇기에 자동투자를 하기 위해서는 리스크 최소화가 관건이었다.
+리스크 최소화 방법으로 내가 선택한건 Hedging(헷징)이다.</description>
+    </item>
+  </channel>
+</rss>
