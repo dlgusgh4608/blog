@@ -7,10 +7,6 @@ tags:
   - Kimp
 categories:
   - Arbitrage
-cover:
-  image: '/assets/img/finance.jpg'
-  alt: 'Arbitrage (1)'
-  relative: false
 showToc: true
 ---
 
