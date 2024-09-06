@@ -26,7 +26,7 @@ Websocket을 이용하여 실시간으로 데이터를 수신 받아 비교하�
 
 ws는 Node.js에서 Websocket을 사용할 때 보편적으로 많이 사용하는 라이브러리이다.
 
-![npm ws weekly download](/assets/post/npm-ws.png)
+![npm ws weekly download](/assets/posts/arbitrage-2/npm-ws.png)
 
 위의 사진에 나와있듯 주간 다운로드 횟수가 6천만 건이므로 이미 검증되어 있는 라이브러리라 생각한다.
 
@@ -106,7 +106,7 @@ ws 라이브러리의 사용법은 [해당 링크](https://www.npmjs.com/package
 ### 네이버 증권
 
 [네이버 증권](https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW)에 접속해서 브라우저의 개발자 도구를 열어 고시회차별 시세 부분을 확인해보면 iframe으로 불러온 코드라는걸 확인 할 수 있다.
-![naver finance code](/assets/post/naver-finance.png)
+![naver finance code](/assets/posts/arbitrage-2/naver-finance.png)
 
 네이버 증권의 경우 [해당 iframe 링크](https://finance.naver.com/marketindex/exchangeDegreeCountQuote.naver?marketindexCd=FX_USDKRW)를 긁어오면 편하게 환율 정보를 얻을 수 있다.
 
@@ -115,7 +115,7 @@ ws 라이브러리의 사용법은 [해당 링크](https://www.npmjs.com/package
 [Google Finance](https://www.google.com/finance/quote/USD-KRW)에서 환율 정보를 긁어 와야 한다.
 
 구글 역시 브라우저의 개발자 도구를 열어 환율정보를 표시하는 element의 class가 document에서 겹치지 않는 class 임을 확인할 수 있다.
-![google finance code](/assets/post/google-finance.png)
+![google finance code](/assets/posts/arbitrage-2/google-finance.png)
 
 해당 Selector를 이용하여 div Element의 text를 긁어오면 간편하게 환율 정보를 얻을 수 있다.
 

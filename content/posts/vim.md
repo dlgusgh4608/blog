@@ -24,7 +24,7 @@ showToc: true
 Vimium은 웹 사이트에서 Command를 사용하여 키보드로 페이지를 컨트롤 할 수 있는 확장 프로그램이었다.
 
 직접 설치하여 사용해보니 정말 편리함을 느낄수 있었다.
-![Vimium Find Command](/assets/post/vimium.png)
+![Vimium Find Command](/assets/posts/vim/vimium.png)
 설치는 및 명령어는 [해당 링크](https://chromewebstore.google.com/detail/vimium/dbepggeogbaibhgnhhndojpepiihcmeb?hl=ko&pli=1)를 참조 한다.
 
 ## Vim
